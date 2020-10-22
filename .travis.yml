@@ -2,17 +2,18 @@ language: java
 sudo: required
 matrix:
   include:
-    - jdk: openjdk11
+  - jdk: openjdk11
 addons:
   sonarcloud:
     organization: exasol
-
+    token:
+      secure: i49mlOn7cPl14WAhQ+w1qsdwvH1XDBbRcx1lpLjVMxN1MOaBRsp2ZqOxFY7OY6MVpAkNZfk6kwvMO4amhB1US2LdbgqDQmUFaF26Hdflf0F0VHaHIsBEPdrayNQqwYAPDLuqKq08Q+lsty6Ovx7O07TNnhXl7m5kzrPD63u5BL32sSkb824ok+6OaqD0BLLk2tEkmiGy9tY+z3mr2DKNeddAjb5K2Ny2BZ0dt6QtIHjaKnQsMxJrhi1FJXYq0NY74wRmrAsDkNagQ77ERe0ZZSYSyLnpuDNuW/pTPJk4/HCN06GSNpjABAe00HpS/LgXnWe76zGnK1/ZXLxemp7Wz9Q/dBDP8iJyI9r6mkOtIN4+dLHPXPTGnbGcIpNmkbLDP9O3VSJWHLjwgBaLamZc9/ZkbOHw7jQaTMmso/C5g+KD+QEN0GP3SZandPbff+7l74nfVCDATFgrh2Gezxn2g+qhNIuI9+f9WSt+L1Hkztuvsbhq/CEFVKuXZInSsvKD8tDQlbJQlUxV3kfkVa1lr6APUPax6v44UsUNIXAimNIFGW8sbKtks3rEOFZAmK+FzviLqbEviSv5NPnc//n1egHEcUHVcqdfSE/KfZvc0hv5AWsO039Ct6Oab14mU7V7cldz5ATRpIXDwNuusSTpHmhcUkHOlRhdpSH2IvSe1CY=
 install:
-  - rm -rf "$HOME/.m2/repository/com/exasol/virtual-schema-common-*" #clear cache for our repos since they change quickly
-  - travis_retry mvn dependency:resolve
+- rm -rf "$HOME/.m2/repository/com/exasol/virtual-schema-common-*"
+- travis_retry mvn dependency:resolve
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:prepare-agent-integration
-    verify sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,target/site/jacoco-udf/jacoco.xml
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:prepare-agent-integration
+  verify sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,target/site/jacoco-udf/jacoco.xml
 cache:
   directories:
-    - "$HOME/.m2"
+  - "$HOME/.m2"
