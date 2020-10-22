@@ -222,6 +222,7 @@
                 </executions>
                 <configuration>
                     <modules>
+                        <module>maven_central</module>
                     </modules>
                 </configuration>
             </plugin>
