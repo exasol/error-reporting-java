@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
  */
 class Quoter {
 
+    private Quoter() {
+        // empty on purpose
+    }
+
     /**
      * Quote an objects for the use in error messages.
      * 
