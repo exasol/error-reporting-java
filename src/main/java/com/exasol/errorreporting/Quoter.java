@@ -13,7 +13,7 @@ class Quoter {
     }
 
     /**
-     * Quote an objects for the use in error messages.
+     * Return a quoted string representation of the objectToQuote passed.
      * 
      * @param objectToQuote object to quote
      * @return quoted object
