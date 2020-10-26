@@ -33,7 +33,7 @@ ExaError.messageBuilder("E-TEST-2")
   .mitigation("Delete something.")
   .toString();
 ```
-Result: `Too tew disk space. Delete something.`
+Result: `E-TEST-2: Too tew disk space. Delete something.`
 
 <hr>
 
@@ -47,7 +47,7 @@ ExaError.messageBuilder("E-TEST-2")
 Result:
 
 ```text
-Too tew disk space. Known mitigations:
+E-TEST-2: Too few disk space. Known mitigations:
 * Delete something.
 * Create larger partition.
 ```
