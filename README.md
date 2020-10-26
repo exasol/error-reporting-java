@@ -52,7 +52,6 @@ Too tew disk space. Known mitigations:
 * Create larger partition.
 ```
 
-
 ## Additional Resources
 
 * [Changelog](doc/changes/changelog.md)
