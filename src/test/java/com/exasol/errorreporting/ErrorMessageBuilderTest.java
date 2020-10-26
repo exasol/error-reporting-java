@@ -15,7 +15,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessageWithPlaceholder() {
+    void testMessageWithParameter() {
         final String message = new ErrorMessageBuilder("T-ERJ-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
                 .parameter("myPlaceholder", "myValue").parameter("number", 1, "a number").toString();
@@ -23,7 +23,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessageWithUnquotedPlaceholder() {
+    void testMessageWithUnquotedParameter() {
         final String message = new ErrorMessageBuilder("T-ERJ-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
                 .unquotedParameter("myPlaceholder", "myValue").unquotedParameter("number", 1, "a number").toString();
@@ -31,7 +31,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testUnknownPlaceholder() {
+    void testUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("T-ERJ-1").message("{{unknown}}");
         final IllegalStateException exception = assertThrows(IllegalStateException.class, messageBuilder::toString);
         assertThat(exception.getMessage(), equalTo("F-ERJ-1: Unknown placeholder 'unknown'."));

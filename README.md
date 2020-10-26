@@ -13,6 +13,8 @@ result: `E-TEST-1: Something went wrong.`
 
 ### Parameters
 
+You can specify placeholders in the message and fill them up with parameters values, as follows:
+
 ```java
 ExaError.messageBuilder("E-TEST-2")
   .message("Unknown input {{input}}.")
@@ -27,6 +29,8 @@ If you don't want that use `unquotedParameter(placeholder, value, description)` 
  
 ### Mitigations
 
+The mitigations describe those actions the user can follow to overcame the error, and are specified as follows:
+
 ```java
 ExaError.messageBuilder("E-TEST-2")
   .message("Too tew disk space.")
@@ -34,6 +38,8 @@ ExaError.messageBuilder("E-TEST-2")
   .toString();
 ```
 Result: `E-TEST-2: Too tew disk space. Delete something.`
+
+You can use parameters in mitigations too.
 
 <hr>
 

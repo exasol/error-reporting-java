@@ -111,6 +111,7 @@ class ErrorMessageBuilder {
      * 
      * @return built error massage string
      */
+    @Override
     public String toString() {
         final StringBuilder result = new StringBuilder();
         result.append(this.errorCode);
