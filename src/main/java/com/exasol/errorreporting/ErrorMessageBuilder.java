@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -117,7 +116,7 @@ class ErrorMessageBuilder {
         result.append(this.errorCode);
         if (this.messageBuilder.length() > 0) {
             result.append(": ");
-            result.append(applyPlaceholders(this.messageBuilder.toString()));
+            result.append(replacePlaceholders(this.messageBuilder.toString()));
         }
         if (this.mitigations.size() == 1) {
             result.append(" ");
@@ -132,8 +131,15 @@ class ErrorMessageBuilder {
         return result.toString();
     }
 
-    private String applyPlaceholders(final String subject) {
-        return replacePlaceholders(subject, this::resolvePlaceholder);
+    private String replacePlaceholders(final String subject) {
+        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
+        final StringBuilder resultBuilder = new StringBuilder();
+        while (matcher.find()) {
+            final String placeholder = matcher.group(1);
+            matcher.appendReplacement(resultBuilder, resolvePlaceholder(placeholder));
+        }
+        matcher.appendTail(resultBuilder);
+        return resultBuilder.toString();
     }
 
     private String resolvePlaceholder(final String placeholder) {
@@ -144,16 +150,5 @@ class ErrorMessageBuilder {
                     .message("Unknown placeholder {{placeholder}}.").parameter("placeholder", placeholder)//
                     .toString());
         }
-    }
-
-    private String replacePlaceholders(final String subject, final UnaryOperator<String> placeholderResolver) {
-        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
-        final StringBuilder resultBuilder = new StringBuilder();
-        while (matcher.find()) {
-            final String placeholder = matcher.group(1);
-            matcher.appendReplacement(resultBuilder, placeholderResolver.apply(placeholder));
-        }
-        matcher.appendTail(resultBuilder);
-        return resultBuilder.toString();
     }
 }
