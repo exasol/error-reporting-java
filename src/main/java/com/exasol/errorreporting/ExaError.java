@@ -11,9 +11,6 @@ public class ExaError {
 
     /**
      * Get a builder for error messages.
-     * <p>
-     * These builder calls can be crawled using https://github.com/exasol/error-code-crawler-maven-plugin.
-     * </p>
      * 
      * @param errorCode Exasol error code
      * @return built error message

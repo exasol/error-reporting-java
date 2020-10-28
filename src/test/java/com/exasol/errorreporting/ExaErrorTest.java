@@ -9,6 +9,6 @@ class ExaErrorTest {
 
     @Test
     void testCreateErrorCodeMessage() {
-        assertThat(ExaError.messageBuilder("T-ERJ-1").toString(), equalTo("T-ERJ-1"));
+        assertThat(ExaError.messageBuilder("E-ERJ-TEST-1").toString(), equalTo("E-ERJ-TEST-1"));
     }
 }

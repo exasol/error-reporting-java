@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  * Builder for Exasol error messages.
  */
 class ErrorMessageBuilder {
+    private static final String ERROR_CODE_REGEX = "^[WFE]-[A-Z][A-Z0-9]*(-[A-Z][A-Z0-9]*)*-\\d+$";
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
@@ -23,6 +24,10 @@ class ErrorMessageBuilder {
      * @param errorCode Exasol error code
      */
     ErrorMessageBuilder(final String errorCode) {
+        assert Pattern.compile(ERROR_CODE_REGEX).matcher(errorCode).matches() : ExaError.messageBuilder("E-ERJ-2")
+                .message("Invalid error code {{errorCode}}")
+                .mitigation("Please change your error code so that it matches the Regex '" + ERROR_CODE_REGEX + "'.")
+                .parameter("errorCode", errorCode).toString();
         this.errorCode = errorCode;
     }
 
@@ -123,7 +128,7 @@ class ErrorMessageBuilder {
             result.append(this.mitigations.get(0));
         } else if (this.mitigations.size() > 1) {
             result.append(" Known mitigations:");
-            this.mitigations.stream().forEach(mitigation -> {
+            this.mitigations.forEach(mitigation -> {
                 result.append("\n* ");
                 result.append(mitigation);
             });
@@ -143,12 +148,12 @@ class ErrorMessageBuilder {
     }
 
     private String resolvePlaceholder(final String placeholder) {
+        assert this.parameterMapping.containsKey(placeholder) : ExaError.messageBuilder("F-ERJ-1")
+                .message("Unknown placeholder {{placeholder}}.").parameter("placeholder", placeholder).toString();
         if (this.parameterMapping.containsKey(placeholder)) {
             return this.parameterMapping.get(placeholder);
         } else {
-            throw new IllegalStateException(ExaError.messageBuilder("F-ERJ-1")//
-                    .message("Unknown placeholder {{placeholder}}.").parameter("placeholder", placeholder)//
-                    .toString());
+            return "UNKNOWN PLACEHOLDER('" + placeholder + "')";
         }
     }
 }

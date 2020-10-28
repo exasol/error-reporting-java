@@ -4,51 +4,80 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 class ErrorMessageBuilderTest {
 
+    @AfterEach
+    void afterEach() {
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        loader.clearAssertionStatus();
+    }
+
     @Test
     void testMessage() {
-        final String message = new ErrorMessageBuilder("T-ERJ-1").message("Test message.").toString();
-        assertThat(message, equalTo("T-ERJ-1: Test message."));
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Test message.").toString();
+        assertThat(message, equalTo("E-ERJ-TEST-1: Test message."));
     }
 
     @Test
     void testMessageWithParameter() {
-        final String message = new ErrorMessageBuilder("T-ERJ-1")
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
                 .parameter("myPlaceholder", "myValue").parameter("number", 1, "a number").toString();
-        assertThat(message, equalTo("T-ERJ-1: Test message 'myValue' and a number 1."));
+        assertThat(message, equalTo("E-ERJ-TEST-1: Test message 'myValue' and a number 1."));
     }
 
     @Test
     void testMessageWithUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("T-ERJ-1")
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
                 .unquotedParameter("myPlaceholder", "myValue").unquotedParameter("number", 1, "a number").toString();
-        assertThat(message, equalTo("T-ERJ-1: Test message myValue and a number 1."));
+        assertThat(message, equalTo("E-ERJ-TEST-1: Test message myValue and a number 1."));
     }
 
     @Test
-    void testUnknownParameter() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("T-ERJ-1").message("{{unknown}}");
-        final IllegalStateException exception = assertThrows(IllegalStateException.class, messageBuilder::toString);
+    void testUnknownParameterWithAssertionsEnabled() throws ClassNotFoundException, NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException, InstantiationException {
+        final ErrorMessageBuilder messageBuilder = getErrorMessageBuilder(true);
+        final AssertionError exception = assertThrows(AssertionError.class, messageBuilder::toString);
         assertThat(exception.getMessage(), equalTo("F-ERJ-1: Unknown placeholder 'unknown'."));
     }
 
     @Test
+    void testUnknownParameterWithAssertionsDisabled() throws ClassNotFoundException, NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException, InstantiationException {
+        final ErrorMessageBuilder messageBuilder = getErrorMessageBuilder(false);
+        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: UNKNOWN PLACEHOLDER('unknown')"));
+    }
+
+    private ErrorMessageBuilder getErrorMessageBuilder(final boolean assertionsEsnabled) throws InstantiationException,
+            IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+        final ClassLoader loader = ClassLoader.getSystemClassLoader();
+        loader.clearAssertionStatus();
+        loader.setDefaultAssertionStatus(assertionsEsnabled);
+        final ErrorMessageBuilder messageBuilder = (ErrorMessageBuilder) loader
+                .loadClass(ErrorMessageBuilder.class.getName()).getDeclaredConstructor(String.class)
+                .newInstance("E-ERJ-TEST-1");
+        messageBuilder.message("{{unknown}}");
+        return messageBuilder;
+    }
+
+    @Test
     void testSingleMitigation() {
-        final String message = new ErrorMessageBuilder("T-ERJ-1").message("Something went wrong.").mitigation("Fix it.")
-                .toString();
-        assertThat(message, equalTo("T-ERJ-1: Something went wrong. Fix it."));
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
+                .mitigation("Fix it.").toString();
+        assertThat(message, equalTo("E-ERJ-TEST-1: Something went wrong. Fix it."));
     }
 
     @Test
     void testMitigations() {
-        final String message = new ErrorMessageBuilder("T-ERJ-1").message("Something went wrong.").mitigation("Fix it.")
-                .mitigation("Contact support.").toString();
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
+                .mitigation("Fix it.").mitigation("Contact support.").toString();
         assertThat(message,
-                equalTo("T-ERJ-1: Something went wrong. Known mitigations:\n* Fix it.\n* Contact support."));
+                equalTo("E-ERJ-TEST-1: Something went wrong. Known mitigations:\n* Fix it.\n* Contact support."));
     }
 }
