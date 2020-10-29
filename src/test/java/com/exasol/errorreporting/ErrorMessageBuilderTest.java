@@ -2,7 +2,6 @@ package com.exasol.errorreporting;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -40,25 +39,16 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testUnknownParameterWithAssertionsEnabled() throws ClassNotFoundException, NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException, InstantiationException {
-        final ErrorMessageBuilder messageBuilder = getErrorMessageBuilder(true);
-        final AssertionError exception = assertThrows(AssertionError.class, messageBuilder::toString);
-        assertThat(exception.getMessage(), equalTo("F-ERJ-1: Unknown placeholder 'unknown'."));
-    }
-
-    @Test
     void testUnknownParameterWithAssertionsDisabled() throws ClassNotFoundException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException, InstantiationException {
-        final ErrorMessageBuilder messageBuilder = getErrorMessageBuilder(false);
-        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: UNKNOWN PLACEHOLDER('unknown')"));
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
+        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
     }
 
-    private ErrorMessageBuilder getErrorMessageBuilder(final boolean assertionsEsnabled) throws InstantiationException,
+    private ErrorMessageBuilder getErrorMessageBuilder(final boolean assertionsEnabled) throws InstantiationException,
             IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
         final ClassLoader loader = ClassLoader.getSystemClassLoader();
-        loader.clearAssertionStatus();
-        loader.setDefaultAssertionStatus(assertionsEsnabled);
+        loader.setClassAssertionStatus(ErrorMessageBuilder.class.getName(), assertionsEnabled);
         final ErrorMessageBuilder messageBuilder = (ErrorMessageBuilder) loader
                 .loadClass(ErrorMessageBuilder.class.getName()).getDeclaredConstructor(String.class)
                 .newInstance("E-ERJ-TEST-1");

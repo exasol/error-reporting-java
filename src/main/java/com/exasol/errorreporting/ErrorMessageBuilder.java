@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
  * Builder for Exasol error messages.
  */
 class ErrorMessageBuilder {
-    private static final String ERROR_CODE_REGEX = "^[WFE]-[A-Z][A-Z0-9]*(-[A-Z][A-Z0-9]*)*-\\d+$";
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
@@ -24,10 +23,6 @@ class ErrorMessageBuilder {
      * @param errorCode Exasol error code
      */
     ErrorMessageBuilder(final String errorCode) {
-        assert Pattern.compile(ERROR_CODE_REGEX).matcher(errorCode).matches() : ExaError.messageBuilder("E-ERJ-2")
-                .message("Invalid error code {{errorCode}}")
-                .mitigation("Please change your error code so that it matches the Regex '" + ERROR_CODE_REGEX + "'.")
-                .parameter("errorCode", errorCode).toString();
         this.errorCode = errorCode;
     }
 
@@ -148,8 +143,6 @@ class ErrorMessageBuilder {
     }
 
     private String resolvePlaceholder(final String placeholder) {
-        assert this.parameterMapping.containsKey(placeholder) : ExaError.messageBuilder("F-ERJ-1")
-                .message("Unknown placeholder {{placeholder}}.").parameter("placeholder", placeholder).toString();
         if (this.parameterMapping.containsKey(placeholder)) {
             return this.parameterMapping.get(placeholder);
         } else {
