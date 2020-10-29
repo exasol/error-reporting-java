@@ -39,21 +39,10 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testUnknownParameterWithAssertionsDisabled() throws ClassNotFoundException, NoSuchMethodException,
-            IllegalAccessException, InvocationTargetException, InstantiationException {
+    void testUnknownParameter() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
-    }
-
-    private ErrorMessageBuilder getErrorMessageBuilder(final boolean assertionsEnabled) throws InstantiationException,
-            IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
-        final ClassLoader loader = ClassLoader.getSystemClassLoader();
-        loader.setClassAssertionStatus(ErrorMessageBuilder.class.getName(), assertionsEnabled);
-        final ErrorMessageBuilder messageBuilder = (ErrorMessageBuilder) loader
-                .loadClass(ErrorMessageBuilder.class.getName()).getDeclaredConstructor(String.class)
-                .newInstance("E-ERJ-TEST-1");
-        messageBuilder.message("{{unknown}}");
-        return messageBuilder;
     }
 
     @Test
