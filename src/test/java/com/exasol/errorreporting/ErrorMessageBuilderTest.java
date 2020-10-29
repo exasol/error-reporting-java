@@ -3,8 +3,6 @@ package com.exasol.errorreporting;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,8 +37,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testUnknownParameter() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+    void testUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
     }
