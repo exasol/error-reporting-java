@@ -1,6 +1,7 @@
-# error-reporting-java 0.1.0, released 2020-XX-XX
+# error-reporting-java 0.1.0, released 2020-10-30
 
-Code Name: 
+Code Name: Error code builder
 
 ## Features / Enhancements
  
+* #1: Added a builder for error codes with details in code
