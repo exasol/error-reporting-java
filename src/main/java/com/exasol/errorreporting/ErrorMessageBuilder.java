@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Builder for Exasol error messages.
  */
-class ErrorMessageBuilder {
+public class ErrorMessageBuilder {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
