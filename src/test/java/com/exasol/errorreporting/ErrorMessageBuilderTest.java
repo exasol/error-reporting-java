@@ -50,10 +50,18 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    void testSingleMitigationWithParameter() {
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
+                .mitigation("Delete line {{LINE_NR}}.").parameter("LINE_NR", 1).toString();
+        assertThat(message, equalTo("E-ERJ-TEST-1: Something went wrong. Delete line 1."));
+    }
+
+    @Test
     void testMitigations() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
-                .mitigation("Fix it.").mitigation("Contact support.").toString();
-        assertThat(message,
-                equalTo("E-ERJ-TEST-1: Something went wrong. Known mitigations:\n* Fix it.\n* Contact support."));
+                .mitigation("Fix it.").mitigation("Contact support under {{SUPPORT_HOTLINE}}.")
+                .parameter("SUPPORT_HOTLINE", "1234/56789").toString();
+        assertThat(message, equalTo(
+                "E-ERJ-TEST-1: Something went wrong. Known mitigations:\n* Fix it.\n* Contact support under '1234/56789'."));
     }
 }
