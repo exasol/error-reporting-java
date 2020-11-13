@@ -43,6 +43,13 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    void testParameterWithGroupReferenceChar() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1")
+                .message("test {{PLACEHOLDER}}").unquotedParameter("PLACEHOLDER", "$2");
+        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test $2"));
+    }
+
+    @Test
     void testSingleMitigation() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
                 .mitigation("Fix it.").toString();

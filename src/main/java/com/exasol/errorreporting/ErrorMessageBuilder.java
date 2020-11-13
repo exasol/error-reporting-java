@@ -134,11 +134,14 @@ public class ErrorMessageBuilder {
     private String replacePlaceholders(final String subject) {
         final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
         final StringBuilder resultBuilder = new StringBuilder();
+        int lastMatchEnd = 0;
         while (matcher.find()) {
             final String placeholder = matcher.group(1);
-            matcher.appendReplacement(resultBuilder, resolvePlaceholder(placeholder));
+            resultBuilder.append(subject.substring(lastMatchEnd, matcher.start()));
+            resultBuilder.append(resolvePlaceholder(placeholder));
+            lastMatchEnd = matcher.end();
         }
-        matcher.appendTail(resultBuilder);
+        resultBuilder.append(subject.substring(lastMatchEnd));
         return resultBuilder.toString();
     }
 
