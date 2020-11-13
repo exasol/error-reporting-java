@@ -120,12 +120,12 @@ public class ErrorMessageBuilder {
         }
         if (this.mitigations.size() == 1) {
             result.append(" ");
-            result.append(this.mitigations.get(0));
+            result.append(replacePlaceholders(this.mitigations.get(0)));
         } else if (this.mitigations.size() > 1) {
             result.append(" Known mitigations:");
             this.mitigations.forEach(mitigation -> {
                 result.append("\n* ");
-                result.append(mitigation);
+                result.append(replacePlaceholders(mitigation));
             });
         }
         return result.toString();
