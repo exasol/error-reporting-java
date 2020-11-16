@@ -106,6 +106,16 @@ public class ErrorMessageBuilder {
     }
 
     /**
+     * Add a mitigation for cases in which the only thing a user can do is opening a ticket.
+     * 
+     * @return self for fluent programming
+     */
+    public ErrorMessageBuilder ticketMitigation() {
+        mitigation("This is an internal error that should not happen. Please report it by opening a GitHub issue.");
+        return this;
+    }
+
+    /**
      * Build the error message.
      * 
      * @return built error massage string

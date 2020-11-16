@@ -71,4 +71,12 @@ class ErrorMessageBuilderTest {
         assertThat(message, equalTo(
                 "E-ERJ-TEST-1: Something went wrong. Known mitigations:\n* Fix it.\n* Contact support under '1234/56789'."));
     }
+
+    @Test
+    void testTicketMitigation() {
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
+                .ticketMitigation().toString();
+        assertThat(message, equalTo(
+                "E-ERJ-TEST-1: Something went wrong. This is an internal error that should not happen. Please report it by opening a GitHub issue."));
+    }
 }
