@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>error-reporting-java</artifactId>
-    <version>0.1.3</version>
+    <version>0.2.0</version>
     <name>error-reporting-java</name>
     <description>Builder for exasol error codes.</description>
     <url>https://github.com/exasol/error-reporting-java</url>
