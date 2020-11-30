@@ -19,6 +19,7 @@ class QuoterTest {
                 Arguments.of(1d, "1.0"), //
                 Arguments.of(List.of(1, "test"), "[1, 'test']"), //
                 Arguments.of(new CustomObject(), "<CustomObject>"), //
+                Arguments.of(null, "<null>"), //
                 Arguments.of("test", "'test'")//
         );
     }
