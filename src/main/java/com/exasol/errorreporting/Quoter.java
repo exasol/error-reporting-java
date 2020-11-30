@@ -19,7 +19,9 @@ class Quoter {
      * @return quoted object
      */
     static String quoteObject(final Object objectToQuote) {
-        if (objectToQuote instanceof String || objectToQuote instanceof Character) {
+        if (objectToQuote == null) {
+            return "<null>";
+        } else if (objectToQuote instanceof String || objectToQuote instanceof Character) {
             return "'" + objectToQuote.toString() + "'";
         } else if (objectToQuote instanceof List) {
             final List<?> list = (List<?>) objectToQuote;
