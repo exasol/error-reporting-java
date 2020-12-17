@@ -36,6 +36,13 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    void testMessageWithNullUnquotedParameter() {
+        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("{{myPlaceholder}}")
+                .unquotedParameter("myPlaceholder", null).toString();
+        assertThat(message, equalTo("E-ERJ-TEST-1: <null>"));
+    }
+
+    @Test
     void testMessageWithUnquotedParameter() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
