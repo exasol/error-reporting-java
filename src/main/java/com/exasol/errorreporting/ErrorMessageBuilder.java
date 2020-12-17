@@ -1,9 +1,6 @@
 package com.exasol.errorreporting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,7 +74,7 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
-        this.parameterMapping.put(placeholder, value.toString());
+        this.parameterMapping.put(placeholder, Objects.requireNonNullElse(value, "<null>").toString());
         return this;
     }
 
