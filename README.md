@@ -49,7 +49,7 @@ The mitigations describe those actions the user can follow to overcame the error
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-  .message("Too tew disk space.")
+  .message("Too few disk space.")
   .mitigation("Delete something.")
   .toString();
 ```
@@ -61,7 +61,7 @@ You can use parameters in mitigations too.
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-  .message("Too tew disk space.")
+  .message("Too few disk space.")
   .mitigation("Delete something.")
   .mitigation("Create larger partition.")
   .toString();
