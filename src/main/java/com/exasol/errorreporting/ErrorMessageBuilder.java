@@ -16,7 +16,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Create a new instance of
-     * 
+     *
      * @param errorCode Exasol error code
      */
     ErrorMessageBuilder(final String errorCode) {
@@ -28,7 +28,7 @@ public class ErrorMessageBuilder {
      * <p>
      * If this method is called multiple times, the message is appended.
      * </p>
-     * 
+     *
      * @param message exception message
      * @return self for fluent programming
      */
@@ -38,11 +38,45 @@ public class ErrorMessageBuilder {
     }
 
     /**
+     * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
+     *
+     * Place holders are defined in the message pattern by using curly brackets `{}`. By default, arguments are
+     * formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by `{|uq}`.
+     *
+     * You can also define names in the place holders. This name will be shown in case no argument is missing, by
+     * `{argumentName}` or `{argumentName|uq}`.
+     *
+     * Below you can find examples on how to use it.
+     *
+     * Example for quoted arguments:
+     *
+     * `ErrorMessageBuilder("ERROR_CODE").format("Message with {namedQuotedArgument}, {} and {missingQuotedArgument},
+     * "named", "unnamed")`
+     *
+     * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     *
+     * Example for unquoted arguments:
+     *
+     * `ErrorMessageBuilder("ERROR_CODE").format("Message with {namedUnquotedArgument|uq}, {|uq} and
+     * {missingUnquotedArgument|uq}, "named", "unnamed")`
+     *
+     * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     *
+     * @param messagePattern message with place holders
+     * @param arguments      arguments to fill the place holders
+     * @return formatted message as String
+     */
+    public ErrorMessageBuilder format(final String messagePattern, final Object... arguments) {
+        this.messageBuilder.append(MessageFormatter.formatMessage(messagePattern, arguments));
+        return this;
+    }
+
+    /**
      * Add a parameter. This method quotes the parameter.
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
@@ -56,7 +90,7 @@ public class ErrorMessageBuilder {
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @param description description for the error catalog
@@ -68,7 +102,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Add a parameter without quotes.
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
@@ -104,7 +138,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Add a mitigation for cases in which the only thing a user can do is opening a ticket.
-     * 
+     *
      * @return self for fluent programming
      */
     public ErrorMessageBuilder ticketMitigation() {
@@ -114,7 +148,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Build the error message.
-     * 
+     *
      * @return built error massage string
      */
     @Override

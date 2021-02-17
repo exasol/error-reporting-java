@@ -51,13 +51,19 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testUnknownParameter() {
+    void testMessageWithoutParameterName() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{}}");
+        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('')"));
+    }
+
+    @Test
+    void testMessageUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
     }
 
     @Test
-    void testParameterWithGroupReferenceChar() {
+    void testMessageParameterWithGroupReferenceChar() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1")
                 .message("test {{PLACEHOLDER}}").unquotedParameter("PLACEHOLDER", "$2");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test $2"));
