@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * `MessageFormatter.formatMessage("Message with {namedUnquotedArgument|uq}, {|uq} and {missingUnquotedArgument|uq},
  * "named", "unnamed")`
  *
- * is formatted to "Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+ * is formatted to "Message with named, unnamed and UNKNOWN PLACEHOLDER(' anotherQuotedArgument')".
  *
  */
 public class MessageFormatter {
@@ -94,19 +94,8 @@ public class MessageFormatter {
         return this.matcher.group(1);
     }
 
-    /**
-     * @return true if a single null argument was provided, or an actual argument in the arguments array is provided.
-     */
     private boolean isArgumentFound() {
-        return this.isSingleNullArgument() || this.isArgumentProvided();
-    }
-
-    private boolean isSingleNullArgument() {
-        return this.arguments == null;
-    }
-
-    private boolean isArgumentProvided() {
-        return !this.isSingleNullArgument() && (this.argumentIndex < this.arguments.length);
+        return (this.arguments != null) && (this.argumentIndex < this.arguments.length);
     }
 
     private void appendFoundArgument(final String placeholder) {
@@ -142,7 +131,7 @@ public class MessageFormatter {
     }
 
     private Object getCurrentArgument() {
-        if (this.isArgumentProvided()) {
+        if (this.isArgumentFound()) {
             return this.arguments[this.argumentIndex];
         }
         return null;

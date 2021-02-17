@@ -67,8 +67,15 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
-        this.messageBuilder.append(MessageFormatter.formatMessage(messagePattern, arguments));
+        this.messageBuilder.append(MessageFormatter.formatMessage(messagePattern, this.getPatternArguments(arguments)));
         return this;
+    }
+
+    private Object[] getPatternArguments(final Object[] arguments) {
+        if (arguments == null) {
+            return new Object[] { null };
+        }
+        return arguments;
     }
 
     /**
@@ -76,12 +83,12 @@ public class ErrorMessageBuilder {
      *
      * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
      *
-     * @param mitiagationMessagePattern mitigation message pattern with place holders
-     * @param arguments                 arguments to fill the place holders
+     * @param mitigationPattern mitigation message pattern with place holders
+     * @param arguments         arguments to fill the place holders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder formatMitigation(final String mitiagationMessagePattern, final Object... arguments) {
-        this.mitigations.add(MessageFormatter.formatMessage(mitiagationMessagePattern, arguments));
+    public ErrorMessageBuilder formatMitigation(final String mitigationPattern, final Object... arguments) {
+        this.mitigations.add(MessageFormatter.formatMessage(mitigationPattern, this.getPatternArguments(arguments)));
         return this;
     }
 
