@@ -71,6 +71,11 @@ public class ErrorMessageBuilder {
         return this;
     }
 
+    public ErrorMessageBuilder formatMitigation(final String messagePattern, final Object... arguments) {
+        this.mitigations.add(MessageFormatter.formatMessage(messagePattern, arguments));
+        return this;
+    }
+
     /**
      * Add a parameter. This method quotes the parameter.
      * <p>

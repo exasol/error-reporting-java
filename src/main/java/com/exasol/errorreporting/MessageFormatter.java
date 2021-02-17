@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * `MessageFormatter.formatMessage("Message with {namedUnquotedArgument|uq}, {|uq} and {missingUnquotedArgument|uq},
  * "named", "unnamed")`
  *
- * is formatter to "Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+ * is formatted to "Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
  *
  */
 public class MessageFormatter {
@@ -73,27 +73,6 @@ public class MessageFormatter {
         this.appendArgument();
     }
 
-    private void appendArgument() {
-        final String placeholder = this.getCurrentArgumentPlaceHolder();
-        if (this.isArgumentFound()) {
-            this.appendFoundArgument(placeholder);
-        } else {
-            this.appendNotFoundArgument(placeholder);
-        }
-    }
-
-    private String getCurrentArgumentPlaceHolder() {
-        return this.matcher.group(1);
-    }
-
-    private void appendFoundArgument(final String placeholder) {
-        if (this.isNullArgument()) {
-            this.appendNullArgument();
-        } else {
-            this.appendRegularArgument(placeholder);
-        }
-    }
-
     private void appendSectionBeforeNextPlaceHolder() {
         this.resultBuilder.append(this.getMessagePortionBeforeNextArgument());
     }
@@ -102,55 +81,17 @@ public class MessageFormatter {
         return this.messagePattern.substring(this.placeholderEndPosition, this.matcher.start());
     }
 
-    private void appendRegularArgument(final String placeholder) {
-        if (this.isUnquotedParameter(placeholder)) {
-            this.appendUnquotedArgument();
+    private void appendArgument() {
+        final String placeholder = this.getCurrentPlaceHolder();
+        if (this.isArgumentFound()) {
+            this.appendFoundArgument(placeholder);
         } else {
-            this.appendQuotedArgument();
+            this.appendNotFoundArgument(placeholder);
         }
     }
 
-    private void appendQuotedArgument() {
-        this.resultBuilder.append(this.quoteArgument());
-    }
-
-    private Object quoteArgument() {
-        return Quoter.quoteObject(this.getCurrentArgument());
-    }
-
-    private Object getCurrentArgument() {
-        if (this.isArgumentProvided()) {
-            return this.arguments[this.argumentIndex];
-        }
-        return null;
-    }
-
-    private void appendUnquotedArgument() {
-        this.resultBuilder.append(this.getCurrentArgument());
-    }
-
-    private void appendNotFoundArgument(final String placeholder) {
-        final String parameterName = this.parserParameterNameFrom(placeholder);
-        this.resultBuilder.append("UNKNOWN PLACEHOLDER('" + parameterName + "')");
-    }
-
-    private void appendNullArgument() {
-        this.resultBuilder.append("<null>");
-    }
-
-    private String parserParameterNameFrom(final String placeholder) {
-        if (this.isUnquotedParameter(placeholder)) {
-            return placeholder.substring(0, placeholder.length() - 3);
-        }
-        return placeholder;
-    }
-
-    private boolean isUnquotedParameter(final String placeholder) {
-        return placeholder.endsWith("|uq");
-    }
-
-    private boolean isNullArgument() {
-        return this.isArgumentFound() && (this.getCurrentArgument() == null);
+    private String getCurrentPlaceHolder() {
+        return this.matcher.group(1);
     }
 
     /**
@@ -166,6 +107,65 @@ public class MessageFormatter {
 
     private boolean isArgumentProvided() {
         return !this.isSingleNullArgument() && (this.argumentIndex < this.arguments.length);
+    }
+
+    private void appendFoundArgument(final String placeholder) {
+        if (this.isNullArgument()) {
+            this.appendNullArgument();
+        } else {
+            this.appendRegularArgument(placeholder);
+        }
+    }
+
+    private boolean isNullArgument() {
+        return this.isArgumentFound() && (this.getCurrentArgument() == null);
+    }
+
+    private void appendNullArgument() {
+        this.resultBuilder.append("<null>");
+    }
+
+    private void appendRegularArgument(final String placeholder) {
+        if (this.isUnquotedParameter(placeholder)) {
+            this.appendUnquotedArgument();
+        } else {
+            this.appendQuotedArgument();
+        }
+    }
+
+    private boolean isUnquotedParameter(final String placeholder) {
+        return placeholder.endsWith("|uq");
+    }
+
+    private void appendUnquotedArgument() {
+        this.resultBuilder.append(this.getCurrentArgument());
+    }
+
+    private Object getCurrentArgument() {
+        if (this.isArgumentProvided()) {
+            return this.arguments[this.argumentIndex];
+        }
+        return null;
+    }
+
+    private void appendQuotedArgument() {
+        this.resultBuilder.append(this.quoteArgument());
+    }
+
+    private Object quoteArgument() {
+        return Quoter.quoteObject(this.getCurrentArgument());
+    }
+
+    private void appendNotFoundArgument(final String placeholder) {
+        final String parameterName = this.parserParameterNameFrom(placeholder);
+        this.resultBuilder.append("UNKNOWN PLACEHOLDER('" + parameterName + "')");
+    }
+
+    private String parserParameterNameFrom(final String placeholder) {
+        if (this.isUnquotedParameter(placeholder)) {
+            return placeholder.substring(0, placeholder.length() - 3);
+        }
+        return placeholder;
     }
 
     private void moveToNextPlaceHolder() {
