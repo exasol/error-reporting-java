@@ -62,17 +62,26 @@ public class ErrorMessageBuilder {
      *
      * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
      *
-     * @param messagePattern message with place holders
+     * @param messagePattern message pattern with place holders
      * @param arguments      arguments to fill the place holders
-     * @return formatted message as String
+     * @return self for fluent programming
      */
-    public ErrorMessageBuilder format(final String messagePattern, final Object... arguments) {
+    public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
         this.messageBuilder.append(MessageFormatter.formatMessage(messagePattern, arguments));
         return this;
     }
 
-    public ErrorMessageBuilder formatMitigation(final String messagePattern, final Object... arguments) {
-        this.mitigations.add(MessageFormatter.formatMessage(messagePattern, arguments));
+    /**
+     * Add a mitigation. Explain here what users can do to resolve or avoid this error.
+     *
+     * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
+     *
+     * @param mitiagationMessagePattern mitigation message pattern with place holders
+     * @param arguments                 arguments to fill the place holders
+     * @return self for fluent programming
+     */
+    public ErrorMessageBuilder formatMitigation(final String mitiagationMessagePattern, final Object... arguments) {
+        this.mitigations.add(MessageFormatter.formatMessage(mitiagationMessagePattern, arguments));
         return this;
     }
 
