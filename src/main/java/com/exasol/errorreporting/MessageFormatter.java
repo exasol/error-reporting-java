@@ -115,7 +115,7 @@ public class MessageFormatter {
     }
 
     private Object quoteArgument() {
-        return Quoter.quoteObject(this.getCurrentArgument().toString());
+        return Quoter.quoteObject(this.getCurrentArgument());
     }
 
     private Object getCurrentArgument() {

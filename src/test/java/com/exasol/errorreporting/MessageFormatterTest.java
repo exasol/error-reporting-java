@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.Test;
 
 class MessageFormatterTest {
-
     @Test
     void testFormat() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Test message.").toString();
@@ -24,7 +23,7 @@ class MessageFormatterTest {
     void testFormatQuotedMultipleParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
                 .format("Message with {parameterName1} and {parameterName2}.", "value", 1).toString();
-        assertThat(message, equalTo("ERROR-CODE: Message with 'value' and '1'."));
+        assertThat(message, equalTo("ERROR-CODE: Message with 'value' and 1."));
     }
 
     @Test
