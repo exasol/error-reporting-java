@@ -119,7 +119,7 @@ public class MessageFormatter {
     }
 
     private Object getCurrentArgument() {
-        if (this.arguments != null) {
+        if (this.isArgumentProvided()) {
             return this.arguments[this.argumentIndex];
         }
         return null;
@@ -153,8 +153,19 @@ public class MessageFormatter {
         return this.isArgumentFound() && (this.getCurrentArgument() == null);
     }
 
+    /**
+     * @return true if a single null argument was provided, or an actual argument in the arguments array is provided.
+     */
     private boolean isArgumentFound() {
-        return (this.arguments == null) || (this.argumentIndex < this.arguments.length);
+        return this.isSingleNullArgument() || this.isArgumentProvided();
+    }
+
+    private boolean isSingleNullArgument() {
+        return this.arguments == null;
+    }
+
+    private boolean isArgumentProvided() {
+        return !this.isSingleNullArgument() && (this.argumentIndex < this.arguments.length);
     }
 
     private void moveToNextPlaceHolder() {
