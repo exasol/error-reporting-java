@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
  */
 public class MessageFormatter {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{([^\\}]*)\\}");
+    private static final String UNQUOTED_SUFFIX = "|uq";
     private final StringBuilder resultBuilder = new StringBuilder();
     private final Matcher matcher;
     private int argumentIndex = 0;
@@ -69,15 +70,15 @@ public class MessageFormatter {
     }
 
     private void processPlaceHolder() {
-        this.appendSectionBeforeNextPlaceHolder();
+        this.appendSectionBeforePlaceHolder();
         this.appendArgument();
     }
 
-    private void appendSectionBeforeNextPlaceHolder() {
-        this.resultBuilder.append(this.getMessagePortionBeforeNextArgument());
+    private void appendSectionBeforePlaceHolder() {
+        this.resultBuilder.append(this.getSectionBeforePlaceHolder());
     }
 
-    private String getMessagePortionBeforeNextArgument() {
+    private String getSectionBeforePlaceHolder() {
         return this.messagePattern.substring(this.placeholderEndPosition, this.matcher.start());
     }
 
@@ -123,7 +124,7 @@ public class MessageFormatter {
     }
 
     private boolean isUnquotedParameter(final String placeholder) {
-        return placeholder.endsWith("|uq");
+        return placeholder.endsWith(UNQUOTED_SUFFIX);
     }
 
     private void appendUnquotedArgument() {
