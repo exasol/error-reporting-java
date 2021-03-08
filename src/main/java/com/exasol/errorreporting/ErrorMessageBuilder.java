@@ -1,8 +1,6 @@
 package com.exasol.errorreporting;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Builder for Exasol error messages.
@@ -66,7 +64,6 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
-//        this.messageBuilder.append(messagePattern);
         final Object[] patternArguments = this.getPatternArguments(arguments);
         this.messageBuilder.append(MessageFormatterUsingOldAPI.formatMessage(messagePattern, patternArguments, this));
         return this;
@@ -89,7 +86,6 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder formatMitigation(final String mitigationPattern, final Object... arguments) {
-//        this.mitigations.add(mitigationPattern);
         final Object[] patternArguments = this.getPatternArguments(arguments);
         this.mitigations.add(MessageFormatterUsingOldAPI.formatMessage(mitigationPattern, patternArguments, this));
         return this;
@@ -197,33 +193,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
-        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
-        final StringBuilder resultBuilder = new StringBuilder();
-        int lastMatchEnd = 0;
-        while (matcher.find()) {
-            final String placeholder = matcher.group(1);
-            resultBuilder.append(subject.substring(lastMatchEnd, matcher.start()));
-            resultBuilder.append(resolvePlaceholder(placeholder));
-            lastMatchEnd = matcher.end();
-        }
-        resultBuilder.append(subject.substring(lastMatchEnd));
-        return resultBuilder.toString();
-    }
-
-    private String resolvePlaceholder(final String placeholder) {
-        if (this.parameterMapping.containsKey(placeholder)) {
-            return this.parameterMapping.get(placeholder);
-        } else {
-            return "UNKNOWN PLACEHOLDER('" + placeholder + "')";
-        }
-    }
-
-    public boolean containsParameter(final String parameterName) {
-        return this.parameterMapping.containsKey(parameterName);
-    }
-
-    public String getParameter(final String parameterName) {
-        return this.parameterMapping.get(parameterName);
+        return PlaceHolderReplacer.replacePlaceHolders(subject, this.parameterMapping);
     }
 }
