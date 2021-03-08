@@ -65,7 +65,7 @@ public class ErrorMessageBuilder {
      */
     public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
         final Object[] patternArguments = this.getPatternArguments(arguments);
-        this.messageBuilder.append(MessageFormatterUsingOldAPI.formatMessage(messagePattern, patternArguments, this));
+        this.messageBuilder.append(PlaceHolderMapper.formatMessage(messagePattern, patternArguments, this));
         return this;
     }
 
@@ -87,7 +87,7 @@ public class ErrorMessageBuilder {
      */
     public ErrorMessageBuilder formatMitigation(final String mitigationPattern, final Object... arguments) {
         final Object[] patternArguments = this.getPatternArguments(arguments);
-        this.mitigations.add(MessageFormatterUsingOldAPI.formatMessage(mitigationPattern, patternArguments, this));
+        this.mitigations.add(PlaceHolderMapper.formatMessage(mitigationPattern, patternArguments, this));
         return this;
     }
 

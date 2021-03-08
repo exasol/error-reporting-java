@@ -1,17 +1,9 @@
 package com.exasol.errorreporting;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class MessageFormatterUsingOldAPI {
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");// Pattern.compile("\\{([^\\}]*)\\}");
+public class PlaceHolderMapper extends MessagePatternProcessor {
     private static final String UNQUOTED_SUFFIX = "|uq";
-    private final StringBuilder resultBuilder = new StringBuilder();
-    private final Matcher matcher;
     private int argumentIndex = 0;
-    private int placeholderEndPosition = 0;
     private final Object[] arguments;
-    private final String messagePattern;
     private final ErrorMessageBuilder errorMessageBuilder;
 
     /**
@@ -23,59 +15,32 @@ public class MessageFormatterUsingOldAPI {
      */
     public static String formatMessage(final String messagePattern, final Object[] arguments,
             final ErrorMessageBuilder errorMessageBuilder) {
-        return new MessageFormatterUsingOldAPI(messagePattern, arguments, errorMessageBuilder).format();
+        return new PlaceHolderMapper(messagePattern, arguments, errorMessageBuilder).replacePlaceholders();
     }
 
-    private MessageFormatterUsingOldAPI(final String messagePattern, final Object[] arguments,
+    public PlaceHolderMapper(final String messagePattern, final Object[] arguments,
             final ErrorMessageBuilder errorMessageBuilder) {
+        super(messagePattern);
         this.arguments = arguments;
-        this.messagePattern = messagePattern;
         this.errorMessageBuilder = errorMessageBuilder;
-        this.matcher = MessageFormatterUsingOldAPI.PLACEHOLDER_PATTERN.matcher(this.messagePattern);
     }
 
-    private String format() {
-        while (this.isPlaceHolderFound()) {
-            this.processPlaceHolder();
-            this.moveToNextPlaceHolder();
-        }
-        this.appendRestOfTheMessage();
-        return this.getFullMessage();
+    @Override
+    protected void processPlaceHolder(final String placeholder) {
+        this.appendPlaceholder(placeholder);
+        this.appendArgument(placeholder);
+        this.argumentIndex++;
     }
 
-    private boolean isPlaceHolderFound() {
-        return this.matcher.find();
-    }
-
-    private void processPlaceHolder() {
-        this.appendSectionBeforePlaceHolder();
-        this.appendPlaceholder();
-        this.appendArgument();
-    }
-
-    private void appendPlaceholder() {
-        final String placeholder = this.getCurrentPlaceHolder();
+    private void appendPlaceholder(final String placeholder) {
         final String parameterName = this.parserParameterNameFrom(placeholder);
-        this.resultBuilder.append("{{" + parameterName + "}}");
+        this.append("{{" + parameterName + "}}");
     }
 
-    private void appendSectionBeforePlaceHolder() {
-        this.resultBuilder.append(this.getSectionBeforePlaceHolder());
-    }
-
-    private String getSectionBeforePlaceHolder() {
-        return this.messagePattern.substring(this.placeholderEndPosition, this.matcher.start());
-    }
-
-    private void appendArgument() {
-        final String placeholder = this.getCurrentPlaceHolder();
+    private void appendArgument(final String placeholder) {
         if (this.isArgumentFound()) {
             this.appendFoundArgument(placeholder);
         }
-    }
-
-    private String getCurrentPlaceHolder() {
-        return this.matcher.group(1);
     }
 
     private boolean isArgumentFound() {
@@ -133,18 +98,5 @@ public class MessageFormatterUsingOldAPI {
             return placeholder.substring(0, placeholder.length() - 3);
         }
         return placeholder;
-    }
-
-    private void moveToNextPlaceHolder() {
-        this.argumentIndex++;
-        this.placeholderEndPosition = this.matcher.end();
-    }
-
-    private void appendRestOfTheMessage() {
-        this.resultBuilder.append(this.messagePattern.substring(this.placeholderEndPosition));
-    }
-
-    private String getFullMessage() {
-        return this.resultBuilder.toString();
     }
 }
