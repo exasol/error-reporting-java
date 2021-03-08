@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
  * Builder for Exasol error messages.
  */
 public class ErrorMessageBuilder {
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
     private final List<String> mitigations = new ArrayList<>();
@@ -67,7 +66,9 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
-        this.messageBuilder.append(MessageFormatter.formatMessage(messagePattern, this.getPatternArguments(arguments)));
+//        this.messageBuilder.append(messagePattern);
+        final Object[] patternArguments = this.getPatternArguments(arguments);
+        this.messageBuilder.append(MessageFormatterUsingOldAPI.formatMessage(messagePattern, patternArguments, this));
         return this;
     }
 
@@ -88,7 +89,9 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder formatMitigation(final String mitigationPattern, final Object... arguments) {
-        this.mitigations.add(MessageFormatter.formatMessage(mitigationPattern, this.getPatternArguments(arguments)));
+//        this.mitigations.add(mitigationPattern);
+        final Object[] patternArguments = this.getPatternArguments(arguments);
+        this.mitigations.add(MessageFormatterUsingOldAPI.formatMessage(mitigationPattern, patternArguments, this));
         return this;
     }
 
@@ -194,6 +197,7 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
+        final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
         final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
         final StringBuilder resultBuilder = new StringBuilder();
         int lastMatchEnd = 0;
@@ -213,5 +217,13 @@ public class ErrorMessageBuilder {
         } else {
             return "UNKNOWN PLACEHOLDER('" + placeholder + "')";
         }
+    }
+
+    public boolean containsParameter(final String parameterName) {
+        return this.parameterMapping.containsKey(parameterName);
+    }
+
+    public String getParameter(final String parameterName) {
+        return this.parameterMapping.get(parameterName);
     }
 }

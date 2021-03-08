@@ -3,33 +3,7 @@ package com.exasol.errorreporting;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Formatter for messages with place holders.
- *
- * Place holders are defined in the message pattern by using curly brackets `{}`. By default, arguments are formatted
- * with simple quotes unless specified other wise with the 'unquoted' format, defined by `{|uq}`.
- *
- * You can also define names in the place holders. This name will be shown in case no argument is missing, by
- * `{argumentName}` or `{argumentName|uq}`.
- *
- * Below you can find examples on how to use it.
- *
- * Example for quoted arguments:
- *
- * `MessageFormatter.formatMessage("Message with {namedQuotedArgument}, {} and {missingQuotedArgument}, "named",
- * "unnamed")`
- *
- * is formatter to "Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
- *
- * Example for unquoted arguments:
- *
- * `MessageFormatter.formatMessage("Message with {namedUnquotedArgument|uq}, {|uq} and {missingUnquotedArgument|uq},
- * "named", "unnamed")`
- *
- * is formatted to "Message with named, unnamed and UNKNOWN PLACEHOLDER(' anotherQuotedArgument')".
- *
- */
-public class MessageFormatter {
+public class MessageFormatterUsingOldAPI {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");// Pattern.compile("\\{([^\\}]*)\\}");
     private static final String UNQUOTED_SUFFIX = "|uq";
     private final StringBuilder resultBuilder = new StringBuilder();
@@ -38,6 +12,7 @@ public class MessageFormatter {
     private int placeholderEndPosition = 0;
     private final Object[] arguments;
     private final String messagePattern;
+    private final ErrorMessageBuilder errorMessageBuilder;
 
     /**
      * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
@@ -46,14 +21,17 @@ public class MessageFormatter {
      * @param arguments      arguments to fill the place holders
      * @return formatted message as String
      */
-    public static String formatMessage(final String messagePattern, final Object[] arguments) {
-        return new MessageFormatter(messagePattern, arguments).format();
+    public static String formatMessage(final String messagePattern, final Object[] arguments,
+            final ErrorMessageBuilder errorMessageBuilder) {
+        return new MessageFormatterUsingOldAPI(messagePattern, arguments, errorMessageBuilder).format();
     }
 
-    private MessageFormatter(final String messagePattern, final Object[] arguments) {
+    private MessageFormatterUsingOldAPI(final String messagePattern, final Object[] arguments,
+            final ErrorMessageBuilder errorMessageBuilder) {
         this.arguments = arguments;
         this.messagePattern = messagePattern;
-        this.matcher = MessageFormatter.PLACEHOLDER_PATTERN.matcher(this.messagePattern);
+        this.errorMessageBuilder = errorMessageBuilder;
+        this.matcher = MessageFormatterUsingOldAPI.PLACEHOLDER_PATTERN.matcher(this.messagePattern);
     }
 
     private String format() {
@@ -71,7 +49,14 @@ public class MessageFormatter {
 
     private void processPlaceHolder() {
         this.appendSectionBeforePlaceHolder();
+        this.appendPlaceholder();
         this.appendArgument();
+    }
+
+    private void appendPlaceholder() {
+        final String placeholder = this.getCurrentPlaceHolder();
+        final String parameterName = this.parserParameterNameFrom(placeholder);
+        this.resultBuilder.append("{{" + parameterName + "}}");
     }
 
     private void appendSectionBeforePlaceHolder() {
@@ -86,8 +71,6 @@ public class MessageFormatter {
         final String placeholder = this.getCurrentPlaceHolder();
         if (this.isArgumentFound()) {
             this.appendFoundArgument(placeholder);
-        } else {
-            this.appendNotFoundArgument(placeholder);
         }
     }
 
@@ -101,7 +84,7 @@ public class MessageFormatter {
 
     private void appendFoundArgument(final String placeholder) {
         if (this.isNullArgument()) {
-            this.appendNullArgument();
+            this.appendNullArgument(placeholder);
         } else {
             this.appendRegularArgument(placeholder);
         }
@@ -111,15 +94,16 @@ public class MessageFormatter {
         return this.isArgumentFound() && (this.getCurrentArgument() == null);
     }
 
-    private void appendNullArgument() {
-        this.resultBuilder.append("<null>");
+    private void appendNullArgument(final String placeholder) {
+        final String parameterName = this.parserParameterNameFrom(placeholder);
+        this.errorMessageBuilder.parameter(parameterName, null);
     }
 
     private void appendRegularArgument(final String placeholder) {
         if (this.isUnquotedParameter(placeholder)) {
-            this.appendUnquotedArgument();
+            this.appendUnquotedArgument(placeholder);
         } else {
-            this.appendQuotedArgument();
+            this.appendQuotedArgument(placeholder);
         }
     }
 
@@ -127,8 +111,9 @@ public class MessageFormatter {
         return placeholder.endsWith(UNQUOTED_SUFFIX);
     }
 
-    private void appendUnquotedArgument() {
-        this.resultBuilder.append(this.getCurrentArgument());
+    private void appendUnquotedArgument(final String placeholder) {
+        final String parameterName = this.parserParameterNameFrom(placeholder);
+        this.errorMessageBuilder.unquotedParameter(parameterName, this.getCurrentArgument());
     }
 
     private Object getCurrentArgument() {
@@ -138,17 +123,9 @@ public class MessageFormatter {
         return null;
     }
 
-    private void appendQuotedArgument() {
-        this.resultBuilder.append(this.quoteArgument());
-    }
-
-    private Object quoteArgument() {
-        return Quoter.quoteObject(this.getCurrentArgument());
-    }
-
-    private void appendNotFoundArgument(final String placeholder) {
+    private void appendQuotedArgument(final String placeholder) {
         final String parameterName = this.parserParameterNameFrom(placeholder);
-        this.resultBuilder.append("UNKNOWN PLACEHOLDER('" + parameterName + "')");
+        this.errorMessageBuilder.parameter(parameterName, this.getCurrentArgument());
     }
 
     private String parserParameterNameFrom(final String placeholder) {
