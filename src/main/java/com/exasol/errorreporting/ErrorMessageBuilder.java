@@ -23,25 +23,34 @@ public class ErrorMessageBuilder {
     /**
      * Format a given message pattern with placeholders, filling them with the arguments passed in the specified form.
      * <p>
-     * Placeholders are defined in the message pattern by using double curly brackets {{}}. By default, arguments are
-     * formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by `{{|uq}}`.
+     * Placeholders are defined in the message pattern by using double curly brackets {@code {{}}}. By default,
+     * arguments are formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by
+     * {@code {{|uq}}}.
      * </p>
+     * <p>
      * You should always define names in the placeholders. This name will be shown in case no argument is missing, by
-     * `{{argumentName}}` or `{{argumentName|uq}}`.
+     * {@code {{argumentName}}} or {@code {{argumentName|uq}}}.
+     * </p>
      * <p>
      * Below you can find examples on how to use it.
      * </p>
-     * Example for quoted arguments:
      * <p>
-     * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
-     * {{missingQuotedArgument}}, "named", "unnamed")`
+     * Example for quoted arguments:
      * </p>
+     * <p>
+     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
+     * {{missingQuotedArgument}}, "named", "unnamed")}
+     * </p>
+     * <p>
      * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     * </p>
      * <p>
      * Example for unquoted arguments:
      * </p>
-     * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
-     * {{missingUnquotedArgument|uq}}, "named", "unnamed")`
+     * <p>
+     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
+     * {{missingUnquotedArgument|uq}}, "named", "unnamed")}
+     * </p>
      * <p>
      * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
      * </p>
