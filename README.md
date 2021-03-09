@@ -28,15 +28,9 @@ ExaError.messageBuilder("E-TEST-1").message("Something went wrong.").toString();
 
 result: `E-TEST-1: Something went wrong.`
 
-From version `0.3.0` you can achieve the same result with:
-
-```java
-ExaError.messageBuilder("E-TEST-1").format("Something went wrong.").toString();
-```
-
 ### Parameters
 
-You can specify placeholders in the message and fill them up with parameters values, as follows:
+You can specify place holders in the message and fill them up with parameters values, as follows:
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
@@ -54,7 +48,7 @@ From version `0.3.0` you can achieve the same result with:
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-  .format("Unknown input {input}.", "unknown").toString();
+  .message("Unknown input {{input}}.", "unknown").toString();
 ```
  
 ### Mitigations
@@ -92,5 +86,3 @@ E-TEST-2: Too few disk space. Known mitigations:
 
 * [Changelog](doc/changes/changelog.md)
 * [Dependencies](NOTICE)
-
- 
