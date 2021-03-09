@@ -128,44 +128,44 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testFormatMitigationWithoutParamters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.").formatMitigation("Mitigation.")
+    void testmitigationWithoutParamters() {
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.").mitigation("Mitigation.")
                 .toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation."));
     }
 
     @Test
-    void testFormatMitigationSingleParameter() {
+    void testmitigationSingleParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .formatMitigation("Mitigation with {{parameterName}}.", "value").toString();
+                .mitigation("Mitigation with {{parameterName}}.", "value").toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with 'value'."));
     }
 
     @Test
-    void testFormatMitigationMultipleParameters() {
+    void testmitigationMultipleParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .formatMitigation("Mitigation with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
+                .mitigation("Mitigation with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with 'value' and 1."));
     }
 
     @Test
-    void testFormatMitigationParameterWithoutValue() {
+    void testmitigationParameterWithoutValue() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .formatMitigation("Mitigation with {{unknown}}").toString();
+                .mitigation("Mitigation with {{unknown}}").toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with UNKNOWN PLACEHOLDER('unknown')"));
     }
 
     @Test
-    void testFormatMitigationSingleNullParameter() {
+    void testmitigationSingleNullParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .formatMitigation("Mitigation with {{parameterName1}}.", null).toString();
+                .mitigation("Mitigation with {{parameterName1}}.", null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null>."));
     }
 
     @Test
-    void testFormatMitigationMultipleNullParameters() {
+    void testmitigationMultipleNullParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .formatMitigation("Mitigation with {{parameterName1}} {{parameterName2}}.", null, null).toString();
+                .mitigation("Mitigation with {{parameterName1}} {{parameterName2}}.", null, null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null> <null>."));
     }
 

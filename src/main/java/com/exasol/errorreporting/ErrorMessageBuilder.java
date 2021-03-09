@@ -50,9 +50,13 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder message(final String messagePattern, final Object... arguments) {
-        final Object[] patternArguments = this.getPatternArguments(arguments);
-        this.messageBuilder.append(PlaceHolderMapper.formatMessage(messagePattern, patternArguments, this));
+        this.messageBuilder.append(formatPattern(messagePattern, arguments));
         return this;
+    }
+
+    private String formatPattern(final String pattern, final Object[] arguments) {
+        final Object[] patternArguments = this.getPatternArguments(arguments);
+        return PlaceHolderMapper.formatPattern(pattern, patternArguments, this);
     }
 
     private Object[] getPatternArguments(final Object[] arguments) {
@@ -60,21 +64,6 @@ public class ErrorMessageBuilder {
             return new Object[] { null };
         }
         return arguments;
-    }
-
-    /**
-     * Add a mitigation. Explain here what users can do to resolve or avoid this error.
-     *
-     * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
-     *
-     * @param mitigationPattern mitigation message pattern with place holders
-     * @param arguments         arguments to fill the place holders
-     * @return self for fluent programming
-     */
-    public ErrorMessageBuilder formatMitigation(final String mitigationPattern, final Object... arguments) {
-        final Object[] patternArguments = this.getPatternArguments(arguments);
-        this.mitigations.add(PlaceHolderMapper.formatMessage(mitigationPattern, patternArguments, this));
-        return this;
     }
 
     /**
@@ -134,11 +123,14 @@ public class ErrorMessageBuilder {
     /**
      * Add a mitigation. Explain here what users can do to resolve or avoid this error.
      *
-     * @param mitigation explanation
+     * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
+     *
+     * @param mitigationPattern mitigation message pattern with place holders
+     * @param arguments         arguments to fill the place holders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder mitigation(final String mitigation) {
-        this.mitigations.add(mitigation);
+    public ErrorMessageBuilder mitigation(final String mitigationPattern, final Object... arguments) {
+        this.mitigations.add(formatPattern(mitigationPattern, arguments));
         return this;
     }
 

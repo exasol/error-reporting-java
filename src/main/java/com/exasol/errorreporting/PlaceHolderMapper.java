@@ -9,18 +9,18 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
     /**
      * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
      *
-     * @param messagePattern message with place holders
+     * @param pattern message with place holders
      * @param arguments      arguments to fill the place holders
      * @return formatted message as String
      */
-    public static String formatMessage(final String messagePattern, final Object[] arguments,
+    public static String formatPattern(final String pattern, final Object[] arguments,
             final ErrorMessageBuilder errorMessageBuilder) {
-        return new PlaceHolderMapper(messagePattern, arguments, errorMessageBuilder).replacePlaceholders();
+        return new PlaceHolderMapper(pattern, arguments, errorMessageBuilder).replacePlaceholders();
     }
 
-    public PlaceHolderMapper(final String messagePattern, final Object[] arguments,
+    public PlaceHolderMapper(final String pattern, final Object[] arguments,
             final ErrorMessageBuilder errorMessageBuilder) {
-        super(messagePattern);
+        super(pattern);
         this.arguments = arguments;
         this.errorMessageBuilder = errorMessageBuilder;
     }
