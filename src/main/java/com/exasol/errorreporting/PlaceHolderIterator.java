@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * An iterator over a text that may contain place holders.
  *
  */
-public class PlaceHolderIterator {
+class PlaceHolderIterator {
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final Matcher matcher;
     private final String text;
