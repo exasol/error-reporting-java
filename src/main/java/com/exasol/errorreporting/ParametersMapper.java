@@ -17,7 +17,7 @@ class ParametersMapper {
      *
      * @param text                text that may contain place holders
      * @param parameters          parameters to be mapped
-     * @param errorMessageBuilder {@link ErrorMessageBuilder} that holds the mapped parameters
+     * @param errorMessageBuilder {@link ErrorMessageBuilder} to add the parameters to
      */
     static void mapParametersByName(final String text, final Object[] parameters,
             final ErrorMessageBuilder errorMessageBuilder) {
