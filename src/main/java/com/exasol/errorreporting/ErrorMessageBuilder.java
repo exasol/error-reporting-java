@@ -45,18 +45,19 @@ public class ErrorMessageBuilder {
      *
      * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
      *
-     * @param messagePattern message pattern with place holders
-     * @param arguments      arguments to fill the place holders
+     * @param message   message that may contain place holders
+     * @param arguments arguments to fill the place holders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder message(final String messagePattern, final Object... arguments) {
-        this.messageBuilder.append(formatPattern(messagePattern, arguments));
+    public ErrorMessageBuilder message(final String message, final Object... arguments) {
+        this.messageBuilder.append(message);
+        this.addParameters(message, arguments);
         return this;
     }
 
-    private String formatPattern(final String pattern, final Object[] arguments) {
+    private void addParameters(final String text, final Object[] arguments) {
         final Object[] patternArguments = this.getPatternArguments(arguments);
-        return PlaceHolderMapper.formatPattern(pattern, patternArguments, this);
+        ParametersMapper.mapParametersByName(text, patternArguments, this);
     }
 
     private Object[] getPatternArguments(final Object[] arguments) {
@@ -125,12 +126,13 @@ public class ErrorMessageBuilder {
      *
      * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
      *
-     * @param mitigationPattern mitigation message pattern with place holders
-     * @param arguments         arguments to fill the place holders
+     * @param mitigation mitigation message that may contain place holders
+     * @param arguments  arguments to fill the place holders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder mitigation(final String mitigationPattern, final Object... arguments) {
-        this.mitigations.add(formatPattern(mitigationPattern, arguments));
+    public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
+        this.mitigations.add(mitigation);
+        this.addParameters(mitigation, arguments);
         return this;
     }
 
