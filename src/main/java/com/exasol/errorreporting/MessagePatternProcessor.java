@@ -40,16 +40,16 @@ public abstract class MessagePatternProcessor {
         this.append(this.getRestOfTheMessage());
     }
 
-    public String getSectionBeforePlaceHolder() {
+    private String getSectionBeforePlaceHolder() {
         return this.messagePattern.substring(this.previousPlaceHolderEndPosition,
                 this.iterator.getPlaceHolderStartPosition());
     }
 
-    public String getRestOfTheMessage() {
+    private String getRestOfTheMessage() {
         return this.messagePattern.substring(this.previousPlaceHolderEndPosition);
     }
 
-    public void moveToNextPlaceHolder() {
+    private void moveToNextPlaceHolder() {
         this.previousPlaceHolderEndPosition = this.iterator.getPlaceHolderEndPosition();
     }
 

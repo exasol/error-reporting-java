@@ -9,8 +9,8 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
     /**
      * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
      *
-     * @param pattern message with place holders
-     * @param arguments      arguments to fill the place holders
+     * @param pattern   message with place holders
+     * @param arguments arguments to fill the place holders
      * @return formatted message as String
      */
     public static String formatPattern(final String pattern, final Object[] arguments,
@@ -22,6 +22,7 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
             final ErrorMessageBuilder errorMessageBuilder) {
         super(pattern);
         this.arguments = arguments;
+        this.argumentIndex = 0;
         this.errorMessageBuilder = errorMessageBuilder;
     }
 
@@ -29,7 +30,7 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
     protected void processPlaceHolder(final String placeholder) {
         this.appendPlaceholder(placeholder);
         this.appendArgument(placeholder);
-        this.argumentIndex++;
+        this.moveToNextArgument();
     }
 
     private void appendPlaceholder(final String placeholder) {
@@ -98,5 +99,9 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
             return placeholder.substring(0, placeholder.length() - UNQUOTED_SUFFIX.length());
         }
         return placeholder;
+    }
+
+    private void moveToNextArgument() {
+        this.argumentIndex++;
     }
 }
