@@ -1,5 +1,10 @@
 package com.exasol.errorreporting;
 
+import com.exasol.errorreporting.PlaceHolderIterator.PlaceHolder;
+
+/**
+ * Class for parsing a text with place holders and setting the right parameter mapping in an {@link ErrorMessageBuilder}
+ */
 class ParametersMapper {
     private final String text;
     private final Object[] parameters;
@@ -7,11 +12,12 @@ class ParametersMapper {
     private final ErrorMessageBuilder errorMessageBuilder;
 
     /**
-     * Format a given text with place holders, filling them with the arguments passed in the specified form.
+     * Given a text that may contain place holders, and an array of parameters, and an {@link ErrorMessageBuilder},
+     * generates a map with the place holders and the parameters by adding them to the {@link ErrorMessageBuilder}
      *
-     * @param text       message with place holders
-     * @param parameters arguments to fill the place holders
-     * @return formatted message as String
+     * @param text                text that may contain place holders
+     * @param parameters          parameters to be mapped
+     * @param errorMessageBuilder {@link ErrorMessageBuilder} that holds the mapped parameters
      */
     static void mapParametersByName(final String text, final Object[] parameters,
             final ErrorMessageBuilder errorMessageBuilder) {
@@ -26,7 +32,7 @@ class ParametersMapper {
         this.text = text;
     }
 
-    void mapParameters() {
+    private void mapParameters() {
         final PlaceHolderIterator iterator = new PlaceHolderIterator(this.text);
         while (iterator.findNext()) {
             this.mapParameter(iterator.getPlaceHolder());

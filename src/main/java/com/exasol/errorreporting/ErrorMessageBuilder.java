@@ -173,6 +173,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        return PlaceHolderReplacer.replacePlaceHolders(subject, this.parameterMapping);
+        return PlaceHoldersFiller.fillPlaceHolders(subject, this.parameterMapping);
     }
 }
