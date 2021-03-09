@@ -95,7 +95,7 @@ public class PlaceHolderMapper extends MessagePatternProcessor {
 
     private String parserParameterNameFrom(final String placeholder) {
         if (this.isUnquotedParameter(placeholder)) {
-            return placeholder.substring(0, placeholder.length() - 3);
+            return placeholder.substring(0, placeholder.length() - UNQUOTED_SUFFIX.length());
         }
         return placeholder;
     }

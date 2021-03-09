@@ -21,20 +21,6 @@ public class ErrorMessageBuilder {
     }
 
     /**
-     * Add exception message.
-     * <p>
-     * If this method is called multiple times, the message is appended.
-     * </p>
-     *
-     * @param message exception message
-     * @return self for fluent programming
-     */
-    public ErrorMessageBuilder message(final String message) {
-        this.messageBuilder.append(message);
-        return this;
-    }
-
-    /**
      * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
      *
      * Place holders are defined in the message pattern by using curly brackets `{}`. By default, arguments are
@@ -63,7 +49,7 @@ public class ErrorMessageBuilder {
      * @param arguments      arguments to fill the place holders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder formatMessage(final String messagePattern, final Object... arguments) {
+    public ErrorMessageBuilder message(final String messagePattern, final Object... arguments) {
         final Object[] patternArguments = this.getPatternArguments(arguments);
         this.messageBuilder.append(PlaceHolderMapper.formatMessage(messagePattern, patternArguments, this));
         return this;

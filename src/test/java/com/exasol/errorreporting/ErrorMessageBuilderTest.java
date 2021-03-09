@@ -101,70 +101,70 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testFormatMessageWithoutParameters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Test message.").toString();
+    void testmessageWithoutParameters() {
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Test message.").toString();
         assertThat(message, equalTo("ERROR-CODE: Test message."));
     }
 
     @Test
-    void testFormatMessageSingleParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName}}.", "value").toString();
+    void testmessageSingleParameter() {
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName}}.", "value")
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with 'value'."));
     }
 
     @Test
-    void testFormatMessageMultipleParameters() {
+    void testmessageMultipleParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
+                .message("Message with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with 'value' and 1."));
     }
 
     @Test
-    void testFormatMessageSingleNullParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}}.", null).toString();
+    void testmessageSingleNullParameter() {
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.", null)
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
     @Test
     void testFormatMitigationWithoutParamters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
-                .formatMitigation("Mitigation.").toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.").formatMitigation("Mitigation.")
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation."));
     }
 
     @Test
     void testFormatMitigationSingleParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
                 .formatMitigation("Mitigation with {{parameterName}}.", "value").toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with 'value'."));
     }
 
     @Test
     void testFormatMitigationMultipleParameters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
                 .formatMitigation("Mitigation with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with 'value' and 1."));
     }
 
     @Test
     void testFormatMitigationParameterWithoutValue() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
                 .formatMitigation("Mitigation with {{unknown}}").toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with UNKNOWN PLACEHOLDER('unknown')"));
     }
 
     @Test
     void testFormatMitigationSingleNullParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
                 .formatMitigation("Mitigation with {{parameterName1}}.", null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null>."));
     }
 
     @Test
     void testFormatMitigationMultipleNullParameters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message.")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
                 .formatMitigation("Mitigation with {{parameterName1}} {{parameterName2}}.", null, null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null> <null>."));
     }
@@ -178,99 +178,96 @@ class ErrorMessageBuilderTest {
 
     @Test
     void testFormatSingleQuotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName}}.", "value").toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName}}.", "value")
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with 'value'."));
     }
 
     @Test
     void testFormatQuotedMultipleParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
+                .message("Message with {{parameterName1}} and {{parameterName2}}.", "value", 1).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with 'value' and 1."));
     }
 
     @Test
     void testFormatQuoteParameterWithoutName() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message with {{}}.", "value")
-                .toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{}}.", "value").toString();
         assertThat(message, equalTo("ERROR-CODE: Message with 'value'."));
     }
 
     @Test
     void testFormatQuotedParameterWithoutValue() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message with {{unknown}}")
-                .toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{unknown}}").toString();
         assertThat(message, equalTo("ERROR-CODE: Message with UNKNOWN PLACEHOLDER('unknown')"));
     }
 
     @Test
     void testFormatQuotedParameterWithGroupReferenceChar() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName}}.", "$2");
+                .message("Message with {{parameterName}}.", "$2");
         assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with '$2'."));
     }
 
     @Test
     void testFormatSingleNullQuotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}}.", null).toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.", null)
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
     @Test
     void testFormatMultipleNullQuotedParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
+                .message("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null> <null>."));
     }
 
     @Test
     void testFormatSingleUnquotedParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName|uq}}.", "value").toString();
+                .message("Message with {{parameterName|uq}}.", "value").toString();
         assertThat(message, equalTo("ERROR-CODE: Message with value."));
     }
 
     @Test
     void testFormatUnquotedMultipleParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1|uq}} and {{parameterName2|uq}}.", "value", 1).toString();
+                .message("Message with {{parameterName1|uq}} and {{parameterName2|uq}}.", "value", 1).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with value and 1."));
     }
 
     @Test
     void testFormatUnquoteParameterWithoutName() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message with {{|uq}}.", "value")
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{|uq}}.", "value")
                 .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with value."));
     }
 
     @Test
     void testFormatUnquotedParameterWithoutValue() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").formatMessage("Message with {{unknown|uq}}")
-                .toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{unknown|uq}}").toString();
         assertThat(message, equalTo("ERROR-CODE: Message with UNKNOWN PLACEHOLDER('unknown')"));
     }
 
     @Test
     void testFormatSingleNullUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}}.", null).toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.", null)
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
     @Test
     void testFormatMultipleNullUnquotedParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
+                .message("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null> <null>."));
     }
 
     @Test
     void testFormatUnquotedParameterWithGroupReferenceChar() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .formatMessage("Message with {{parameterName|uq}}.", "$2");
+                .message("Message with {{parameterName|uq}}.", "$2");
         assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with $2."));
     }
 }
