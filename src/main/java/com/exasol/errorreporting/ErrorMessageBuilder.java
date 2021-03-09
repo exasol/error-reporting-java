@@ -21,32 +21,33 @@ public class ErrorMessageBuilder {
     }
 
     /**
-     * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
-     *
-     * Place holders are defined in the message pattern by using double curly brackets `{{}}`. By default, arguments are
+     * Format a given message pattern with placeholders, filling them with the arguments passed in the specified form.
+     * <p>
+     * Placeholders are defined in the message pattern by using double curly brackets {{}}. By default, arguments are
      * formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by `{{|uq}}`.
-     *
-     * You can also define names in the place holders. This name will be shown in case no argument is missing, by
+     * </p>
+     * You should always define names in the placeholders. This name will be shown in case no argument is missing, by
      * `{{argumentName}}` or `{{argumentName|uq}}`.
-     *
+     * <p>
      * Below you can find examples on how to use it.
-     *
+     * </p>
      * Example for quoted arguments:
-     *
+     * <p>
      * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
      * {{missingQuotedArgument}}, "named", "unnamed")`
-     *
+     * </p>
      * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
-     *
+     * <p>
      * Example for unquoted arguments:
-     *
+     * </p>
      * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
      * {{missingUnquotedArgument|uq}}, "named", "unnamed")`
-     *
+     * <p>
      * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     * </p>
      *
-     * @param message   message that may contain place holders
-     * @param arguments arguments to fill the place holders
+     * @param message   message that may contain placeholders
+     * @param arguments arguments to fill the placeholders
      * @return self for fluent programming
      */
     public ErrorMessageBuilder message(final String message, final Object... arguments) {
@@ -123,11 +124,12 @@ public class ErrorMessageBuilder {
 
     /**
      * Add a mitigation. Explain here what users can do to resolve or avoid this error.
+     * <p>
+     * For learning about the format rules, see {@link ErrorMessageBuilder#message(String, Object...)}.
+     * </p>
      *
-     * For learning about the format rules, see {@link ErrorMessageBuilder#message(String, Object...)}}
-     *
-     * @param mitigation mitigation message that may contain place holders
-     * @param arguments  arguments to fill the place holders
+     * @param mitigation mitigation message that may contain placeholders
+     * @param arguments  arguments to fill the placeholders
      * @return self for fluent programming
      */
     public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
@@ -173,6 +175,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        return PlaceHoldersFiller.fillPlaceHolders(subject, this.parameterMapping);
+        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping);
     }
 }

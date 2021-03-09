@@ -1,9 +1,9 @@
 package com.exasol.errorreporting;
 
-import com.exasol.errorreporting.PlaceHolderIterator.PlaceHolder;
+import com.exasol.errorreporting.PlaceholderIterator.Placeholder;
 
 /**
- * Class for parsing a text with place holders and setting the right parameter mapping in an {@link ErrorMessageBuilder}
+ * Class for parsing a text with placeholders and setting the right parameter mapping in an {@link ErrorMessageBuilder}.
  */
 class ParametersMapper {
     private final String text;
@@ -12,10 +12,10 @@ class ParametersMapper {
     private final ErrorMessageBuilder errorMessageBuilder;
 
     /**
-     * Given a text that may contain place holders, and an array of parameters, and an {@link ErrorMessageBuilder},
+     * Given a text that may contain placeholders, and an array of parameters, and an {@link ErrorMessageBuilder},
      * generates a map with the placeholders and the parameters by adding them to the {@link ErrorMessageBuilder}.
      *
-     * @param text                text that may contain place holders
+     * @param text                text that may contain placeholders
      * @param parameters          parameters to be mapped
      * @param errorMessageBuilder {@link ErrorMessageBuilder} to add the parameters to
      */
@@ -33,14 +33,14 @@ class ParametersMapper {
     }
 
     private void mapParameters() {
-        final PlaceHolderIterator iterator = new PlaceHolderIterator(this.text);
+        final PlaceholderIterator iterator = new PlaceholderIterator(this.text);
         while (iterator.findNext()) {
-            this.mapParameter(iterator.getPlaceHolder());
+            this.mapParameter(iterator.getPlaceholder());
             this.moveToNextParameter();
         }
     }
 
-    private void mapParameter(final PlaceHolder placeholder) {
+    private void mapParameter(final Placeholder placeholder) {
         if (this.isParameterPresent()) {
             this.appendParameter(placeholder);
         }
@@ -50,7 +50,7 @@ class ParametersMapper {
         return (this.parameters != null) && (this.parameterIndex < this.parameters.length);
     }
 
-    private void appendParameter(final PlaceHolder placeholder) {
+    private void appendParameter(final Placeholder placeholder) {
         if (this.isNullParameter()) {
             this.appendNullParameter(placeholder.getName());
         } else {
@@ -66,7 +66,7 @@ class ParametersMapper {
         this.errorMessageBuilder.parameter(parameterName, null);
     }
 
-    private void appendRegularParameter(final PlaceHolder placeholder) {
+    private void appendRegularParameter(final Placeholder placeholder) {
         if (placeholder.isUnquoted()) {
             this.appendUnquotedArgument(placeholder.getName());
         } else {
