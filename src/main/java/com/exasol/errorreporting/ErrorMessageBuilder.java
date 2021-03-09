@@ -23,25 +23,25 @@ public class ErrorMessageBuilder {
     /**
      * Format a given message pattern with place holders, filling them with the arguments passed in the specified form.
      *
-     * Place holders are defined in the message pattern by using curly brackets `{}`. By default, arguments are
-     * formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by `{|uq}`.
+     * Place holders are defined in the message pattern by using double curly brackets `{{}}`. By default, arguments are
+     * formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by `{{|uq}}`.
      *
      * You can also define names in the place holders. This name will be shown in case no argument is missing, by
-     * `{argumentName}` or `{argumentName|uq}`.
+     * `{{argumentName}}` or `{{argumentName|uq}}`.
      *
      * Below you can find examples on how to use it.
      *
      * Example for quoted arguments:
      *
-     * `ErrorMessageBuilder("ERROR_CODE").format("Message with {namedQuotedArgument}, {} and {missingQuotedArgument},
-     * "named", "unnamed")`
+     * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
+     * {{missingQuotedArgument}}, "named", "unnamed")`
      *
      * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
      *
      * Example for unquoted arguments:
      *
-     * `ErrorMessageBuilder("ERROR_CODE").format("Message with {namedUnquotedArgument|uq}, {|uq} and
-     * {missingUnquotedArgument|uq}, "named", "unnamed")`
+     * `ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
+     * {{missingUnquotedArgument|uq}}, "named", "unnamed")`
      *
      * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
      *
@@ -124,7 +124,7 @@ public class ErrorMessageBuilder {
     /**
      * Add a mitigation. Explain here what users can do to resolve or avoid this error.
      *
-     * For learning about the format rules, see {@link ErrorMessageBuilder#formatMessage(String, Object...)}}
+     * For learning about the format rules, see {@link ErrorMessageBuilder#message(String, Object...)}}
      *
      * @param mitigation mitigation message that may contain place holders
      * @param arguments  arguments to fill the place holders
