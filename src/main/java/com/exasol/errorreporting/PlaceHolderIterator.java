@@ -13,7 +13,7 @@ class PlaceHolderIterator {
     private final String text;
 
     /**
-     * Create a new instance of {@link PlaceHolderIterator}
+     * Create a new instance of {@link PlaceHolderIterator}.
      *
      * @param text containing place holders to iterate
      */
