@@ -1,14 +1,11 @@
 package com.exasol.errorreporting;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Builder for Exasol error messages.
  */
 public class ErrorMessageBuilder {
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
     private final List<String> mitigations = new ArrayList<>();
@@ -16,7 +13,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Create a new instance of
-     * 
+     *
      * @param errorCode Exasol error code
      */
     ErrorMessageBuilder(final String errorCode) {
@@ -24,17 +21,60 @@ public class ErrorMessageBuilder {
     }
 
     /**
-     * Add exception message.
+     * Format a given message pattern with placeholders, filling them with the arguments passed in the specified form.
      * <p>
-     * If this method is called multiple times, the message is appended.
+     * Placeholders are defined in the message pattern by using double curly brackets {@code {{}}}. By default,
+     * arguments are formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by
+     * {@code {{|uq}}}.
      * </p>
-     * 
-     * @param message exception message
+     * <p>
+     * You should always define names in the placeholders. This name will be shown in case no argument is missing, by
+     * {@code {{argumentName}}} or {@code {{argumentName|uq}}}.
+     * </p>
+     * <p>
+     * Below you can find examples on how to use it.
+     * </p>
+     * <p>
+     * Example for quoted arguments:
+     * </p>
+     * <p>
+     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
+     * {{missingQuotedArgument}}, "named", "unnamed")}
+     * </p>
+     * <p>
+     * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     * </p>
+     * <p>
+     * Example for unquoted arguments:
+     * </p>
+     * <p>
+     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
+     * {{missingUnquotedArgument|uq}}, "named", "unnamed")}
+     * </p>
+     * <p>
+     * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
+     * </p>
+     *
+     * @param message   message that may contain placeholders
+     * @param arguments arguments to fill the placeholders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder message(final String message) {
+    public ErrorMessageBuilder message(final String message, final Object... arguments) {
         this.messageBuilder.append(message);
+        this.addParameters(message, arguments);
         return this;
+    }
+
+    private void addParameters(final String text, final Object[] arguments) {
+        final Object[] patternArguments = this.getPatternArguments(arguments);
+        ParametersMapper.mapParametersByName(text, patternArguments, this);
+    }
+
+    private Object[] getPatternArguments(final Object[] arguments) {
+        if (arguments == null) {
+            return new Object[] { null };
+        }
+        return arguments;
     }
 
     /**
@@ -42,7 +82,7 @@ public class ErrorMessageBuilder {
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
@@ -56,7 +96,7 @@ public class ErrorMessageBuilder {
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @param description description for the error catalog
@@ -68,7 +108,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Add a parameter without quotes.
-     * 
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
@@ -93,18 +133,23 @@ public class ErrorMessageBuilder {
 
     /**
      * Add a mitigation. Explain here what users can do to resolve or avoid this error.
+     * <p>
+     * For learning about the format rules, see {@link ErrorMessageBuilder#message(String, Object...)}.
+     * </p>
      *
-     * @param mitigation explanation
+     * @param mitigation mitigation message that may contain placeholders
+     * @param arguments  arguments to fill the placeholders
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder mitigation(final String mitigation) {
+    public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
         this.mitigations.add(mitigation);
+        this.addParameters(mitigation, arguments);
         return this;
     }
 
     /**
      * Add a mitigation for cases in which the only thing a user can do is opening a ticket.
-     * 
+     *
      * @return self for fluent programming
      */
     public ErrorMessageBuilder ticketMitigation() {
@@ -114,7 +159,7 @@ public class ErrorMessageBuilder {
 
     /**
      * Build the error message.
-     * 
+     *
      * @return built error massage string
      */
     @Override
@@ -139,24 +184,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        final Matcher matcher = PLACEHOLDER_PATTERN.matcher(subject);
-        final StringBuilder resultBuilder = new StringBuilder();
-        int lastMatchEnd = 0;
-        while (matcher.find()) {
-            final String placeholder = matcher.group(1);
-            resultBuilder.append(subject.substring(lastMatchEnd, matcher.start()));
-            resultBuilder.append(resolvePlaceholder(placeholder));
-            lastMatchEnd = matcher.end();
-        }
-        resultBuilder.append(subject.substring(lastMatchEnd));
-        return resultBuilder.toString();
-    }
-
-    private String resolvePlaceholder(final String placeholder) {
-        if (this.parameterMapping.containsKey(placeholder)) {
-            return this.parameterMapping.get(placeholder);
-        } else {
-            return "UNKNOWN PLACEHOLDER('" + placeholder + "')";
-        }
+        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping);
     }
 }
