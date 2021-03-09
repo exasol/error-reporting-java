@@ -46,7 +46,7 @@ class PlaceHolderIterator {
         private final int endPosition;
 
         /**
-         * Create a new instance of {@link PlaceHolder}
+         * Create a new instance of {@link PlaceHolder}.
          *
          * @param text          the place holder text
          * @param startPosition
