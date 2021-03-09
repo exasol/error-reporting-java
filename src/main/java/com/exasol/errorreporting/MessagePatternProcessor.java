@@ -1,26 +1,22 @@
 package com.exasol.errorreporting;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public abstract class MessagePatternProcessor {
-    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
-    private final Matcher matcher;
-    private int placeholderEndPosition;
-    private final String messagePattern;
     private final StringBuilder result;
+    private int previousPlaceHolderEndPosition;
+    private final String messagePattern;
+    private final PlaceHolderIterator iterator;
 
     protected MessagePatternProcessor(final String messagePattern) {
-        this.messagePattern = messagePattern;
         this.result = new StringBuilder();
-        this.placeholderEndPosition = 0;
-        this.matcher = PLACEHOLDER_PATTERN.matcher(this.messagePattern);
+        this.previousPlaceHolderEndPosition = 0;
+        this.messagePattern = messagePattern;
+        this.iterator = new PlaceHolderIterator(this.messagePattern);
     }
 
     public String replacePlaceholders() {
-        while (this.isPlaceHolderFound()) {
+        while (this.iterator.findNext()) {
             this.appendSectionBeforePlaceHolder();
-            this.processPlaceHolder(this.getCurrentPlaceHolder());
+            this.processPlaceHolder(this.iterator.getPlaceHolder());
             this.moveToNextPlaceHolder();
         }
         this.appendRestOfTheMessage();
@@ -29,20 +25,8 @@ public abstract class MessagePatternProcessor {
 
     protected abstract void processPlaceHolder(final String placeholder);
 
-    private boolean isPlaceHolderFound() {
-        return this.matcher.find();
-    }
-
-    protected String getCurrentPlaceHolder() {
-        return this.matcher.group(1);
-    }
-
     private void appendSectionBeforePlaceHolder() {
         this.append(this.getSectionBeforePlaceHolder());
-    }
-
-    private String getSectionBeforePlaceHolder() {
-        return this.messagePattern.substring(this.placeholderEndPosition, this.matcher.start());
     }
 
     protected void append(final String text) {
@@ -50,11 +34,20 @@ public abstract class MessagePatternProcessor {
     }
 
     private void appendRestOfTheMessage() {
-        this.append(this.messagePattern.substring(this.placeholderEndPosition));
+        this.append(this.getRestOfTheMessage());
     }
 
-    private void moveToNextPlaceHolder() {
-        this.placeholderEndPosition = this.matcher.end();
+    public String getSectionBeforePlaceHolder() {
+        return this.messagePattern.substring(this.previousPlaceHolderEndPosition,
+                this.iterator.getPlaceHolderStartPosition());
+    }
+
+    public String getRestOfTheMessage() {
+        return this.messagePattern.substring(this.previousPlaceHolderEndPosition);
+    }
+
+    public void moveToNextPlaceHolder() {
+        this.previousPlaceHolderEndPosition = this.iterator.getPlaceHolderEndPosition();
     }
 
     private String getFullMessage() {
