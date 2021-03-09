@@ -13,7 +13,7 @@ class ParametersMapper {
 
     /**
      * Given a text that may contain place holders, and an array of parameters, and an {@link ErrorMessageBuilder},
-     * generates a map with the place holders and the parameters by adding them to the {@link ErrorMessageBuilder}
+     * generates a map with the placeholders and the parameters by adding them to the {@link ErrorMessageBuilder}.
      *
      * @param text                text that may contain place holders
      * @param parameters          parameters to be mapped
