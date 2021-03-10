@@ -2,6 +2,8 @@
 
 Code Name: New API for simpler formatting.
 
+## Summary
+
 In this release we add the possibility to define parameters for place holders directly in the `ErrorMessageBuilder.message` and ``ErrorMessageBuilder.mitigation` methods.
 
 When calling `ErrorMessageBuilder.message` place holders are defined in the message pattern by using double curly brackets `{{}}`.
@@ -28,5 +30,5 @@ The `ErrorMessageBuilder.unquotedParameter` API method is also deprecated. To de
 
 ## Features
 
-* # 20: Make the API less verbose.
-* # 23: Deprecate `ErrorMessageBuilder.unquotedParameter` API method.
+* #20: Make the API less verbose.
+* #23: Deprecate `ErrorMessageBuilder.unquotedParameter` API method.

@@ -4,7 +4,7 @@ Code Name: Fixed null value for unquoted parameters
 
 ## Bugfixes
 
-* # 17: Fixed NullPointerException in unquotedParameter
+* #17: Fixed NullPointerException in unquotedParameter
 
 # Dependency Updates:
 
