@@ -31,7 +31,7 @@ class ParametersMapper {
     }
 
     private void mapParameters() {
-        final PlaceholderMatcher placeholders = PlaceholderMatcher.findPlaceholders(this.text);
+        final Iterable<Placeholder> placeholders = PlaceholderMatcher.findPlaceholders(this.text);
         for (final Placeholder placeholder : placeholders) {
             this.mapParameter(placeholder);
             this.moveToNextParameter();
