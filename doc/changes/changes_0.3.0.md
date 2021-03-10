@@ -1,4 +1,4 @@
-# error-reporting-java 0.3.0, released 2021-??-??
+# error-reporting-java 0.3.0, released 2021-03-10
 
 Code Name: New API for simpler formatting.
 
