@@ -60,7 +60,7 @@ public class PlaceholderMatcher implements Iterable<Placeholder> {
 
         @Override
         public Placeholder next() {
-            if (this.hasNext) {
+            if (this.hasNext()) {
                 final Placeholder placeholder = getPlaceholder();
                 this.hasNext = this.matcher.find();
                 return placeholder;
