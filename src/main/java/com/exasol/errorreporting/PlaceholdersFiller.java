@@ -18,8 +18,9 @@ class PlaceholdersFiller {
     /**
      * Fill the placeholders, if any, of the passed text with the passed parameters.
      *
-     * @param text       text that may contain placeholders
-     * @param parameters parameters to fill the placeholders in the passed text
+     * @param text               text that may contain placeholders
+     * @param parameters         parameters to fill the placeholders in the passed text
+     * @param unquotedParameters a map with those parameters that should be unquoted
      * @return text with its placeholders filled
      */
     static String fillPlaceholders(final String text, final Map<String, Object> parameters,
@@ -81,19 +82,27 @@ class PlaceholdersFiller {
     }
 
     private String getPlaceholderFilling(final Placeholder placeholder) {
-        if (this.parameters.containsKey(placeholder.getName())) {
-            if (this.isNullParameter(placeholder)) {
-                return "<null>";
-            }
-            if (this.isUnquoted(placeholder)) {
-                return this.parameters.get(placeholder.getName()).toString();
-            }
-            return this.quoteParameter(placeholder);
+        if (this.isParameterPresent(placeholder)) {
+            return this.getPresentParameterPlaceholderFilling(placeholder);
         }
         return this.getUnknownPlaceholderTextFor(placeholder);
     }
 
-    private boolean isUnquoted(final Placeholder placeholder) {
+    private boolean isParameterPresent(final Placeholder placeholder) {
+        return this.parameters.containsKey(placeholder.getName());
+    }
+
+    private String getPresentParameterPlaceholderFilling(final Placeholder placeholder) {
+        if (this.isNullParameter(placeholder)) {
+            return "<null>";
+        }
+        if (this.isUnquotedParameter(placeholder)) {
+            return this.parameters.get(placeholder.getName()).toString();
+        }
+        return this.quoteParameter(placeholder);
+    }
+
+    private boolean isUnquotedParameter(final Placeholder placeholder) {
         return placeholder.isUnquoted() || this.unquotedParameters.containsKey(placeholder.getName());
     }
 
