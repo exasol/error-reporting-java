@@ -121,7 +121,7 @@ public class ErrorMessageBuilder {
      * @param value       value to insert
      * @return self for fluent programming
      */
-    @Deprecated
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
         this.explicitlyUnquotedParameterMapping.put(placeholder, value);
         this.parameter(placeholder, value);
@@ -142,7 +142,7 @@ public class ErrorMessageBuilder {
      * @param description description for the error catalog
      * @return self for fluent programming
      */
-    @Deprecated
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value,
             final String description) {
         return this.unquotedParameter(placeholder, value);
