@@ -9,7 +9,9 @@ public class ErrorMessageBuilder {
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
     private final List<String> mitigations = new ArrayList<>();
-    private final Map<String, String> parameterMapping = new HashMap<>();
+    private final Map<String, Object> parameterMapping = new HashMap<>();
+    @Deprecated
+    private final Map<String, Object> unquotedParameterMapping = new HashMap<>();
 
     /**
      * Create a new instance of
@@ -88,11 +90,12 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder parameter(final String placeholder, final Object value) {
-        return this.unquotedParameter(placeholder, Quoter.quoteObject(value));
+        this.parameterMapping.put(placeholder, value);
+        return this;
     }
 
     /**
-     * Add a parameter. This method quotes the parameter.
+     * Add a parameter.
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
@@ -109,23 +112,36 @@ public class ErrorMessageBuilder {
     /**
      * Add a parameter without quotes.
      *
+     * <p>
+     * This method is deprecated. You can define that a parameter is unquoted by adding '|uq' to its correspondent
+     * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
+     * </p>
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
      */
+    @Deprecated
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
-        this.parameterMapping.put(placeholder, Objects.requireNonNullElse(value, "<null>").toString());
+        this.unquotedParameterMapping.put(placeholder, value);
+        this.parameter(placeholder, value);
         return this;
     }
 
     /**
      * Add a parameter without quotes.
      *
+     * <p>
+     * This method is deprecated. You can define that a parameter is unquoted by adding '|uq' to its correspondent
+     * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
+     * </p>
+     *
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @param description description for the error catalog
      * @return self for fluent programming
      */
+    @Deprecated
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value,
             final String description) {
         return this.unquotedParameter(placeholder, value);
@@ -184,6 +200,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping);
+        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping, this.unquotedParameterMapping);
     }
 }

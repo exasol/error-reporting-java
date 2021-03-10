@@ -67,15 +67,7 @@ class ParametersMapper {
     }
 
     private void appendRegularParameter(final Placeholder placeholder) {
-        if (placeholder.isUnquoted()) {
-            this.appendUnquotedArgument(placeholder.getName());
-        } else {
-            this.appendQuotedArgument(placeholder.getName());
-        }
-    }
-
-    private void appendUnquotedArgument(final String parameterName) {
-        this.errorMessageBuilder.unquotedParameter(parameterName, this.getCurrentParameter());
+        this.errorMessageBuilder.parameter(placeholder.getName(), this.getCurrentParameter());
     }
 
     private Object getCurrentParameter() {
@@ -83,10 +75,6 @@ class ParametersMapper {
             return this.parameters[this.parameterIndex];
         }
         return null;
-    }
-
-    private void appendQuotedArgument(final String parameterName) {
-        this.errorMessageBuilder.parameter(parameterName, this.getCurrentParameter());
     }
 
     private void moveToNextParameter() {
