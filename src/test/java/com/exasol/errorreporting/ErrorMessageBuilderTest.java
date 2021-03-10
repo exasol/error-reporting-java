@@ -241,7 +241,7 @@ class ErrorMessageBuilderTest {
     @Test
     void testMessageOutlineAndInlineInOrder() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName1}}", "value1").parameter("parameterName1", "value1")
+                .message("Message with {{parameterName1}}").parameter("parameterName1", "value1")
                 .message(" {{parameterName2}}.", "value2");
         assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with 'value1' 'value2'."));
     }
@@ -252,5 +252,19 @@ class ErrorMessageBuilderTest {
                 .message("Message with {{parameterName1|uq}}", "value1").message(" {{parameterName2}}.")
                 .unquotedParameter("parameterName2", "value2");
         assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with value1 value2."));
+    }
+
+    @Test
+    void testMessage_() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
+                .message("Message with {{parameterName|uq}}.").parameter("parameterName", "value");
+        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with value."));
+    }
+
+    @Test
+    void testMessage__() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
+                .message("Message with {{parameterName|uq}}.").unquotedParameter("parameterName", "value");
+        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with value."));
     }
 }

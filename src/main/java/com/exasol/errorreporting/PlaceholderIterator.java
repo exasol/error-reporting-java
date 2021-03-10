@@ -92,5 +92,11 @@ class PlaceholderIterator {
         int getEndPosition() {
             return this.endPosition;
         }
+
+        @Override
+        public String toString() {
+            return "Placeholder [text=" + this.text + ", startPosition=" + this.startPosition + ", endPosition="
+                    + this.endPosition + "]";
+        }
     }
 }

@@ -24,6 +24,9 @@ returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anothe
 
 The same examples apply for the `ErrorMessageBuilder.mitigation` method.
 
+The `ErrorMessageBuilder.unquotedParameter` API method is also deprecated. To define that a parameter is unquoted you should use the `|uq` suffix in the correspondent placeholder as described above. 
+
 ## Features
 
 * # 20: Make the API less verbose.
+* # 23: Deprecate `ErrorMessageBuilder.unquotedParameter` API method.

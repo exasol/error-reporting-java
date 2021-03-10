@@ -25,7 +25,6 @@ The invocations of the Builder can be parsed by the [error-code-crawler-maven-pl
 ```java
 ExaError.messageBuilder("E-TEST-1").message("Something went wrong.").toString();
 ```
-
 result: `E-TEST-1: Something went wrong.`
 
 ### Parameters
@@ -42,14 +41,22 @@ result: `E-TEST-2: Unknown input 'unknown'.`
 The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
 
 The builder automatically quotes parameters (depending on the type of the parameter).
-If you don't want that use `unquotedParameter(placeholder, value, description)` instead.
-
-From version `0.3.0` you can achieve the same result with:
+If you don't want that, use the `|uq` suffix in the correspondent placeholder, as follows:
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-  .message("Unknown input {{input}}.", "unknown").toString();
+  .message("Unknown input {{input|uq}}.")
+  .parameter("input", 'unknown', "The illegal user input.").toString();
 ```
+result: `E-TEST-2: Unknown input unknown.`
+
+From version `0.3.0` you can achieve the same result by inlining the parameters, as follows:
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+  .message("Message with {{quotedParameter}} and {{unquotedParameter|uq}}.", "quoted", "unquoted").toString();
+```
+result: `E-TEST-2: Message with 'quoted' and unquoted.`
  
 ### Mitigations
 
@@ -61,7 +68,7 @@ ExaError.messageBuilder("E-TEST-2")
   .mitigation("Delete something.")
   .toString();
 ```
-Result: `E-TEST-2: Too tew disk space. Delete something.`
+Result: `E-TEST-2: Too few disk space. Delete something.`
 
 You can use parameters in mitigations too.
 
