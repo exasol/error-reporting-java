@@ -2,8 +2,6 @@ package com.exasol.errorreporting;
 
 import java.util.Map;
 
-import com.exasol.errorreporting.PlaceholderIterator.Placeholder;
-
 /**
  * Class for filling the placeholders of texts.
  */
@@ -17,10 +15,10 @@ class PlaceholdersFiller {
     /**
      * Fill the placeholders, if any, of the passed text with the passed parameters.
      *
-     * @param text                         text that may contain placeholders
-     * @param parameters                   parameters to fill the placeholders in the passed text
-     * @param explicitlyUnquotedParameters a map with those parameters that should be unquoted, and where defined by
-     *                                     calling {@link ErrorMessageBuilder#unquotedParameter(String, Object)}
+     * @param text               text that may contain placeholders
+     * @param parameters         parameters to fill the placeholders in the passed text
+     * @param unquotedParameters a map with those parameters that should be unquoted, and where defined by calling
+     *                           {@link ErrorMessageBuilder#unquotedParameter(String, Object)}
      * @return text with its placeholders filled
      */
     static String fillPlaceholders(final String text, final Map<String, Object> parameters,
@@ -38,9 +36,8 @@ class PlaceholdersFiller {
     }
 
     private String fillPlaceholders() {
-        final PlaceholderIterator iterator = new PlaceholderIterator(this.text);
-        while (iterator.findNext()) {
-            final Placeholder placeholder = iterator.getPlaceholder();
+        final Iterable<Placeholder> placeholders = PlaceholderMatcher.findPlaceholders(this.text);
+        for (final Placeholder placeholder : placeholders) {
             this.appendSectionBeforePlaceholder(placeholder);
             this.fillPlaceholder(placeholder);
             this.moveToNextPlaceholder(placeholder);
