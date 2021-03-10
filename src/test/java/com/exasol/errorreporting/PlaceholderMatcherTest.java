@@ -14,7 +14,6 @@ import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 
 class PlaceholderMatcherTest {
-
     @Test
     void testMatching() {
         final PlaceholderMatcher matcher = PlaceholderMatcher.findPlaceholders("{{a}} {{b}}");

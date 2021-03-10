@@ -22,7 +22,7 @@ public class PlaceholderMatcher implements Iterable<Placeholder> {
      * @param text string containing placeholders
      * @return iterable for placeholders
      */
-    public static PlaceholderMatcher findPlaceholders(final String text) {
+    public static Iterable<Placeholder> findPlaceholders(final String text) {
         return new PlaceholderMatcher(text);
     }
 
@@ -41,7 +41,7 @@ public class PlaceholderMatcher implements Iterable<Placeholder> {
          *
          * @param text containing placeholders to iterate.
          */
-        public PlaceholderIterator(final String text) {
+        private PlaceholderIterator(final String text) {
             this.matcher = PLACEHOLDER_PATTERN.matcher(text);
             this.hasNext = this.matcher.find();
         }
