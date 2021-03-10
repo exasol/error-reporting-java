@@ -13,7 +13,7 @@ public class ErrorMessageBuilder {
     private final Map<String, Object> explicitlyUnquotedParameterMapping = new HashMap<>();
 
     /**
-     * Create a new instance of
+     * Create a new instance of {@link ErrorMessageBuilder}.
      *
      * @param errorCode Exasol error code
      */

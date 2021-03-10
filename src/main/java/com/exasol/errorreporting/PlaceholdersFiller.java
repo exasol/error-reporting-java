@@ -84,8 +84,9 @@ class PlaceholdersFiller {
     private String getPlaceholderFilling(final Placeholder placeholder) {
         if (this.isParameterPresent(placeholder)) {
             return this.getPresentParameterPlaceholderFilling(placeholder);
+        } else {
+            return this.getUnknownPlaceholderTextFor(placeholder);
         }
-        return this.getUnknownPlaceholderTextFor(placeholder);
     }
 
     private boolean isParameterPresent(final Placeholder placeholder) {
@@ -98,8 +99,9 @@ class PlaceholdersFiller {
         }
         if (this.isUnquotedParameter(placeholder)) {
             return this.parameters.get(placeholder.getName()).toString();
+        } else {
+            return this.quoteParameter(placeholder);
         }
-        return this.quoteParameter(placeholder);
     }
 
     private boolean isUnquotedParameter(final Placeholder placeholder) {

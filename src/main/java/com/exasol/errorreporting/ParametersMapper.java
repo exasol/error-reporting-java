@@ -73,8 +73,9 @@ class ParametersMapper {
     private Object getCurrentParameter() {
         if (this.isParameterPresent()) {
             return this.parameters[this.parameterIndex];
+        } else {
+            return null;
         }
-        return null;
     }
 
     private void moveToNextParameter() {
