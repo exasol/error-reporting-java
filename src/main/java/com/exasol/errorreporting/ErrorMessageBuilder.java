@@ -10,7 +10,6 @@ public class ErrorMessageBuilder {
     private final StringBuilder messageBuilder = new StringBuilder();
     private final List<String> mitigations = new ArrayList<>();
     private final Map<String, Object> parameterMapping = new HashMap<>();
-    @Deprecated
     private final Map<String, Object> explicitlyUnquotedParameterMapping = new HashMap<>();
 
     /**
@@ -117,6 +116,7 @@ public class ErrorMessageBuilder {
      * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
      * </p>
      *
+     * @deprecated As of release 3.0.0
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
@@ -136,6 +136,7 @@ public class ErrorMessageBuilder {
      * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
      * </p>
      *
+     * @deprecated As of release 3.0.0
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @param description description for the error catalog

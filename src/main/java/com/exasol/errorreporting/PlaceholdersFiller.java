@@ -11,6 +11,9 @@ class PlaceholdersFiller {
     private final StringBuilder result;
     private final String text;
     private final Map<String, Object> parameters;
+    /**
+     * @deprecated As of release 3.0.0
+     */
     @Deprecated
     private final Map<String, Object> explicitlyUnquotedParameters;
     private int previousPlaceholderEndPosition;
