@@ -2,8 +2,6 @@ package com.exasol.errorreporting;
 
 import java.util.Map;
 
-import com.exasol.errorreporting.PlaceholderIterator.Placeholder;
-
 /**
  * Class for filling the placeholders of texts.
  */
@@ -38,9 +36,8 @@ class PlaceholdersFiller {
     }
 
     private String fillPlaceholders() {
-        final PlaceholderIterator iterator = new PlaceholderIterator(this.text);
-        while (iterator.findNext()) {
-            final Placeholder placeholder = iterator.getPlaceholder();
+        final PlaceholderMatcher placeholders = PlaceholderMatcher.findPlaceholders(this.text);
+        for (final Placeholder placeholder : placeholders) {
             this.appendSectionBeforePlaceholder(placeholder);
             this.fillPlaceholder(placeholder);
             this.moveToNextPlaceholder(placeholder);

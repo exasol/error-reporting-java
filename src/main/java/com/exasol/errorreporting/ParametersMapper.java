@@ -1,7 +1,5 @@
 package com.exasol.errorreporting;
 
-import com.exasol.errorreporting.PlaceholderIterator.Placeholder;
-
 /**
  * Class for parsing a text with placeholders and setting the right parameter mapping in an {@link ErrorMessageBuilder}.
  */
@@ -33,9 +31,9 @@ class ParametersMapper {
     }
 
     private void mapParameters() {
-        final PlaceholderIterator iterator = new PlaceholderIterator(this.text);
-        while (iterator.findNext()) {
-            this.mapParameter(iterator.getPlaceholder());
+        final PlaceholderMatcher placeholders = PlaceholderMatcher.findPlaceholders(this.text);
+        for (final Placeholder placeholder : placeholders) {
+            this.mapParameter(placeholder);
             this.moveToNextParameter();
         }
     }
