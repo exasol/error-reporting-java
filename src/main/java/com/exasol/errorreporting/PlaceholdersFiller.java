@@ -12,15 +12,16 @@ class PlaceholdersFiller {
     private final String text;
     private final Map<String, Object> parameters;
     @Deprecated
-    private final Map<String, Object> unquotedParameters;
+    private final Map<String, Object> explicitlyUnquotedParameters;
     private int previousPlaceholderEndPosition;
 
     /**
      * Fill the placeholders, if any, of the passed text with the passed parameters.
      *
-     * @param text               text that may contain placeholders
-     * @param parameters         parameters to fill the placeholders in the passed text
-     * @param unquotedParameters a map with those parameters that should be unquoted
+     * @param text                         text that may contain placeholders
+     * @param parameters                   parameters to fill the placeholders in the passed text
+     * @param explicitlyUnquotedParameters a map with those parameters that should be unquoted, and where defined by
+     *                                     calling {@link ErrorMessageBuilder#unquotedParameter(String, Object)}
      * @return text with its placeholders filled
      */
     static String fillPlaceholders(final String text, final Map<String, Object> parameters,
@@ -29,9 +30,9 @@ class PlaceholdersFiller {
     }
 
     private PlaceholdersFiller(final String text, final Map<String, Object> parameters,
-            final Map<String, Object> unquotedParameters) {
+            final Map<String, Object> explicitlyUnquotedParameters) {
         this.parameters = parameters;
-        this.unquotedParameters = unquotedParameters;
+        this.explicitlyUnquotedParameters = explicitlyUnquotedParameters;
         this.result = new StringBuilder();
         this.text = text;
         this.previousPlaceholderEndPosition = 0;
@@ -103,7 +104,7 @@ class PlaceholdersFiller {
     }
 
     private boolean isUnquotedParameter(final Placeholder placeholder) {
-        return placeholder.isUnquoted() || this.unquotedParameters.containsKey(placeholder.getName());
+        return placeholder.isUnquoted() || this.explicitlyUnquotedParameters.containsKey(placeholder.getName());
     }
 
     private String quoteParameter(final Placeholder placeholder) {

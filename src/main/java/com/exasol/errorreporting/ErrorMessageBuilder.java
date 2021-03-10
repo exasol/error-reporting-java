@@ -11,7 +11,7 @@ public class ErrorMessageBuilder {
     private final List<String> mitigations = new ArrayList<>();
     private final Map<String, Object> parameterMapping = new HashMap<>();
     @Deprecated
-    private final Map<String, Object> unquotedParameterMapping = new HashMap<>();
+    private final Map<String, Object> explicitlyUnquotedParameterMapping = new HashMap<>();
 
     /**
      * Create a new instance of
@@ -123,7 +123,7 @@ public class ErrorMessageBuilder {
      */
     @Deprecated
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
-        this.unquotedParameterMapping.put(placeholder, value);
+        this.explicitlyUnquotedParameterMapping.put(placeholder, value);
         this.parameter(placeholder, value);
         return this;
     }
@@ -200,6 +200,7 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping, this.unquotedParameterMapping);
+        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping,
+                this.explicitlyUnquotedParameterMapping);
     }
 }
