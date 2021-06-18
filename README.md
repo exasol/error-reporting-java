@@ -1,6 +1,6 @@
 # Java Error Reporting
 
-[![Build Status](https://travis-ci.com/exasol/error-reporting-java.svg?branch=master)](https://travis-ci.com/exasol/error-reporting-java)
+[![Build Status](https://travis-ci.com/exasol/error-reporting-java.svg?branch=main)](https://travis-ci.com/exasol/error-reporting-java)
 [![Maven Central](https://img.shields.io/maven-central/v/com.exasol/error-reporting-java)](https://search.maven.org/artifact/com.exasol/error-reporting-java)
  
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
