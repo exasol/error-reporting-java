@@ -116,12 +116,12 @@ public class ErrorMessageBuilder {
      * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
      * </p>
      *
-     * @deprecated As of release 3.0.0
+     * @deprecated since {@code 3.0.0}, set for removal
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @return self for fluent programming
      */
-    @Deprecated(since = "3.0.0", forRemoval = true)
+    @Deprecated
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
         this.explicitlyUnquotedParameterMapping.put(placeholder, value);
         this.parameter(placeholder, value);
@@ -136,13 +136,13 @@ public class ErrorMessageBuilder {
      * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
      * </p>
      *
-     * @deprecated As of release 3.0.0
+     * @deprecated since {@code 3.0.0}, set for removal
      * @param placeholder placeholder without parentheses
      * @param value       value to insert
      * @param description description for the error catalog
      * @return self for fluent programming
      */
-    @Deprecated(since = "3.0.0", forRemoval = true)
+    @Deprecated
     public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value,
             final String description) {
         return this.unquotedParameter(placeholder, value);

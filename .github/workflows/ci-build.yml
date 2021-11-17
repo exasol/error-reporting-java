@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
-          java-version: 11
+          java-version: 8
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -24,12 +24,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Run tests and build with Maven
-        run: |
-          mvn --batch-mode --update-snapshots clean verify sonar:sonar \
-              -DtrimStackTrace=false \
-              -Dsonar.organization=exasol \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN
+        run: mvn --batch-mode --update-snapshots clean verify -DtrimStackTrace=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
