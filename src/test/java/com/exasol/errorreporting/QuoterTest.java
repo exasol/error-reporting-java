@@ -3,7 +3,7 @@ package com.exasol.errorreporting;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +17,7 @@ class QuoterTest {
                 Arguments.of(1L, "1"), //
                 Arguments.of(1f, "1.0"), //
                 Arguments.of(1d, "1.0"), //
-                Arguments.of(List.of(1, "test"), "[1, 'test']"), //
+                Arguments.of(Arrays.asList(1, "test"), "[1, 'test']"), //
                 Arguments.of(new CustomObject(), "<CustomObject>"), //
                 Arguments.of(null, "<null>"), //
                 Arguments.of("test", "'test'")//
