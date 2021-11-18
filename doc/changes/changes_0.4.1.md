@@ -1,4 +1,4 @@
-# error-reporting-java 0.4.1, released 2021-11-17
+# error-reporting-java 0.4.1, released 2021-11-18
 
 Code name: Migrated Travis CI to Github Actions
 
