@@ -70,7 +70,7 @@ Result:
 
 ### Mitigations
 
-The mitigations describe actions the user can take to resolve the error: Here is an example of a mitigation definition:
+The mitigations describe actions the user can take to resolve the error. Here is an example of a mitigation definition:
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
