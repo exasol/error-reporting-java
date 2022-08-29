@@ -132,7 +132,7 @@ So when you plan to remove an obsolete error code:
 
    Even if you deleted the entry with the highest number. The whole purpose of that index is to help avoid reusing error codes.
 
-3. Do not reuse the error code (see ["Never Change the Meaning of an Error"](#never-change-the-meaning-of-an-error).
+3. Do not reuse the error code (see ["Never Change the Meaning of an Error"](#never-change-the-meaning-of-an-error)).
 
 ## Information for Users
 
