@@ -113,6 +113,27 @@ Result:
     * Delete something.
     * Create larger partition.
 
+### Never Change the Meaning of an Error
+
+If you have an error that does not fit anymore or was wrong to begin with, don't reuse the error code. Instead,
+remove the old one and create a new one with a new code.
+
+What you can do is fix typos in error, improve the readability or make them more detailed. But you should never change
+the meaning of an existing error.
+
+### Removing Obsolete Error Codes
+
+In order to ensure a linear history of the error codes, developers should not reuse old error codes.
+
+So when you plan to remove an obsolete error code:
+
+1. Remove it from the implementation
+2. Leave the `highest-index` in the `error_code_config.yml` untouched.
+
+   Even if you deleted the entry with the highest number. The whole purpose of that index is to help avoid reusing error codes.
+
+3. Do not reuse the error code (see ["Never Change the Meaning of an Error"](#never-change-the-meaning-of-an-error).
+
 ## Information for Users
 
 - [Changelog](doc/changes/changelog.md)
