@@ -109,46 +109,6 @@ public class ErrorMessageBuilder {
     }
 
     /**
-     * Add a parameter without quotes.
-     *
-     * <p>
-     * This method is deprecated. You can define that a parameter is unquoted by adding '|uq' to its correspondent
-     * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
-     * </p>
-     *
-     * @deprecated As of release 3.0.0
-     * @param placeholder placeholder without parentheses
-     * @param value       value to insert
-     * @return self for fluent programming
-     */
-    @Deprecated(since = "3.0.0", forRemoval = true)
-    public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value) {
-        this.explicitlyUnquotedParameterMapping.put(placeholder, value);
-        this.parameter(placeholder, value);
-        return this;
-    }
-
-    /**
-     * Add a parameter without quotes.
-     *
-     * <p>
-     * This method is deprecated. You can define that a parameter is unquoted by adding '|uq' to its correspondent
-     * placeholder. For more information, see {@link ErrorMessageBuilder#message(String, Object...)}.
-     * </p>
-     *
-     * @deprecated As of release 3.0.0
-     * @param placeholder placeholder without parentheses
-     * @param value       value to insert
-     * @param description description for the error catalog
-     * @return self for fluent programming
-     */
-    @Deprecated(since = "3.0.0", forRemoval = true)
-    public ErrorMessageBuilder unquotedParameter(final String placeholder, final Object value,
-            final String description) {
-        return this.unquotedParameter(placeholder, value);
-    }
-
-    /**
      * Add a mitigation. Explain here what users can do to resolve or avoid this error.
      * <p>
      * For learning about the format rules, see {@link ErrorMessageBuilder#message(String, Object...)}.
