@@ -15,19 +15,20 @@ class Quoter {
     /**
      * Return a quoted string representation of the objectToQuote passed.
      * 
-     * @param objectToQuote object to quote
+     * @param object object to quote
      * @return quoted object
      */
-    static String quoteObject(final Object objectToQuote) {
-        if (objectToQuote == null) {
+    static String quoteObject(final Object object) {
+        if (object == null) {
             return "<null>";
-        } else if (objectToQuote instanceof String || objectToQuote instanceof Character) {
-            return "'" + objectToQuote.toString() + "'";
-        } else if (objectToQuote instanceof List) {
-            final List<?> list = (List<?>) objectToQuote;
+        } else if (object instanceof String || object instanceof Character || object instanceof java.nio.file.Path
+                || object instanceof java.io.File || object instanceof java.net.URL || object instanceof java.net.URI) {
+            return "'" + object + "'";
+        } else if (object instanceof List) {
+            final List<?> list = (List<?>) object;
             return "[" + list.stream().map(Quoter::quoteObject).collect(Collectors.joining(", ")) + "]";
         } else {
-            return objectToQuote.toString();
+            return object.toString();
         }
     }
 }

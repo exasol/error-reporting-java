@@ -1,8 +1,10 @@
 # error-reporting-java 1.0.0, released 2022-08-30
 
-Code name: Full-featured
+Code name: Quoting enhancements
 
-In this release we added a guideline for deleting error codes and migrated the project to Project Keeper 2
+In this release we added a guideline for deleting error codes and migrated the project to Project Keeper 2.
+
+When you use Java a `Path`, `File`, `URL` or `URI` as parameter in a message, it now automatically gets quoted. Note that this can break existing unit tests in you code or client code that parses error messages.
 
 Note that we removed the deprecated `unquotedParameter` methods.
 
