@@ -44,7 +44,15 @@ Result:
 
 The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
 
-The builder automatically quotes parameters (depending on the type of the parameter).
+The builder automatically quotes parameters of the following types:
+
+* `String`
+* `Character`
+* `Path`
+* `File`
+* `URI`
+* `URL`
+
 If you don't want that, use the `uq` switch in the correspondent placeholder. Switches are separated with a pipe symbol "|" from the parameter name.
 
 ```java
