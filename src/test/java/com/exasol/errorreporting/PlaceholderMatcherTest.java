@@ -15,15 +15,15 @@ class PlaceholderMatcherTest {
     @Test
     void testMatching() {
         final Iterable<Placeholder> matcher = PlaceholderMatcher.findPlaceholders("{{a}} {{b}}");
-        final List<String> placeholders = StreamSupport.stream(matcher.spliterator(), false).map(Placeholder::getName)
+        final List<String> placeholders = StreamSupport.stream(matcher.spliterator(), false) //
+                .map(Placeholder::getReference) //
                 .collect(Collectors.toList());
         assertThat(placeholders, contains("a", "b"));
     }
 
     @Test
-    void testCallHasNextMoreOften() {
+    void testHasNext() {
         final Iterator<Placeholder> iterator = PlaceholderMatcher.findPlaceholders("{{a}}").iterator();
-        iterator.hasNext();
         assertTrue(iterator.hasNext());
         iterator.next();
         assertFalse(iterator.hasNext());
@@ -32,7 +32,7 @@ class PlaceholderMatcherTest {
     @Test
     void testNextWithoutHasNext() {
         final Iterator<Placeholder> iterator = PlaceholderMatcher.findPlaceholders("{{a}}").iterator();
-        assertThat(iterator.next().getName(), equalTo("a"));
+        assertThat(iterator.next().getReference(), equalTo("a"));
     }
 
     @Test

@@ -50,7 +50,7 @@ class ParametersMapper {
 
     private void appendParameter(final Placeholder placeholder) {
         if (this.isNullParameter()) {
-            this.appendNullParameter(placeholder.getName());
+            this.appendNullParameter(placeholder.getReference());
         } else {
             this.appendRegularParameter(placeholder);
         }
@@ -65,7 +65,7 @@ class ParametersMapper {
     }
 
     private void appendRegularParameter(final Placeholder placeholder) {
-        this.errorMessageBuilder.parameter(placeholder.getName(), this.getCurrentParameter());
+        this.errorMessageBuilder.parameter(placeholder.getReference(), this.getCurrentParameter());
     }
 
     private Object getCurrentParameter() {

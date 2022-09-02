@@ -9,8 +9,7 @@ public class ErrorMessageBuilder {
     private final String errorCode;
     private final StringBuilder messageBuilder = new StringBuilder();
     private final List<String> mitigations = new ArrayList<>();
-    private final Map<String, Object> parameterMapping = new HashMap<>();
-    private final Map<String, Object> explicitlyUnquotedParameterMapping = new HashMap<>();
+    private final ParameterDefinitionList parameterDefinitions = new ParameterDefinitionList();
 
     /**
      * Create a new instance of {@link ErrorMessageBuilder}.
@@ -22,47 +21,17 @@ public class ErrorMessageBuilder {
     }
 
     /**
-     * Format a given message pattern with placeholders, filling them with the arguments passed in the specified form.
+     * Define an error message.
      * <p>
-     * Placeholders are defined in the message pattern by using double curly brackets {@code {{}}}. By default,
-     * arguments are formatted with simple quotes unless specified other wise with the 'unquoted' format, defined by
-     * {@code {{|uq}}}.
+     * Error messages can optionally contain placeholders that can be replaced by arguments.
      * </p>
-     * <p>
-     * You should always define names in the placeholders. This name will be shown in case no argument is missing, by
-     * {@code {{argumentName}}} or {@code {{argumentName|uq}}}.
-     * </p>
-     * <p>
-     * Below you can find examples on how to use it.
-     * </p>
-     * <p>
-     * Example for quoted arguments:
-     * </p>
-     * <p>
-     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedQuotedArgument}}, {{}} and
-     * {{missingQuotedArgument}}, "named", "unnamed")}
-     * </p>
-     * <p>
-     * returns "ERROR_CODE: Message with 'named', 'unnamed' and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
-     * </p>
-     * <p>
-     * Example for unquoted arguments:
-     * </p>
-     * <p>
-     * {@code ErrorMessageBuilder("ERROR_CODE").message("Message with {{namedUnquotedArgument|uq}}, {{|uq}} and
-     * {{missingUnquotedArgument|uq}}, "named", "unnamed")}
-     * </p>
-     * <p>
-     * returns "ERROR_CODE: Message with named, unnamed and UNKNOWN PLACEHOLDER('anotherQuotedArgument')".
-     * </p>
-     *
      * @param message   message that may contain placeholders
      * @param arguments arguments to fill the placeholders
      * @return self for fluent programming
      */
     public ErrorMessageBuilder message(final String message, final Object... arguments) {
-        this.messageBuilder.append(message);
-        this.addParameters(message, arguments);
+        messageBuilder.append(message);
+        addParameters(message, arguments);
         return this;
     }
 
@@ -84,12 +53,12 @@ public class ErrorMessageBuilder {
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
      *
-     * @param placeholder placeholder without parentheses
-     * @param value       value to insert
+     * @param name parameter name
+     * @param value value to insert
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder parameter(final String placeholder, final Object value) {
-        this.parameterMapping.put(placeholder, value);
+    public ErrorMessageBuilder parameter(final String name, final Object value) {
+        parameterDefinitions.add(ParameterDefinition.builder(name).value(value).build());
         return this;
     }
 
@@ -98,14 +67,19 @@ public class ErrorMessageBuilder {
      * <p>
      * You can use the parameter in message and mitigation using {@code {{parameter}}}.
      * </p>
+     * <p>
+     * Note that the last parameter exists only as a means to add a description in the error catalog. It is not used
+     * when displaying error messages to the application users.
+     * </p>
      *
      * @param placeholder placeholder without parentheses
-     * @param value       value to insert
-     * @param description description for the error catalog
+     * @param value value to insert
+     * @param ignoredDescription description for the error catalog
      * @return self for fluent programming
      */
-    public ErrorMessageBuilder parameter(final String placeholder, final Object value, final String description) {
-        return this.parameter(placeholder, value);
+    public ErrorMessageBuilder parameter(final String placeholder, final Object value,
+            final String ignoredDescription) {
+        return parameter(placeholder, value);
     }
 
     /**
@@ -119,8 +93,8 @@ public class ErrorMessageBuilder {
      * @return self for fluent programming
      */
     public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
-        this.mitigations.add(mitigation);
-        this.addParameters(mitigation, arguments);
+        mitigations.add(mitigation);
+        addParameters(mitigation, arguments);
         return this;
     }
 
@@ -161,7 +135,6 @@ public class ErrorMessageBuilder {
     }
 
     private String replacePlaceholders(final String subject) {
-        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterMapping,
-                this.explicitlyUnquotedParameterMapping);
+        return PlaceholdersFiller.fillPlaceholders(subject, this.parameterDefinitions);
     }
 }

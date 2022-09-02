@@ -44,37 +44,58 @@ Result:
 
 The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
 
-The builder automatically quotes parameters of the following types:
-
-* `String`
-* `Character`
-* `Path`
-* `File`
-* `URI`
-* `URL`
-
-If you don't want that, use the `uq` switch in the correspondent placeholder. Switches are separated with a pipe symbol "|" from the parameter name.
+From version `0.3.0` on you can achieve the same result by specifying the parameter values directly in the `message()` method. This is a convenience variant that is a little more compact, but lacks the chance to describe the parameter.
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-    .message("Unknown input: {{input|uq}}.")
+    .message("Message with {{first-parameter}} and {{second-parameter}}.", "first value", "second value").toString();
+```
+
+Result:
+
+    E-TEST-2: Message with 'q-value' and uq-value.
+
+#### Automatic Quoting
+
+When replacing placeholders in messages, `ExaError` quotes the values according to your choices. If you don't specify a quoting option in a placeholder, you get auto-quoting. In this mode values are quoted depending on their type.
+
+| Type                 | Quoted with     | Example                    | Since version |
+|----------------------|-----------------|----------------------------|--------------:|
+| `String`             | single quotes   | `'Hello world!'`           |               |
+| `Character` / `char` | single quotes   | `'A'`                      |               |
+| `Path`               | single quotes   | `'/etc/cron.d'`            |         1.0.0 |
+| `File`               | single quotes   | `'~/.bashrc'`              |         1.0.0 |
+| `URI`                | single quotes   | `'URN:ISBN:0-330-28700-1'` |         1.0.0 |
+| `URL`                | single quotes   | `'https://example.org'`    |         1.0.0 |
+| null values          | pointy brackets | `<null>`                   |               |
+| everything else      | not quoted      | `42`, `3.1415`, `true`     |               |
+
+#### Manual Quoting
+
+If you need a different quoting style, you can add switches to the placeholder definition:
+
+`u`
+: unquoted
+
+`q`
+: forced single quotes
+
+`d`
+: forced double quotes
+
+If multiple conflicting switches are given, the one with the highest precedence (see list above) is taken.
+
+Switches are separated with a pipe symbol `|` from the parameter name.
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Unknown input: {{input|u}}.")
     .parameter("input", "unknown", "The illegal user input.").toString();
 ```
 
 Result:
 
     E-TEST-2: Unknown input: unknown.
-
-From version `0.3.0` on you can achieve the same result by specifying the parameter values directly in the `message()` method. This is a convenience variant that is a little bit more compact, but lacks the chance to describe the parameter.
-
-```java
-ExaError.messageBuilder("E-TEST-2")
-    .message("Message with {{quotedParameter}} and {{unquotedParameter|uq}}.", "q-value", "uq-value").toString();
-```
-
-Result:
-
-    E-TEST-2: Message with 'q-value' and uq-value.
 
 ### Mitigations
 
