@@ -4,6 +4,7 @@ package com.exasol.errorreporting;
  * The class models an error code parameter.
  */
 public class ParameterDefinition {
+    /** Replacement Parameter in case a parameter is missing its name */
     public static final ParameterDefinition UNDEFINED_PARAMETER = ParameterDefinition.builder("undefined parameter")
             .build();
     private final String name;
