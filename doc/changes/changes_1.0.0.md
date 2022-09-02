@@ -1,4 +1,4 @@
-# error-reporting-java 1.0.0, released 2022-08-30
+# error-reporting-java 1.0.0, released 2022-09-02
 
 Code name: Quoting enhancements
 
