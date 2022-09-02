@@ -11,10 +11,14 @@ class ParameterDefinitionListTest {
     @Test
     void testGet() {
         ParameterDefinitionList list = new ParameterDefinitionList();
-        final ParameterDefinition expectedParameter = ParameterDefinition.builder("A").build();
-        list.add(expectedParameter);
-        list.add(ParameterDefinition.builder("B").build());
-        assertThat(list.get("A"), sameInstance(expectedParameter));
+        final ParameterDefinition expectedA = ParameterDefinition.builder("A").build();
+        final ParameterDefinition expectedB = ParameterDefinition.builder("B").build();
+        list.add(expectedA);
+        list.add(expectedB);
+        assertAll(
+                () ->  assertThat(list.get("A"), sameInstance(expectedA)),
+                () ->  assertThat(list.get("B"), sameInstance(expectedB))
+        );
     }
 
     @Test

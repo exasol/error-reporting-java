@@ -27,7 +27,7 @@ none
 If multiple conflicting switches are given, the one with the highest precedence (see list above) is taken.
 That means the previous `uq` switch still works because the `q` is ignored in this case.
 
-For the reviewers: open TODOs for this release: #28, #27, #19
+Quoting now supports all collections, not only lists.
 
 ## Documentation
 

@@ -1,6 +1,6 @@
 package com.exasol.errorreporting;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -22,9 +22,9 @@ class Quoter {
     static String quoteObject(final Object object, final Quoting quoting) {
         if (object == null) {
             return "<null>";
-        } else if (object instanceof List) {
-            final List<?> list = (List<?>) object;
-            return "[" + list.stream().map(object1 -> quoteObject(object1, quoting))
+        } else if (object instanceof Collection) {
+            final Collection<?> collection = (Collection<?>) object;
+            return "[" + collection.stream().map(item -> quoteObject(item, quoting))
                     .collect(Collectors.joining(", ")) + "]";
         } else {
             switch (quoting) {

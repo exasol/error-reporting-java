@@ -59,16 +59,16 @@ Result:
 
 When replacing placeholders in messages, `ExaError` quotes the values according to your choices. If you don't specify a quoting option in a placeholder, you get auto-quoting. In this mode values are quoted depending on their type.
 
-| Type            | Quoted with     | Example                    | Since version |
-|-----------------|-----------------|----------------------------|--------------:|
-| `String`        | single quotes   | `'Hello world!'`           |               |
-| `Character`     | single quotes   | `'A'`                      |               |
-| `Path`          | single quotes   | `'/etc/cron.d'`            |         1.0.0 |
-| `File`          | single quotes   | `'~/.bashrc'`              |         1.0.0 |
-| `URI`           | single quotes   | `'URN:ISBN:0-330-28700-1'` |         1.0.0 |
-| `URL`           | single quotes   | `'https://example.org'`    |         1.0.0 |
-| null values     | pointy brackets | `<null>`                   |               |
-| everything else | not quoted      | `42`, `3.1415`, `true`     |               |
+| Type                 | Quoted with     | Example                    | Since version |
+|----------------------|-----------------|----------------------------|--------------:|
+| `String`             | single quotes   | `'Hello world!'`           |               |
+| `Character` / `char` | single quotes   | `'A'`                      |               |
+| `Path`               | single quotes   | `'/etc/cron.d'`            |         1.0.0 |
+| `File`               | single quotes   | `'~/.bashrc'`              |         1.0.0 |
+| `URI`                | single quotes   | `'URN:ISBN:0-330-28700-1'` |         1.0.0 |
+| `URL`                | single quotes   | `'https://example.org'`    |         1.0.0 |
+| null values          | pointy brackets | `<null>`                   |               |
+| everything else      | not quoted      | `42`, `3.1415`, `true`     |               |
 
 #### Manual Quoting
 

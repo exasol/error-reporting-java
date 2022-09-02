@@ -12,7 +12,7 @@ public class Placeholder {
     /**
      * Parse a placeholder from a placeholder string.
      * <p>
-     * Placeholders a reference part and a part that contains switched that control how the placeholder is treated. This
+     * Placeholders consist of a reference part and a part that contains switches that control how the placeholder is treated. This
      * parser takes the string representation and parses it into placeholder information.
      * </p>
      * <p>
