@@ -6,7 +6,26 @@ In this release we added a guideline for deleting error codes and migrated the p
 
 When you use Java types `Path`, `File`, `URL` or `URI` as parameter in a message, it now automatically gets quoted. Note that this can break existing unit tests in you code or client code that parses error messages.
 
+We also now support quoting with double quotes.
+
 Note that we removed the deprecated `unquotedParameter` methods.
+
+Quoting is now exclusively controlled by the following single-character switches:
+
+`u`
+: unquoted
+
+`q`
+: forced single quotes
+
+`d`
+: forced double quotes
+
+none
+: automatic quoting depending on the type
+
+If multiple conflicting switches are given, the one with the highest precedence (see list above) is taken.
+That means the previous `uq` switch still works because the `q` is ignored in this case.
 
 For the reviewers: open TODOs for this release: #28, #27, #19
 
