@@ -1,35 +1,27 @@
 package com.exasol.errorreporting;
 
-import java.util.Map;
-
 /**
- * Class for filling the placeholders of texts.
+ * This class replaces the placeholders in a text.
  */
 class PlaceholdersFiller {
     private final StringBuilder result;
     private final String text;
-    private final Map<String, Object> parameters;
-    private final Map<String, Object> explicitlyUnquotedParameters;
+    private final ParameterDefinitionList parameters;
     private int previousPlaceholderEndPosition;
 
     /**
      * Fill the placeholders, if any, of the passed text with the passed parameters.
      *
      * @param text               text that may contain placeholders
-     * @param parameters         parameters to fill the placeholders in the passed text
-     * @param unquotedParameters a map with those parameters that should be unquoted, and where defined by calling
-     *                           {@link ErrorMessageBuilder#unquotedParameter(String, Object)}
+     * @param parameters         parameters to fill the placeholders in the text passed
      * @return text with its placeholders filled
      */
-    static String fillPlaceholders(final String text, final Map<String, Object> parameters,
-            final Map<String, Object> unquotedParameters) {
-        return new PlaceholdersFiller(text, parameters, unquotedParameters).fillPlaceholders();
+    static String fillPlaceholders(final String text, final ParameterDefinitionList parameters) {
+        return new PlaceholdersFiller(text, parameters).fillPlaceholders();
     }
 
-    private PlaceholdersFiller(final String text, final Map<String, Object> parameters,
-            final Map<String, Object> explicitlyUnquotedParameters) {
+    private PlaceholdersFiller(final String text, final ParameterDefinitionList parameters) {
         this.parameters = parameters;
-        this.explicitlyUnquotedParameters = explicitlyUnquotedParameters;
         this.result = new StringBuilder();
         this.text = text;
         this.previousPlaceholderEndPosition = 0;
@@ -63,7 +55,7 @@ class PlaceholdersFiller {
     }
 
     private String getSectionBeforePlaceholder(final Placeholder placeholder) {
-        return this.text.substring(this.previousPlaceholderEndPosition, placeholder.getStartPosition());
+        return this.text.substring(this.previousPlaceholderEndPosition, placeholder.getStartIndex());
     }
 
     private String getRestOfTheMessage() {
@@ -71,7 +63,7 @@ class PlaceholdersFiller {
     }
 
     private void moveToNextPlaceholder(final Placeholder placeholder) {
-        this.previousPlaceholderEndPosition = placeholder.getEndPosition();
+        this.previousPlaceholderEndPosition = placeholder.getEndIndex();
     }
 
     private String getFullMessage() {
@@ -80,40 +72,26 @@ class PlaceholdersFiller {
 
     private String getPlaceholderFilling(final Placeholder placeholder) {
         if (this.isParameterPresent(placeholder)) {
-            return this.getPresentParameterPlaceholderFilling(placeholder);
+            return getPresentParameterPlaceholderFilling(placeholder);
         } else {
-            return this.getUnknownPlaceholderTextFor(placeholder);
+            return getUnknownPlaceholderTextFor(placeholder);
         }
     }
 
     private boolean isParameterPresent(final Placeholder placeholder) {
-        return this.parameters.containsKey(placeholder.getName());
+        return this.parameters.containsKey(placeholder.getReference());
     }
 
     private String getPresentParameterPlaceholderFilling(final Placeholder placeholder) {
-        if (this.isNullParameter(placeholder)) {
-            return "<null>";
-        }
-        if (this.isUnquotedParameter(placeholder)) {
-            return this.parameters.get(placeholder.getName()).toString();
-        } else {
-            return this.quoteParameter(placeholder);
-        }
+        return quoteParameterValue(placeholder);
     }
 
-    private boolean isUnquotedParameter(final Placeholder placeholder) {
-        return placeholder.isUnquoted() || this.explicitlyUnquotedParameters.containsKey(placeholder.getName());
-    }
-
-    private String quoteParameter(final Placeholder placeholder) {
-        return Quoter.quoteObject(this.parameters.get(placeholder.getName()));
-    }
-
-    private boolean isNullParameter(final Placeholder placeholder) {
-        return this.parameters.get(placeholder.getName()) == null;
+    private String quoteParameterValue(final Placeholder placeholder) {
+        final ParameterDefinition parameter = this.parameters.get(placeholder.getReference());
+        return Quoter.quoteObject(parameter.getValue(), placeholder.getQuoting());
     }
 
     private String getUnknownPlaceholderTextFor(final Placeholder placeholder) {
-        return "UNKNOWN PLACEHOLDER('" + placeholder.getName() + "')";
+        return "UNKNOWN PLACEHOLDER('" + placeholder.getReference() + "')";
     }
 }

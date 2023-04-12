@@ -1,7 +1,7 @@
 # Java Error Reporting
 
 [![Build Status](https://github.com/exasol/error-reporting-java/actions/workflows/ci-build.yml/badge.svg)](https://github.com/exasol/error-reporting-java/actions/workflows/ci-build.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.exasol/error-reporting-java)](https://search.maven.org/artifact/com.exasol/error-reporting-java)
+[![Maven Central – error-reporting-java](https://img.shields.io/maven-central/v/com.exasol/error-reporting-java)](https://search.maven.org/artifact/com.exasol/error-reporting-java)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
 
@@ -26,77 +26,147 @@ The invocations of the Builder can be parsed by the [error-code-crawler-maven-pl
 ExaError.messageBuilder("E-TEST-1").message("Something went wrong.").toString();
 ```
 
-result: `E-TEST-1: Something went wrong.`
+Result: `E-TEST-1: Something went wrong.`
 
 ### Parameters
 
-You can specify place holders in the message and fill them up with parameters values, as follows:
+You can specify placeholders in the message and replace them with parameters values, as follows:
 
 ```java
 ExaError.messageBuilder("E-TEST-2")
-  .message("Unknown input {{input}}.")
-  .parameter("input", 'unknown', "The illegal user input.").toString();
-```
-
-result: `E-TEST-2: Unknown input 'unknown'.`
-
-The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
-
-The builder automatically quotes parameters (depending on the type of the parameter).
-If you don't want that, use the `|uq` suffix in the correspondent placeholder, as follows:
-
-```java
-ExaError.messageBuilder("E-TEST-2")
-  .message("Unknown input {{input|uq}}.")
-  .parameter("input", 'unknown', "The illegal user input.").toString();
-```
-
-result: `E-TEST-2: Unknown input unknown.`
-
-From version `0.3.0` you can achieve the same result by inlining the parameters, as follows:
-
-```java
-ExaError.messageBuilder("E-TEST-2")
-  .message("Message with {{quotedParameter}} and {{unquotedParameter|uq}}.", "quoted", "unquoted").toString();
-```
-
-result: `E-TEST-2: Message with 'quoted' and unquoted.`
-
-### Mitigations
-
-The mitigations describe those actions the user can follow to overcame the error, and are specified as follows:
-
-```java
-ExaError.messageBuilder("E-TEST-2")
-  .message("Too few disk space.")
-  .mitigation("Delete something.")
-  .toString();
-```
-
-Result: `E-TEST-2: Too few disk space. Delete something.`
-
-You can use parameters in mitigations too.
-
-<hr>
-
-```java
-ExaError.messageBuilder("E-TEST-2")
-  .message("Too few disk space.")
-  .mitigation("Delete something.")
-  .mitigation("Create larger partition.")
-  .toString();
+    .message("Unknown input: {{input}}.")
+    .parameter("input", "unknown", "The illegal user input.").toString();
 ```
 
 Result:
 
-```text
-E-TEST-2: Too few disk space. Known mitigations:
-* Delete something.
-* Create larger partition.
+    E-TEST-2: Unknown input: 'unknown'.`
+
+The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
+
+From version `0.3.0` on you can achieve the same result by specifying the parameter values directly in the `message()` method. This is a convenience variant that is a little more compact, but lacks the chance to describe the parameter.
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Message with {{first-parameter}} and {{second-parameter}}.", "first value", "second value").toString();
 ```
 
-## Additional Resources
+Result:
+
+    E-TEST-2: Message with 'q-value' and uq-value.
+
+#### Automatic Quoting
+
+When replacing placeholders in messages, `ExaError` quotes the values according to your choices. If you don't specify a quoting option in a placeholder, you get auto-quoting. In this mode values are quoted depending on their type.
+
+| Type                 | Quoted with     | Example                    | Since version |
+|----------------------|-----------------|----------------------------|--------------:|
+| `String`             | single quotes   | `'Hello world!'`           |               |
+| `Character` / `char` | single quotes   | `'A'`                      |               |
+| `Path`               | single quotes   | `'/etc/cron.d'`            |         1.0.0 |
+| `File`               | single quotes   | `'~/.bashrc'`              |         1.0.0 |
+| `URI`                | single quotes   | `'URN:ISBN:0-330-28700-1'` |         1.0.0 |
+| `URL`                | single quotes   | `'https://example.org'`    |         1.0.0 |
+| null values          | pointy brackets | `<null>`                   |               |
+| everything else      | not quoted      | `42`, `3.1415`, `true`     |               |
+
+#### Manual Quoting
+
+If you need a different quoting style, you can add switches to the placeholder definition:
+
+`u`
+: unquoted
+
+`q`
+: forced single quotes
+
+`d`
+: forced double quotes
+
+If multiple conflicting switches are given, the one with the highest precedence (see list above) is taken.
+
+Switches are separated with a pipe symbol `|` from the parameter name.
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Unknown input: {{input|u}}.")
+    .parameter("input", "unknown", "The illegal user input.").toString();
+```
+
+Result:
+
+    E-TEST-2: Unknown input: unknown.
+
+### Mitigations
+
+The mitigations describe actions the user can take to resolve the error. Here is an example of a mitigation definition:
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Not enough space on device.")
+    .mitigation("Delete something.")
+    .toString();
+```
+
+Result:
+
+    E-TEST-2: Not enough space on device. Delete something.
+
+You can use parameters in mitigations too.
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Not enough space on device {{device}}.")
+    .mitigation("Delete something from {{device}}.")
+    .parameter("device", "/dev/sda1", "name of the device")
+    .toString();
+```
+
+Result: 
+
+    E-TEST-2: Not enough space on device '/dev/sda1'. Delete something from '/dev/sda1'.`
+
+You can chain `mitigation` definitions if you want to tell the users that there is more than one solution.
+
+```java
+ExaError.messageBuilder("E-TEST-2")
+    .message("Not enough space on device.")
+    .mitigation("Delete something.")
+    .mitigation("Create larger partition.")
+    .toString();
+```
+
+Result:
+
+    E-TEST-2: Not enough space on device. Known mitigations:
+    * Delete something.
+    * Create larger partition.
+
+### Never Change the Meaning of an Error
+
+If you have an error that does not fit anymore or was wrong to begin with, don't reuse the error code. Instead,
+remove the old one and create a new one with a new code.
+
+What you can do is fix typos in error, improve the readability or make them more detailed. But you should never change
+the meaning of an existing error.
+
+### Removing Obsolete Error Codes
+
+In order to ensure a linear history of the error codes, developers should not reuse old error codes.
+
+So when you plan to remove an obsolete error code:
+
+1. Remove it from the implementation
+2. Leave the `highest-index` in the `error_code_config.yml` untouched.
+
+   Even if you deleted the entry with the highest number. The whole purpose of that index is to help avoid reusing error codes.
+
+3. Do not reuse the error code (see ["Never Change the Meaning of an Error"](#never-change-the-meaning-of-an-error)).
+
+## Information for Users
 
 - [Changelog](doc/changes/changelog.md)
-- [Dependencies](dependencies.md)
 
+## Information for Developers
+
+- [Dependencies](dependencies.md)

@@ -32,7 +32,7 @@ public class PlaceholderMatcher implements Iterable<Placeholder> {
     }
 
     private static class PlaceholderIterator implements Iterator<Placeholder> {
-        private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^\\}]*)\\}\\}");
+        private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{([^}]*)}+");
         private final Matcher matcher;
         private boolean hasNext;
 
@@ -47,10 +47,14 @@ public class PlaceholderMatcher implements Iterable<Placeholder> {
         }
 
         /**
-         * @return the current {@link Placeholder}.
+         * Get the current placeholder.
+         *
+         * @return current {@link Placeholder}.
          */
         private Placeholder getPlaceholder() {
-            return new Placeholder(this.matcher.group(1), this.matcher.start(), this.matcher.end());
+            final String placeholderString = this.matcher.group(1);
+            final Placeholder.Builder builder = Placeholder.parse(placeholderString);
+            return builder.startIndex(this.matcher.start()).endIndex(this.matcher.end()).build();
         }
 
         @Override

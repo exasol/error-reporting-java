@@ -1,5 +1,6 @@
 package com.exasol.errorreporting;
 
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 class ErrorMessageBuilderTest {
+    final String NULL_STRING = null;
 
     @AfterEach
     void afterEach() {
@@ -36,21 +38,6 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessageWithNullUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("{{myPlaceholder}}")
-                .unquotedParameter("myPlaceholder", null).toString();
-        assertThat(message, equalTo("E-ERJ-TEST-1: <null>"));
-    }
-
-    @Test
-    void testMessageWithUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("E-ERJ-TEST-1")
-                .message("Test message {{myPlaceholder}} and a number {{number}}.")
-                .unquotedParameter("myPlaceholder", "myValue").unquotedParameter("number", 1, "a number").toString();
-        assertThat(message, equalTo("E-ERJ-TEST-1: Test message myValue and a number 1."));
-    }
-
-    @Test
     void testMessageWithoutParameterName() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('')"));
@@ -60,13 +47,6 @@ class ErrorMessageBuilderTest {
     void testMessageUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
-    }
-
-    @Test
-    void testMessageParameterWithGroupReferenceChar() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1")
-                .message("test {{PLACEHOLDER}}").unquotedParameter("PLACEHOLDER", "$2");
-        assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test $2"));
     }
 
     @Test
@@ -124,14 +104,15 @@ class ErrorMessageBuilderTest {
     @Test
     void testMitigationInlineSingleNullParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .mitigation("Mitigation with {{parameterName1}}.", null).toString();
+                .mitigation("Mitigation with {{parameterName1}}.", NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null>."));
     }
 
     @Test
     void testMitigationInlineMultipleNullParameters() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message.")
-                .mitigation("Mitigation with {{parameterName1}} {{parameterName2}}.", null, null).toString();
+                .mitigation("Mitigation with {{parameterName1}} {{parameterName2}}.", NULL_STRING, NULL_STRING)
+                .toString();
         assertThat(message, equalTo("ERROR-CODE: Message. Mitigation with <null> <null>."));
     }
 
@@ -162,16 +143,9 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessageInlineQuotedParameterWithGroupReferenceChar() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName}}.", "$2");
-        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with '$2'."));
-    }
-
-    @Test
     void testMessageInlineSingleNullQuotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.", null)
-                .toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.",
+                        NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
@@ -211,8 +185,8 @@ class ErrorMessageBuilderTest {
 
     @Test
     void testMessageInlineSingleNullUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.", null)
-                .toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.",
+                        NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
@@ -221,13 +195,6 @@ class ErrorMessageBuilderTest {
         final String message = new ErrorMessageBuilder("ERROR-CODE")
                 .message("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null> <null>."));
-    }
-
-    @Test
-    void testMessageInlineUnquotedParameterWithGroupReferenceChar() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName|uq}}.", "$2");
-        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with $2."));
     }
 
     @Test
@@ -247,14 +214,6 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessageInlineAndOutlineUnquotedParameters() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName1|uq}}", "value1").message(" {{parameterName2}}.")
-                .unquotedParameter("parameterName2", "value2");
-        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with value1 value2."));
-    }
-
-    @Test
     void testMessage_() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
                 .message("Message with {{parameterName|uq}}.").parameter("parameterName", "value");
@@ -262,9 +221,16 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    void testMessage__() {
-        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName|uq}}.").unquotedParameter("parameterName", "value");
-        assertThat(messageBuilder.toString(), equalTo("ERROR-CODE: Message with value."));
+    void testForcedSingleQuoting() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("W-FORCE-1")
+                .message("The answer is {{number|q}}").parameter("number", 42);
+        assertThat(messageBuilder.toString(), endsWith("The answer is '42'"));
+    }
+
+    @Test
+    void testForcedDoubleQuoting() {
+        final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("W-FORCE-1")
+                .message("The answer is {{number|d}}").parameter("number", 42);
+        assertThat(messageBuilder.toString(), endsWith("The answer is \"42\""));
     }
 }

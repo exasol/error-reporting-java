@@ -1,5 +1,0 @@
-error-tags:
-  ERJ:
-    packages:
-      - com.exasol.errorreporting
-    highest-index: 0
