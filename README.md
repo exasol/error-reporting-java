@@ -1,19 +1,19 @@
 # Java Error Reporting
 
 [![Build Status](https://github.com/exasol/error-reporting-java/actions/workflows/ci-build.yml/badge.svg)](https://github.com/exasol/error-reporting-java/actions/workflows/ci-build.yml)
-[![Maven Central – error-reporting-java](https://img.shields.io/maven-central/v/com.exasol/error-reporting-java)](https://search.maven.org/artifact/com.exasol/error-reporting-java)
+[![Maven Central &ndash; error-reporting-java8](https://img.shields.io/maven-central/v/com.exasol/error-reporting-java8)](https://search.maven.org/artifact/com.exasol/error-reporting-java8)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
 
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=security_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=sqale_index)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=security_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=sqale_index)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
 
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=code_smells)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=coverage)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=code_smells)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=coverage)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java8&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java8)
 
 This project contains a Java-Builder for Exasol error messages.
 The invocations of the Builder can be parsed by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin).

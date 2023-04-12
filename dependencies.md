@@ -15,12 +15,12 @@
 | ------------------------------------------------------- | ---------------------------------------------- |
 | [SonarQube Scanner for Maven][4]                        | [GNU LGPL 3][5]                                |
 | [Apache Maven Compiler Plugin][6]                       | [Apache License, Version 2.0][7]               |
-| [Apache Maven Enforcer Plugin][8]                       | [Apache License, Version 2.0][7]               |
+| [Apache Maven Enforcer Plugin][8]                       | [Apache-2.0][7]                                |
 | [Maven Flatten Plugin][9]                               | [Apache Software Licenese][7]                  |
 | [org.sonatype.ossindex.maven:ossindex-maven-plugin][10] | [ASL2][11]                                     |
 | [Maven Surefire Plugin][12]                             | [Apache License, Version 2.0][7]               |
 | [Versions Maven Plugin][13]                             | [Apache License, Version 2.0][7]               |
-| [Apache Maven Deploy Plugin][14]                        | [Apache License, Version 2.0][7]               |
+| [Apache Maven Deploy Plugin][14]                        | [Apache-2.0][7]                                |
 | [Apache Maven GPG Plugin][15]                           | [Apache License, Version 2.0][7]               |
 | [Apache Maven Source Plugin][16]                        | [Apache License, Version 2.0][7]               |
 | [Apache Maven Javadoc Plugin][17]                       | [Apache License, Version 2.0][7]               |

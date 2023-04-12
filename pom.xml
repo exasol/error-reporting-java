@@ -7,7 +7,7 @@
     <description>Builder for exasol error codes.</description>
     <url>https://github.com/exasol/error-reporting-java/</url>
     <parent>
-        <artifactId>error-reporting-java-generated-parent</artifactId>
+        <artifactId>error-reporting-java8-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
         <version>1.0.1</version>
         <relativePath>pk_generated_parent.pom</relativePath>
@@ -60,7 +60,7 @@
                 </executions>
                 <configuration>
                     <charset>UTF-8</charset>
-                    <doclint />
+                    <doclint/>
                     <serialwarn>true</serialwarn>
                     <failOnError>true</failOnError>
                     <failOnWarnings>false</failOnWarnings>
