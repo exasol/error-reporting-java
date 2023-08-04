@@ -4,6 +4,7 @@ Code name:
 
 ## Summary
 
+This release fixes sonar warnings and updates dependencies.
 ## Features
 
 * ISSUE_NUMBER: description
