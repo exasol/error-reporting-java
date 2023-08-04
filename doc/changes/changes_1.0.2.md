@@ -10,10 +10,15 @@ Code name:
 
 ## Dependency Updates
 
+### Test Dependency Updates
+
+* Updated `org.junit.jupiter:junit-jupiter-engine:5.9.2` to `5.10.0`
+* Updated `org.junit.jupiter:junit-jupiter-params:5.9.2` to `5.10.0`
+
 ### Plugin Dependency Updates
 
 * Updated `com.exasol:error-code-crawler-maven-plugin:1.2.2` to `1.3.0`
-* Updated `com.exasol:project-keeper-maven-plugin:2.9.3` to `2.9.9`
+* Updated `com.exasol:project-keeper-maven-plugin:2.9.3` to `2.9.10`
 * Updated `org.apache.maven.plugins:maven-compiler-plugin:3.10.1` to `3.11.0`
 * Updated `org.apache.maven.plugins:maven-deploy-plugin:3.0.0` to `3.1.1`
 * Updated `org.apache.maven.plugins:maven-enforcer-plugin:3.1.0` to `3.3.0`
