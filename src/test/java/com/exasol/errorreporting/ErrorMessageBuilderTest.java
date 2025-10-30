@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 class ErrorMessageBuilderTest {
-    final String NULL_STRING = null;
+    static final String NULL_STRING = null;
 
     @AfterEach
     void afterEach() {
@@ -145,7 +145,7 @@ class ErrorMessageBuilderTest {
     @Test
     void testMessageInlineSingleNullQuotedParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.",
-                        NULL_STRING).toString();
+                NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
@@ -185,8 +185,8 @@ class ErrorMessageBuilderTest {
 
     @Test
     void testMessageInlineSingleNullUnquotedParameter() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1}}.",
-                        NULL_STRING).toString();
+        final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1|uq}}.",
+                NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
     }
 
