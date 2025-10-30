@@ -4,3 +4,24 @@ sources:
     modules:
       - maven_central
 excludes:
+build:
+  # Generate dummy error code reports to avoid failing builds.
+  # This project does not use the error code crawler.
+  workflows:
+    - name: "ci-build.yml"
+      stepCustomizations:
+        - action: INSERT_AFTER
+          stepId: build-pk-verify
+          job: build-and-test
+          content:
+            name: Generate dummy error code report
+            id: generate-dummy-error-code-report
+            run: echo '{"$schema":"https://schemas.exasol.com/error_code_report-1.0.0.json","errorCodes":[]}' > target/error_code_report.json
+    - name: "release.yml"
+      stepCustomizations:
+        - action: INSERT_AFTER
+          stepId: build
+          content:
+            name: Generate dummy error code report
+            id: generate-dummy-error-code-report
+            run: echo '{"$schema":"https://schemas.exasol.com/error_code_report-1.0.0.json","errorCodes":[]}' > target/error_code_report.json
