@@ -13,6 +13,13 @@ public class ParameterDefinitionList {
     private final List<ParameterDefinition> parameterDefinitions = new ArrayList<>();
 
     /**
+     * Create a new instance of {@link ParameterDefinitionList}.
+     */
+    public ParameterDefinitionList() {
+        // Empty constructor required by Java >= 17
+    }
+
+    /**
      * Add a parameter definition to the list.
      *
      * @param parameterDefinition definition to be added
@@ -26,11 +33,11 @@ public class ParameterDefinitionList {
      *
      * @param name parameter name to search for
      * @return first parameter definition where the name matches, or {@link ParameterDefinition#UNDEFINED_PARAMETER} if
-     * no parameter matches
+     *         no parameter matches
      */
     public ParameterDefinition get(final String name) {
-        if(name != null) {
-            for(ParameterDefinition definition : this.parameterDefinitions) {
+        if (name != null) {
+            for (ParameterDefinition definition : this.parameterDefinitions) {
                 if (name.equals(definition.getName())) {
                     return definition;
                 }
@@ -44,12 +51,12 @@ public class ParameterDefinitionList {
      *
      * @param name the name of the parameter
      * @return {@code true} if a parameter that name exists in the parameter definition list, {@code false} if the name
-     * searched for is {@code null} or does not exist
+     *         searched for is {@code null} or does not exist
      */
     public boolean containsKey(final String name) {
-        if(name != null) {
-            for(ParameterDefinition definition : this.parameterDefinitions) {
-                if(name.equals(definition.getName())) {
+        if (name != null) {
+            for (ParameterDefinition definition : this.parameterDefinitions) {
+                if (name.equals(definition.getName())) {
                     return true;
                 }
             }
