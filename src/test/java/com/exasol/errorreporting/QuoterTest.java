@@ -4,12 +4,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,9 +31,8 @@ class QuoterTest {
                 Arguments.of(new File("\\foo\\baz.txt"), "'\\foo\\baz.txt'"), //
                 Arguments.of(Path.of("foo/bar"), "'foo/bar'"), //
                 Arguments.of(Path.of("foo\\bar"), "'foo\\bar'"), //
-                Arguments.of(new URL("https://example.org"), "'https://example.org'"), //
-                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "'URN:ISBN:0-330-28700-1'")
-        );
+                Arguments.of(new URI("https://example.org").toURL(), "'https://example.org'"), //
+                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "'URN:ISBN:0-330-28700-1'"));
     }
 
     @ParameterizedTest
@@ -58,9 +55,8 @@ class QuoterTest {
                 Arguments.of('A', "A"), //
                 Arguments.of(new File("/foo/baz.txt"), "/foo/baz.txt"), //
                 Arguments.of(new File("\\foo\\baz.txt"), "\\foo\\baz.txt"), //
-                Arguments.of(new URL("https://example.org"), "https://example.org"), //
-                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "URN:ISBN:0-330-28700-1")
-        );
+                Arguments.of(new URI("https://example.org").toURL(), "https://example.org"), //
+                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "URN:ISBN:0-330-28700-1"));
     }
 
     @ParameterizedTest
@@ -83,9 +79,8 @@ class QuoterTest {
                 Arguments.of('A', "'A'"), //
                 Arguments.of(new File("/foo/baz.txt"), "'/foo/baz.txt'"), //
                 Arguments.of(new File("\\foo\\baz.txt"), "'\\foo\\baz.txt'"), //
-                Arguments.of(new URL("https://example.org"), "'https://example.org'"), //
-                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "'URN:ISBN:0-330-28700-1'")
-        );
+                Arguments.of(new URI("https://example.org").toURL(), "'https://example.org'"), //
+                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "'URN:ISBN:0-330-28700-1'"));
     }
 
     @ParameterizedTest
@@ -108,9 +103,8 @@ class QuoterTest {
                 Arguments.of('A', "\"A\""), //
                 Arguments.of(new File("/foo/baz.txt"), "\"/foo/baz.txt\""), //
                 Arguments.of(new File("\\foo\\baz.txt"), "\"\\foo\\baz.txt\""), //
-                Arguments.of(new URL("https://example.org"), "\"https://example.org\""), //
-                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "\"URN:ISBN:0-330-28700-1\"")
-        );
+                Arguments.of(new URI("https://example.org").toURL(), "\"https://example.org\""), //
+                Arguments.of(new URI("URN:ISBN:0-330-28700-1"), "\"URN:ISBN:0-330-28700-1\""));
     }
 
     @ParameterizedTest
