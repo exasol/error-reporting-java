@@ -21,6 +21,5 @@
 
 ## Decisions Needed
 
-* Confirm whether Java 11 is a permanent minimum runtime requirement.
 * Confirm whether crawler integration and module resolution need dedicated integration tests.
 * Decide whether to add OFT coverage markers in implementation and test files as a separate follow-up step.

@@ -27,7 +27,3 @@ Maven ..> Jar : builds / publishes
 ## Deployment Strategy
 
 Maven compiles, tests, verifies, and publishes the library. At runtime the library performs only in-process string construction and does not initiate network calls or require external state.
-
-## Open Issues
-
-* Supported JVM vendors and the minimum runtime beyond the Java 11 build target are not documented.

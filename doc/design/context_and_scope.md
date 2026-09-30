@@ -13,7 +13,7 @@ Java Error Reporting includes the fluent error-message builder, placeholder pars
 
 ## Supported Environment
 
-The project is built as a Java 11 Maven artifact and can be consumed on the class path or through the declared Java module.
+The project is built as a Java 11 Maven artifact and can be consumed on Java 11 or newer supported runtimes, either on the class path or through the declared Java module. Supported-runtime maintenance follows the [Eclipse Adoptium OpenJDK lifecycle](https://adoptium.net/support/).
 
 ## External Interfaces
 
@@ -29,7 +29,3 @@ Builders hold message fragments, mitigations, and parameter definitions in memor
 * Persisting an error catalog.
 * Sending errors or tickets to remote services.
 * Escaping arbitrary message syntax beyond the documented placeholder and quoting rules.
-
-## Open Issues
-
-* The crawler’s exact parser contract is not tested in this repository.

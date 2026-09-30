@@ -39,7 +39,3 @@ The public facade creates builders. The builder owns accumulated text and delega
 ### Rendering And Quoting
 
 `PlaceholdersFiller` replaces placeholders or emits an unknown-placeholder diagnostic. `Quoter` formats nulls, collections, and scalar values according to automatic or explicit quoting.
-
-## Open Issues
-
-* The parser uses a deliberately permissive regular expression; malformed nested braces are not specified as a separate validation error.

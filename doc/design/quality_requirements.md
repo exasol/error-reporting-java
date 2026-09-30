@@ -6,7 +6,7 @@ Requirements use `feat` → `req` → `scn` and design uses `dsn`. The draft sce
 
 ## Code Quality
 
-The project uses Maven, Project Keeper, JavaDoc-style API documentation, and a Java module descriptor. Source is organized by focused package-private collaborators around the public builder API.
+The project uses Maven, Project Keeper, JavaDoc-style API documentation, and a Java module descriptor. Source is organized by focused package-private collaborators around the public builder API. Java 11 remains the minimum runtime and build target; newer supported runtimes follow the [Eclipse Adoptium OpenJDK lifecycle](https://adoptium.net/support/).
 
 ## Test Quality
 

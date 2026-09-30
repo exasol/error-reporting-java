@@ -12,6 +12,8 @@ There is no runtime configuration. Quoting is selected in placeholder text and e
 
 Missing placeholders become visible diagnostic text rather than exceptions. Null values become `<null>`. The builder does not validate error-code syntax.
 
+An important design rule in this project is that it is always better to have incomplete error output than missing output. Especially, if the missing part is highlighted.
+
 ## Logging and Observability
 
 The library emits no logs, metrics, traces, or telemetry. Its observable result is the returned string.
@@ -19,7 +21,3 @@ The library emits no logs, metrics, traces, or telemetry. Its observable result 
 ## Security and Privacy
 
 The library has no authentication, authorization, storage, or network boundary. Parameter values are inserted into returned strings; callers remain responsible for avoiding secrets or sensitive data in error messages.
-
-## Open Issues
-
-* No explicit policy describes escaping quote characters or sensitive parameter values.
