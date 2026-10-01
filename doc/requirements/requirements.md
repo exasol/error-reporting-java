@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Java Error Reporting is a small library for constructing Exasol error messages in application code. A caller starts with an error code, adds a message, supplies named or inline parameter values, and optionally adds one or more mitigations. The resulting string contains predictable placeholder substitution and quoting and can be consumed by users or by the error-code crawler Maven plugin.
+Java Error Reporting is a small library for constructing Exasol error messages in application code. A caller starts with an error code, adds a message, supplies named or inline parameter values, and optionally adds one or more mitigations. The resulting string contains predictable placeholder substitution and quoting and can be consumed by users. The source code can be consumed by the error-code crawler Maven plugin.
 
 ## Goals
 
@@ -11,6 +11,9 @@ Java Error Reporting is a small library for constructing Exasol error messages i
 * Quote values according to their type or an explicit placeholder switch.
 * Communicate one or more possible mitigations, including a standard ticket message.
 * Provide a public Java API that can be used from modular applications and tooling.
+* Provide a base for publishing errors to an error catalog.
+* The API must not throw exceptions at runtime to avoid suppressing other error messages which would make debugging harder.
+* Low runtime overhead for rendering.
 
 ## Notation
 
@@ -22,7 +25,7 @@ Feature items use `feat`, user requirements use `req`, and acceptance scenarios 
 
 This library does not enforce unique error IDs in any way. It is the responsibility of the caller to assign and maintain IDs.
 
-Also, applying the [crawler](https://github.com/exasol/error-code-crawler-java) and publishing to an [error catalog](https://github.com/exasol/error-code-crawler-maven-plugin) are outside the scope of this project.
+Also, applying the [crawler](https://github.com/exasol/error-code-crawler-java) and publishing to an [error catalog](https://github.com/exasol/error-code-crawler-maven-plugin) are outside the scope of this project. The crawler checks for uniqueness of IDs.
 
 ## Terms and Abbreviations
 
@@ -32,7 +35,7 @@ The stable identifier at the beginning of a generated error message, for example
 
 ###### Placeholder
 
-A double-curly-bracket expression such as `{{input}}` that identifies a value to insert into text.
+A double-curly-bracket expression in error messages or mitigations such as `{{input}}` that identifies a value to insert into text.
 
 ###### Mitigation
 
@@ -51,6 +54,10 @@ Uses the fluent API to define and render error messages in application code.
 ###### Error Catalog Maintainer
 
 Uses parameter descriptions and stable error codes as inputs to the error-code crawler and catalog lifecycle.
+
+Uses the error code crawler to
+* Validate error codes
+* Generate a report for the error catalog
 
 ###### Application User
 

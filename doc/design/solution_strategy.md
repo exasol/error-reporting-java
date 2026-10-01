@@ -11,6 +11,7 @@ The library uses a fluent, mutable `ErrorMessageBuilder`. It accumulates message
 * Fault tolerance for missing, duplicate, unnamed, and null parameters.
 * No runtime service or persistence dependencies.
 * Java-module compatibility.
+* Low runtime overhead when rendering messages.
 
 ## Reuse of Existing Facilities
 
