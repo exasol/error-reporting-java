@@ -30,6 +30,7 @@ This release adds user requirements and design, extracted with the [reverse-spec
 * Added `org.codehaus.mojo:build-helper-maven-plugin:3.6.2`
 * Updated `org.codehaus.mojo:flatten-maven-plugin:1.7.3` to `1.8.0`
 * Updated `org.codehaus.mojo:versions-maven-plugin:2.19.1` to `2.22.0`
+* Added `org.itsallcode:openfasttrace-maven-plugin:3.1.0`
 * Updated `org.jacoco:jacoco-maven-plugin:0.8.14` to `0.8.15`
 * Updated `org.sonarsource.scanner.maven:sonar-maven-plugin:5.2.0.4988` to `5.8.0.7211`
 * Updated `org.sonatype.central:central-publishing-maven-plugin:0.9.0` to `0.11.0`

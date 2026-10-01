@@ -33,10 +33,11 @@
 | [error-code-crawler-maven-plugin][28]                   | [MIT License][29]                              |
 | [Git Commit Id Maven Plugin][30]                        | [GNU Lesser General Public License 3.0][31]    |
 | [Project Keeper Maven plugin][32]                       | [The MIT License][33]                          |
-| [Apache Maven Clean Plugin][34]                         | [Apache-2.0][7]                                |
-| [Apache Maven Resources Plugin][35]                     | [Apache-2.0][7]                                |
-| [Apache Maven Install Plugin][36]                       | [Apache-2.0][7]                                |
-| [Apache Maven Site Plugin][37]                          | [Apache-2.0][7]                                |
+| [OpenFastTrace Maven Plugin][34]                        | [GNU General Public License v3.0][35]          |
+| [Apache Maven Clean Plugin][36]                         | [Apache-2.0][7]                                |
+| [Apache Maven Resources Plugin][37]                     | [Apache-2.0][7]                                |
+| [Apache Maven Install Plugin][38]                       | [Apache-2.0][7]                                |
+| [Apache Maven Site Plugin][39]                          | [Apache-2.0][7]                                |
 
 [0]: http://hamcrest.org/JavaHamcrest/
 [1]: https://raw.githubusercontent.com/hamcrest/JavaHamcrest/master/LICENSE
@@ -72,7 +73,9 @@
 [31]: http://www.gnu.org/licenses/lgpl-3.0.txt
 [32]: https://github.com/exasol/project-keeper/
 [33]: https://github.com/exasol/project-keeper/blob/main/LICENSE
-[34]: https://maven.apache.org/plugins/maven-clean-plugin/
-[35]: https://maven.apache.org/plugins/maven-resources-plugin/
-[36]: https://maven.apache.org/plugins/maven-install-plugin/
-[37]: https://maven.apache.org/plugins/maven-site-plugin/
+[34]: https://github.com/itsallcode/openfasttrace-maven-plugin
+[35]: https://www.gnu.org/licenses/gpl-3.0.html
+[36]: https://maven.apache.org/plugins/maven-clean-plugin/
+[37]: https://maven.apache.org/plugins/maven-resources-plugin/
+[38]: https://maven.apache.org/plugins/maven-install-plugin/
+[39]: https://maven.apache.org/plugins/maven-site-plugin/
