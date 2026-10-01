@@ -6,10 +6,17 @@ Code name: Extract Specification
 
 This release adds user requirements and design, extracted with the [reverse-spec-skill](https://raw.githubusercontent.com/itsallcode/openfasttrace-ai-skills/refs/heads/main/skills/openfasttrace-reverse-specs/SKILL.md) of OpenFastTrace.
 
+We now build with Java 17 while still maintaining Java 11 binary compatibility. This allowed us to upgrade to JUnit 6.
+
 ## Documentation
 
+* Reverse-engineered specification from user guide and code.
 
 ## Dependency Updates
+
+### Test Dependency Updates
+
+* Updated `org.junit.jupiter:junit-jupiter-params:5.13.4` to `6.1.3`
 
 ### Plugin Dependency Updates
 
