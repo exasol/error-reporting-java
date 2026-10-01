@@ -22,4 +22,4 @@
 ## Decisions Needed
 
 * Confirm whether crawler integration and module resolution need dedicated integration tests.
-* Decide whether to add OFT coverage markers in implementation and test files as a separate follow-up step.
+* OFT implementation and unit-test markers are now present for the covered design items; the module export item still lacks a modular runtime test.

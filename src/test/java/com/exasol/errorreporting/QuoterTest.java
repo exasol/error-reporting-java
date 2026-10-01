@@ -37,6 +37,8 @@ class QuoterTest {
 
     @ParameterizedTest
     @MethodSource("getAutoQuotingExamples")
+    // [utest->dsn~apply-scalar-quoting~1]
+    // [utest->dsn~apply-collection-quoting~1]
     void testAutoQuoting(final Object input, final String expectedOutput) {
         assertThat(Quoter.quoteObject(input, Quoting.AUTOMATIC), equalTo(expectedOutput));
     }
@@ -61,6 +63,7 @@ class QuoterTest {
 
     @ParameterizedTest
     @MethodSource("getUnquotedExamples")
+    // [utest->dsn~apply-scalar-quoting~1]
     void testForcedUnquoted(final Object input, final String expectedOutput) {
         assertThat(Quoter.quoteObject(input, Quoting.UNQUOTED), equalTo(expectedOutput));
     }

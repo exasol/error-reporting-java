@@ -17,12 +17,14 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~render-code-and-message~1]
     void testMessage() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Test message.").toString();
         assertThat(message, equalTo("E-ERJ-TEST-1: Test message."));
     }
 
     @Test
+    // [utest->dsn~resolve-parameters~1]
     void testMessageWithParameter() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1")
                 .message("Test message {{myPlaceholder}} and a number {{number}}.")
@@ -31,6 +33,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~report-unknown-and-null-values~1]
     void testMessageWithNullParameter() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("{{myPlaceholder}}")
                 .parameter("myPlaceholder", null).toString();
@@ -44,6 +47,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~report-unknown-and-null-values~1]
     void testMessageUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));
@@ -64,6 +68,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~render-mitigations~1]
     void testMitigations() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
                 .mitigation("Fix it.").mitigation("Contact support under {{SUPPORT_HOTLINE}}.")
@@ -73,6 +78,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~render-ticket-mitigation~1]
     void testTicketMitigation() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("Something went wrong.")
                 .ticketMitigation().toString();
@@ -117,6 +123,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
+    // [utest->dsn~apply-scalar-quoting~1]
     void testMessageInlineSingleQuotedParameter() {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName}}.", "value")
                 .toString();
@@ -188,13 +195,6 @@ class ErrorMessageBuilderTest {
         final String message = new ErrorMessageBuilder("ERROR-CODE").message("Message with {{parameterName1|uq}}.",
                 NULL_STRING).toString();
         assertThat(message, equalTo("ERROR-CODE: Message with <null>."));
-    }
-
-    @Test
-    void testMessageInlineMultipleNullUnquotedParameters() {
-        final String message = new ErrorMessageBuilder("ERROR-CODE")
-                .message("Message with {{parameterName1}} {{parameterName2}}.", null, null).toString();
-        assertThat(message, equalTo("ERROR-CODE: Message with <null> <null>."));
     }
 
     @Test

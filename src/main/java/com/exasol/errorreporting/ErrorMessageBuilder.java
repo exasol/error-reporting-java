@@ -103,6 +103,7 @@ public class ErrorMessageBuilder {
      *
      * @return self for fluent programming
      */
+    // [impl->dsn~render-ticket-mitigation~1]
     public ErrorMessageBuilder ticketMitigation() {
         mitigation("This is an internal error that should not happen. Please report it by opening a GitHub issue.");
         return this;
@@ -111,8 +112,11 @@ public class ErrorMessageBuilder {
     /**
      * Build the error message.
      *
-     * @return built error massage string
+     * @return built error message string
      */
+    // [impl->dsn~render-code-and-message~1]
+    // [impl->dsn~render-mitigations~1]
+    // [impl->dsn~defer-rendering-until-output~1]
     @Override
     public String toString() {
         final StringBuilder result = new StringBuilder();
