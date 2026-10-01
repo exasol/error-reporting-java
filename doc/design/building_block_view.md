@@ -1,28 +1,35 @@
 # Building Block View
 
-## Component Overview
+## Overview
 
 ```plantuml
 @startuml
-component "ExaError facade" as Facade
-component "ErrorMessageBuilder" as Builder
-component "PlaceholderMatcher / Placeholder" as Parser
-component "ParameterDefinitionList" as Parameters
-component "PlaceholdersFiller" as Filler
-component "Quoter" as Quoter
-Facade --> Builder
-Builder --> Parameters
-Builder --> Parser
-Builder --> Filler
-Filler --> Parser
-Filler --> Parameters
-Filler --> Quoter
+hide empty members
+
+class ExaError <<facade>>
+class ErrorMessageBuilder
+class PlaceholderMatcher
+class ParameterDefinitionList
+class ParameterDefinition
+class PlaceholdersFiller
+class Mitigations
+class Quoter
+
+
+ExaError --> ErrorMessageBuilder : create builder
+ErrorMessageBuilder *-- ParameterDefinitionList
+ErrorMessageBuilder *-- "*" Mitigations
+ParameterDefinitionList *-- "*" ParameterDefinition
+ErrorMessageBuilder --> PlaceholdersFiller
+PlaceholdersFiller --> ParameterDefinitionList
+PlaceholdersFiller --> PlaceholderMatcher
+PlaceholdersFiller --> Quoter
 @enduml
 ```
 
 The public facade creates builders. The builder owns accumulated text and delegates parsing, parameter lookup, substitution, and quoting to focused collaborators.
 
-## Component Design Items
+## Building Blocks
 
 ### Public Facade And Builder
 
