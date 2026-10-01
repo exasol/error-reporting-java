@@ -30,33 +30,33 @@ Feature items use `feat`, user requirements use `req`, and acceptance scenarios 
 
 ## Terms and Abbreviations
 
-### Error Code
+###### Error Code
 
 The stable identifier at the beginning of a generated error message, for example `E-TEST-1`.
 
-### Placeholder
+###### Placeholder
 
 A double-curly-bracket expression such as `{{input}}` that identifies a value to insert into text.
 
-### Mitigation
+###### Mitigation
 
 Advice appended to an error message that explains how a user can resolve or avoid the error.
 
-### Automatic Quoting
+###### Automatic Quoting
 
 Quoting selected from the runtime type of a parameter value.
 
 ## User Roles
 
-### Java Application Developer
+###### Java Application Developer
 
 Uses the fluent API to define and render error messages in application code.
 
-### Error Catalog Maintainer
+###### Error Catalog Maintainer
 
 Uses parameter descriptions and stable error codes as inputs to the error-code crawler and catalog lifecycle.
 
-### Application User
+###### Application User
 
 Reads the rendered error message and its mitigation advice.
 
