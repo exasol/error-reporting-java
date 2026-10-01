@@ -50,6 +50,7 @@ public class ParameterDefinition {
      *
      * @return description of the parameter
      */
+    // [impl->dsn~expose-parameter-metadata~1]
     public String getDescription() {
         return this.description;
     }

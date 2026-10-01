@@ -19,6 +19,8 @@ class Quoter {
      * @param quoting quoting style to be used
      * @return quoted object
      */
+    // [impl->dsn~apply-scalar-quoting~1]
+    // [impl->dsn~apply-collection-quoting~1]
     static String quoteObject(final Object object, final Quoting quoting) {
         if (object == null) {
             return "<null>";
