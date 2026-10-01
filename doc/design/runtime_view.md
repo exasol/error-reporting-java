@@ -7,9 +7,7 @@
 
 **Given** a builder contains an error code and accumulated message text
 **When** `toString()` is called
-**Then** the builder emits the code, an optional `: ` separator, and the rendered message.
-
-Status: draft
+**Then** the builder emits the code, and the rendered message.
 
 Covers:
 - `scn~render-code-without-message~1`
@@ -24,8 +22,6 @@ Needs: impl, utest
 **When** explicit definitions and/or inline arguments are mapped
 **Then** definitions are stored by reference and inline arguments are assigned in placeholder order.
 
-Status: draft
-
 Covers:
 - `scn~substitute-explicit-parameter~1`
 - `scn~substitute-inline-arguments-in-order~1`
@@ -38,8 +34,6 @@ Needs: impl, utest
 **Given** a placeholder has no definition or has a null value
 **When** the text is rendered
 **Then** the output contains either `UNKNOWN PLACEHOLDER('<reference>')` or `<null>`.
-
-Status: draft
 
 Covers:
 - `scn~identify-unknown-placeholder~1`
@@ -54,8 +48,6 @@ Needs: impl, utest
 **When** the value is rendered
 **Then** `Quoter` applies automatic type-based quoting or the selected explicit mode.
 
-Status: draft
-
 Covers:
 - `scn~automatically-quote-string~1`
 - `scn~apply-explicit-quoting-modes~1`
@@ -69,8 +61,6 @@ Needs: impl, utest
 **When** the value is rendered
 **Then** `Quoter` renders bracketed elements separated by comma-space and recursively applies the mode.
 
-Status: draft
-
 Covers:
 - `scn~render-collection~1`
 
@@ -83,8 +73,6 @@ Needs: impl, utest
 **When** the builder is rendered
 **Then** zero adds nothing, one is appended inline, and multiple use the ordered `Known mitigations` list format.
 
-Status: draft
-
 Covers:
 - `scn~render-single-mitigation~1`
 - `scn~render-multiple-mitigations~1`
@@ -96,9 +84,7 @@ Needs: impl, utest
 
 **Given** a builder with a message
 **When** `ticketMitigation()` is called
-**Then** it adds the fixed internal-error GitHub issue advice through the normal mitigation pipeline.
-
-Status: draft
+**Then** it adds the "internal-error" GitHub issue raising advice.
 
 Covers:
 - `scn~render-ticket-mitigation~1`
@@ -114,7 +100,9 @@ Needs: impl, utest
 **When** a catalog tool queries it
 **Then** the name, value, and description are available through the public model.
 
-Status: draft
+Rationale:
+
+One of the main points of uniform error definition is that you can apply a [crawler](https://github.com/exasol/error-code-crawler-maven-plugin) to assemble an error catalog.
 
 Covers:
 - `scn~expose-parameter-description~1`
@@ -128,14 +116,8 @@ Needs: impl, utest
 **When** it reads module metadata
 **Then** module `error.reporting.java` exports `com.exasol.errorreporting`.
 
-Status: draft
-
 Covers:
 - `scn~resolve-java-module-export~1`
 - `constr~java-11-module-packaging~1`
 
 Needs: impl, utest
-
-## Open Issues
-
-* Implementation and test coverage markers have not yet been added; this pass drafts requirements and design only.

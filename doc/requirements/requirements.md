@@ -12,21 +12,17 @@ Java Error Reporting is a small library for constructing Exasol error messages i
 * Communicate one or more possible mitigations, including a standard ticket message.
 * Provide a public Java API that can be used from modular applications and tooling.
 
-## Evidence Base
-
-This draft was reverse-engineered from:
-
-* `README.md`, including usage examples, quoting rules, mitigation examples, and error-code lifecycle guidance
-* `doc/changes/changes_0.1.0.md` through `doc/changes/changes_1.0.3.md`
-* Tests under `src/test/java/com/exasol/errorreporting/`
-* Public API classes under `src/main/java/com/exasol/errorreporting/`
-* `src/main/java/module-info.java`, `pom.xml`, and `pk_generated_parent.pom`
-
 ## Notation
 
 This document uses OpenFastTrace specification items to express product features, user requirements, and acceptance scenarios. Each specification item has a unique identifier in the form `<artifact-type>~<name>~<revision>`.
 
 Feature items use `feat`, user requirements use `req`, and acceptance scenarios use `scn`. Design items under `doc/design/` cover the scenarios with `dsn`.
+
+## Out of Scope
+
+This library does not enforce unique error IDs in any way. It is the responsibility of the caller to assign and maintain IDs.
+
+Also, applying the [crawler](https://github.com/exasol/error-code-crawler-java) and publishing to an [error catalog](https://github.com/exasol/error-code-crawler-maven-plugin) are outside the scope of this project.
 
 ## Terms and Abbreviations
 
@@ -67,16 +63,12 @@ Reads the rendered error message and its mitigation advice.
 
 The library constructs a rendered message from an Exasol error code, message text, parameters, and optional mitigation advice.
 
-Status: draft
-
 Needs: req
 
 ### Parameter Substitution
 `feat~parameter-substitution~1`
 
 The library replaces named placeholders with supplied values in messages and mitigations.
-
-Status: draft
 
 Needs: req
 
@@ -85,8 +77,6 @@ Needs: req
 
 The library presents parameter values with automatic or explicitly selected quoting.
 
-Status: draft
-
 Needs: req
 
 ### Mitigation Advice
@@ -94,16 +84,12 @@ Needs: req
 
 The library appends one or more mitigation messages, including a standard internal-error ticket mitigation.
 
-Status: draft
-
 Needs: req
 
 ### Public Java Integration
 `feat~public-java-integration~1`
 
 The library exposes its builder and supporting value types as a reusable Java module and preserves parameter metadata for catalog tooling.
-
-Status: draft
 
 Needs: req
 
@@ -117,8 +103,6 @@ The caller can create a builder with an error code, and rendering a builder with
 Rationale:
 
 Every error must retain a stable code, including messages that contain no additional text.
-
-Status: draft
 
 Covers:
 - `feat~error-message-construction~1`
@@ -134,8 +118,6 @@ Rationale:
 
 The README presents the builder as a fluent API and the implementation accumulates message fragments.
 
-Status: draft
-
 Covers:
 - `feat~error-message-construction~1`
 
@@ -149,8 +131,6 @@ The caller can associate a name with a value through `parameter`, and the same n
 Rationale:
 
 The explicit API supports readable code and an optional catalog description argument.
-
-Status: draft
 
 Covers:
 - `feat~parameter-substitution~1`
@@ -166,8 +146,6 @@ Rationale:
 
 This convenience API was introduced in version 0.3.0.
 
-Status: draft
-
 Covers:
 - `feat~parameter-substitution~1`
 
@@ -182,8 +160,6 @@ Rationale:
 
 The behavior is asserted for named and unnamed placeholders and avoids silently producing an incomplete error message.
 
-Status: draft
-
 Covers:
 - `feat~parameter-substitution~1`
 
@@ -196,9 +172,7 @@ When a referenced value is null or absent from a `ParameterDefinition`, renderin
 
 Rationale:
 
-Null handling is a documented and repeatedly fixed compatibility behavior.
-
-Status: draft
+Visualizing null values is better in an error reporting library than rising `NullPointerExceptions`.
 
 Covers:
 - `feat~parameter-substitution~1`
@@ -208,13 +182,15 @@ Needs: scn
 ### Apply Automatic Quoting By Type
 `req~apply-automatic-quoting~1`
 
-With no quoting switch, strings, characters, paths, files, URLs, and URIs are enclosed in single quotes; other non-null values use their string representation; null uses `<null>`.
+With no quoting switch,
+
+1. strings, characters, paths, files, URLs, and URIs are enclosed in single quotes
+2. other non-null values use their string representation
+3. null uses `<null>`.
 
 Rationale:
 
 The README defines automatic quoting as the default and lists the supported types.
-
-Status: draft
 
 Covers:
 - `feat~value-quoting~1`
@@ -230,8 +206,6 @@ Rationale:
 
 Explicit switches let callers control presentation independently of the runtime type, while preserving the legacy `uq` behavior.
 
-Status: draft
-
 Covers:
 - `feat~value-quoting~1`
 
@@ -241,12 +215,6 @@ Needs: scn
 `req~render-collections-recursively~1`
 
 When a parameter is a collection, rendering encloses the elements in brackets, separates them with comma-space, and applies the selected quoting mode to each element.
-
-Rationale:
-
-Version 1.0.0 extended quoting from lists to all collections.
-
-Status: draft
 
 Covers:
 - `feat~value-quoting~1`
@@ -258,12 +226,6 @@ Needs: scn
 
 The caller can append one mitigation, and rendering places it after the message separated by a space, with its placeholders resolved using the same parameter rules as the message.
 
-Rationale:
-
-Mitigations are part of the user-facing error contract.
-
-Status: draft
-
 Covers:
 - `feat~mitigation-advice~1`
 
@@ -273,12 +235,6 @@ Needs: scn
 `req~format-multiple-mitigations~1`
 
 When multiple mitigations are appended, rendering adds ` Known mitigations:` followed by one `* ` list item per mitigation in insertion order.
-
-Rationale:
-
-The README defines the list format and chaining behavior.
-
-Status: draft
 
 Covers:
 - `feat~mitigation-advice~1`
@@ -294,8 +250,6 @@ Rationale:
 
 The convenience API was introduced specifically for errors whose only mitigation is opening a ticket.
 
-Status: draft
-
 Covers:
 - `feat~mitigation-advice~1`
 
@@ -306,12 +260,6 @@ Needs: scn
 
 The parameter model exposes a name, value, and optional description so catalog tooling can inspect parameter descriptions independently of rendered output.
 
-Rationale:
-
-The README states that the description argument is consumed by the error-code crawler and not displayed to application users.
-
-Status: draft
-
 Covers:
 - `feat~public-java-integration~1`
 
@@ -321,12 +269,6 @@ Needs: scn
 `req~expose-java-module~1`
 
 The published library exposes the `com.exasol.errorreporting` package from the `error.reporting.java` module.
-
-Rationale:
-
-Version 1.0.1 added `module-info.java` for use by other Java modules.
-
-Status: draft
 
 Covers:
 - `feat~public-java-integration~1`
@@ -342,8 +284,6 @@ Needs: scn
 **When** the builder is rendered without message text
 **Then** the result is `E-ERJ-TEST-1`
 
-Status: draft
-
 Covers:
 - `req~start-message-with-error-code~1`
 
@@ -355,8 +295,6 @@ Needs: dsn
 **Given** a builder created with `E-ERJ-TEST-1`
 **When** the caller appends `Test ` and then `message.`
 **Then** the result is `E-ERJ-TEST-1: Test message.`
-
-Status: draft
 
 Covers:
 - `req~append-message-text-fluently~1`
@@ -370,8 +308,6 @@ Needs: dsn
 **When** the builder is rendered
 **Then** the placeholder is replaced with the quoted value `'Ada'`
 
-Status: draft
-
 Covers:
 - `req~define-named-parameters~1`
 
@@ -383,8 +319,6 @@ Needs: dsn
 **Given** message text `{{first}} and {{second}}`
 **When** the caller passes `one` and `2` directly to `message`
 **Then** the result contains `'one' and 2` in that order
-
-Status: draft
 
 Covers:
 - `req~map-inline-arguments-by-order~1`
@@ -398,8 +332,6 @@ Needs: dsn
 **When** the builder is rendered
 **Then** the result contains `UNKNOWN PLACEHOLDER('unknown')`
 
-Status: draft
-
 Covers:
 - `req~render-unknown-placeholders-explicitly~1`
 
@@ -411,8 +343,6 @@ Needs: dsn
 **Given** a referenced parameter whose value is null
 **When** the builder is rendered
 **Then** the placeholder is replaced with `<null>`
-
-Status: draft
 
 Covers:
 - `req~render-null-values~1`
@@ -426,8 +356,6 @@ Needs: dsn
 **When** the placeholder is rendered
 **Then** the value appears as `'value'`
 
-Status: draft
-
 Covers:
 - `req~apply-automatic-quoting~1`
 
@@ -439,8 +367,6 @@ Needs: dsn
 **Given** a numeric parameter with value `42`
 **When** it is rendered once with `|u`, once with `|q`, and once with `|d`
 **Then** the outputs are `42`, `'42'`, and `"42"` respectively
-
-Status: draft
 
 Covers:
 - `req~support-explicit-quoting-switches~1`
@@ -454,8 +380,6 @@ Needs: dsn
 **When** it is rendered with automatic quoting
 **Then** the result is `[1, 'test']`
 
-Status: draft
-
 Covers:
 - `req~render-collections-recursively~1`
 
@@ -467,8 +391,6 @@ Needs: dsn
 **Given** message `Something went wrong.` and mitigation `Fix it.`
 **When** the builder is rendered
 **Then** the result ends with `Something went wrong. Fix it.`
-
-Status: draft
 
 Covers:
 - `req~append-single-mitigation~1`
@@ -482,8 +404,6 @@ Needs: dsn
 **When** the builder is rendered
 **Then** the result contains `Known mitigations:` and two ordered `* ` list items
 
-Status: draft
-
 Covers:
 - `req~format-multiple-mitigations~1`
 
@@ -495,8 +415,6 @@ Needs: dsn
 **Given** a builder with a message
 **When** the caller invokes `ticketMitigation`
 **Then** the standard internal-error instruction to report a GitHub issue is appended
-
-Status: draft
 
 Covers:
 - `req~provide-ticket-mitigation~1`
@@ -510,8 +428,6 @@ Needs: dsn
 **When** its description is queried
 **Then** `getDescription()` returns that description
 
-Status: draft
-
 Covers:
 - `req~preserve-parameter-metadata~1`
 
@@ -523,8 +439,6 @@ Needs: dsn
 **Given** the packaged library is used as a Java module
 **When** a client resolves module `error.reporting.java`
 **Then** package `com.exasol.errorreporting` is exported
-
-Status: draft
 
 Covers:
 - `req~expose-java-module~1`
@@ -563,17 +477,3 @@ Decision needed:
 
 Confirm whether lifecycle guidance should remain documentation-only or be linked to a separate repository requirement.
 
-### Catalog Description Consumption Is External
-
-Source evidence:
-
-* `README.md` says descriptions support `error-code-crawler-maven-plugin`.
-* This repository stores and exposes descriptions but contains no crawler implementation or integration test.
-
-Issue:
-
-The library contract for metadata is clear, but crawler compatibility is only indirectly evidenced.
-
-Decision needed:
-
-Add an integration fixture if crawler compatibility is part of this repository’s acceptance scope.

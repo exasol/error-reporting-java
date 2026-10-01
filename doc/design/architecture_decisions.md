@@ -13,15 +13,9 @@ The system stores raw fragments and parameter definitions and performs placehold
 
 Rationale:
 
-Callers can define parameters before or after message fragments, while the final output remains deterministic.
-
-Status: draft
+Callers can define parameters before or after message fragments, while the final output remains deterministic. The builder makes the code more readable. It is functionally similar to Java's built-in `StringBuilder` which has the advantage of being well-known in the Java developer community. 
 
 Covers:
 - `constr~java-11-module-packaging~1`
 
 Needs: impl
-
-## Open Issues
-
-* The rationale for using `toString()` as the primary rendering operation is inferred from the public API rather than explicitly documented.

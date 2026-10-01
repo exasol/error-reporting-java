@@ -13,8 +13,6 @@ Rationale:
 
 The generated parent sets `java.version` to 11 and `module-info.java` declares the module and export. The supported-runtime policy follows the [Adoptium support lifecycle](https://adoptium.net/support/) as it changes over time.
 
-Status: draft
-
 Needs: dsn
 
 ## Organizational Constraints

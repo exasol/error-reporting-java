@@ -23,7 +23,3 @@ Project Keeper configures Maven verification, quality summarization, dependency/
 ## Testability and Coverage
 
 The deterministic, in-memory design supports unit testing without external services. No integration or system-test suite is present; crawler compatibility and module resolution are currently evidenced by configuration and source rather than dedicated tests.
-
-## Open Issues
-
-* Exact coverage thresholds and release-blocking quality gates are inherited from the generated parent and should be confirmed if they become normative requirements.

@@ -19,7 +19,3 @@ The implementation uses the Java standard library for collections, regular expre
 ## Data and Control Flow Strategy
 
 Message and mitigation calls append raw text and map inline arguments by placeholder order. Explicit `parameter` calls add definitions. At render time, each text fragment is scanned independently, placeholders are parsed, values are looked up by name, and the selected quoting strategy produces the final string.
-
-## Open Issues
-
-* Rendering is implemented through `toString()`, so the API does not expose a separately named immutable render operation.
