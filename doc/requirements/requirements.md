@@ -61,7 +61,7 @@ Uses the error code crawler to
 
 ###### Application User
 
-Reads the rendered error message and its mitigation advice.
+Reads the rendered error message and its mitigation advice in a log or application error. Searches for the error and finds details in the error catalog.
 
 ## Features
 
@@ -123,7 +123,7 @@ The caller can append message fragments through repeated fluent `message` calls,
 
 Rationale:
 
-The README presents the builder as a fluent API and the implementation accumulates message fragments.
+A fluent API is easy to use and the resulting code is easy to read.
 
 Covers:
 - `feat~error-message-construction~1`
@@ -151,7 +151,7 @@ The caller can pass values directly to `message` or `mitigation`; values map to 
 
 Rationale:
 
-This convenience API was introduced in version 0.3.0.
+This makes the API more convenient to use.
 
 Covers:
 - `feat~parameter-substitution~1`
@@ -165,7 +165,8 @@ When no value is defined for a placeholder, rendering preserves an explicit `UNK
 
 Rationale:
 
-The behavior is asserted for named and unnamed placeholders and avoids silently producing an incomplete error message.
+* The behavior is asserted for named and unnamed placeholders and avoids silently producing an incomplete error message.
+* Throwing an exception at runtime may suppress a more helpful error and make debugging harder.
 
 Covers:
 - `feat~parameter-substitution~1`
@@ -179,7 +180,8 @@ When a referenced value is null or absent from a `ParameterDefinition`, renderin
 
 Rationale:
 
-Visualizing null values is better in an error reporting library than rising `NullPointerExceptions`.
+* Visualizing null values is better in an error reporting library than rising `NullPointerExceptions`.
+* Null can be a valid value and should be distinguishable from other values.
 
 Covers:
 - `feat~parameter-substitution~1`
@@ -197,7 +199,7 @@ With no quoting switch,
 
 Rationale:
 
-The README defines automatic quoting as the default and lists the supported types.
+This allows distinguishing values in error messages.
 
 Covers:
 - `feat~value-quoting~1`
