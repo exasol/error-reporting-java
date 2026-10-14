@@ -14,6 +14,8 @@ Missing placeholders become visible diagnostic text rather than exceptions. Null
 
 An important design rule in this project is that it is always better to have incomplete error output than missing output. Especially, if the missing part is highlighted.
 
+We also don't throw runtime exceptions in the error reporting library as those might suppress more important application errors later on. 
+
 ## Logging and Observability
 
 The library emits no logs, metrics, traces, or telemetry. Its observable result is the returned string.
