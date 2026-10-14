@@ -104,21 +104,21 @@ Needs: impl, utest
 
 ## Public Integration
 
-### Expose Parameter Metadata
-`dsn~expose-parameter-metadata~1`
+### Expose Crawler-Readable Error Definitions
+`dsn~expose-crawler-readable-error-definitions~1`
 
-**Given** a `ParameterDefinition` has a description
-**When** a catalog tool queries it
-**Then** the name, value, and description are available through the public model.
+**Given** source code defines an error through the public fluent API
+**When** catalog tooling parses the source code
+**Then** `messageBuilder`, `message`, `parameter` including its optional description, and `mitigation` calls provide the error code, message text, parameter description, and mitigation text.
 
 Rationale:
 
-One of the main points of uniform error definition is that you can apply a [crawler](https://github.com/exasol/error-code-crawler-maven-plugin) to assemble an error catalog.
+The [crawler](https://github.com/exasol/error-code-crawler-maven-plugin) parses source code; it does not inspect `ParameterDefinition` instances at runtime.
 
 Covers:
-- `scn~expose-parameter-description~1`
+- `scn~reconstruct-error-definition-from-source~1`
 
-Needs: impl, utest
+Needs: impl
 
 ### Export The Java Module Package
 `dsn~export-java-module-package~1`

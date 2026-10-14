@@ -2,7 +2,7 @@
 
 ## Domain Model
 
-An error message consists of an error code, zero or more message fragments, zero or more mitigations, and a set of named parameter definitions. A placeholder contains a reference and a quoting mode. A parameter definition contains a name, optional value, and optional catalog description.
+An error message consists of an error code, zero or more message fragments, zero or more mitigations, and a set of named parameter definitions. A placeholder contains a reference and a quoting mode. A parameter definition contains a name and optional value; the public `parameter` call can additionally carry a catalog description for source-based tooling.
 
 ## Configuration
 

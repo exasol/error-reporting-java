@@ -29,6 +29,7 @@ public class ErrorMessageBuilder {
      * @param arguments arguments to fill the placeholders
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder message(final String message, final Object... arguments) {
         messageBuilder.append(message);
         addParameters(message, arguments);
@@ -77,6 +78,7 @@ public class ErrorMessageBuilder {
      * @param ignoredDescription description for the error catalog
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder parameter(final String placeholder, final Object value,
             final String ignoredDescription) {
         return parameter(placeholder, value);
@@ -92,6 +94,7 @@ public class ErrorMessageBuilder {
      * @param arguments  arguments to fill the placeholders
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
         mitigations.add(mitigation);
         addParameters(mitigation, arguments);

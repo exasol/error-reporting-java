@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Java Error Reporting is a small library for constructing Exasol error messages in application code. A caller starts with an error code, adds a message, supplies named or inline parameter values, and optionally adds one or more mitigations. The resulting string contains predictable placeholder substitution and quoting and can be consumed by users. The source code can be consumed by the error-code crawler Maven plugin.
+Java Error Reporting is a small library for constructing Exasol error messages in application code. A caller starts with an error code, adds a message, supplies named or inline parameter values, and optionally adds one or more mitigations. The resulting string contains predictable placeholder substitution and quoting and can be consumed by users. Catalog tooling can parse the fluent source calls to reconstruct error definitions without executing the application.
 
 ## Goals
 
@@ -53,7 +53,7 @@ Uses the fluent API to define and render error messages in application code.
 
 ###### Error Catalog Maintainer
 
-Uses parameter descriptions and stable error codes as inputs to the error-code crawler and catalog lifecycle.
+Uses error codes, messages, named parameter descriptions, and mitigations parsed from fluent source calls as inputs to the error-code crawler and catalog lifecycle.
 
 Uses the error code crawler to
 * Validate error codes
@@ -94,9 +94,9 @@ The library appends one or more mitigation messages, including a standard intern
 Needs: req
 
 ### Public Java Integration
-`feat~public-java-integration~1`
+`feat~public-java-integration~2`
 
-The library exposes its builder and supporting value types as a reusable Java module and preserves parameter metadata for catalog tooling.
+The library exposes its builder and supporting value types as a reusable Java module and provides a fluent API that catalog tooling can parse to reconstruct error definitions from source code.
 
 Needs: req
 
@@ -264,13 +264,13 @@ Covers:
 
 Needs: scn
 
-### Preserve Parameter Metadata
-`req~preserve-parameter-metadata~1`
+### Expose Error Definitions To Catalog Tooling
+`req~expose-error-definitions-to-catalog-tooling~1`
 
-The parameter model exposes a name, value, and optional description so catalog tooling can inspect parameter descriptions independently of rendered output.
+The public fluent API provides stable, parseable calls for declaring an error code, message text, named parameters with optional descriptions, and mitigation text. This enables catalog tooling to reconstruct error definitions from source code without executing the application.
 
 Covers:
-- `feat~public-java-integration~1`
+- `feat~public-java-integration~2`
 
 Needs: scn
 
@@ -280,7 +280,7 @@ Needs: scn
 The published library exposes the `com.exasol.errorreporting` package from the `error.reporting.java` module.
 
 Covers:
-- `feat~public-java-integration~1`
+- `feat~public-java-integration~2`
 
 Needs: scn
 
@@ -430,15 +430,15 @@ Covers:
 
 Needs: dsn
 
-### Expose Parameter Description Metadata
-`scn~expose-parameter-description~1`
+### Reconstruct An Error Definition From Source
+`scn~reconstruct-error-definition-from-source~1`
 
-**Given** a parameter definition built with description `small blue thing`
-**When** its description is queried
-**Then** `getDescription()` returns that description
+**Given** source code defines an error with `messageBuilder`, `message`, `parameter` including its optional description, and `mitigation` calls
+**When** catalog tooling parses the source code
+**Then** it reconstructs the error code, message text, named parameter description, and mitigation text without executing the application
 
 Covers:
-- `req~preserve-parameter-metadata~1`
+- `req~expose-error-definitions-to-catalog-tooling~1`
 
 Needs: dsn
 

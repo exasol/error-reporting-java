@@ -16,7 +16,7 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Aerror-reporting-java&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.exasol%3Aerror-reporting-java)
 
 This project contains a Java-Builder for Exasol error messages.
-The invocations of the Builder can be parsed by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin).
+The [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) parses fluent builder calls to reconstruct error codes, messages, named parameter descriptions, and mitigations without executing the application.
 
 ## Usage
 

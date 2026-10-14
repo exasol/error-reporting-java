@@ -19,7 +19,6 @@ class ParameterDefinitionTest {
     }
 
     @Test
-    // [utest->dsn~expose-parameter-metadata~1]
     void testGetDescription() {
         final ParameterDefinition parameter = ParameterDefinition.builder("irrelevant").description("small blue thing")
                 .build();

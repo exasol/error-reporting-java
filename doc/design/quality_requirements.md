@@ -10,7 +10,7 @@ The project uses Maven, Project Keeper, JavaDoc-style API documentation, and a J
 
 ## Test Quality
 
-JUnit Jupiter parameterized tests and Hamcrest assertions cover builder output, placeholder iteration, parameter metadata, and all quoting modes across representative Java types and collections.
+JUnit Jupiter parameterized tests and Hamcrest assertions cover builder output, placeholder iteration, and all quoting modes across representative Java types and collections. Crawler compatibility is evidenced by the public API and source inspection rather than a crawler integration test.
 
 ## Dependency Policy
 

@@ -32,4 +32,4 @@ The library should remain independent of the error-code crawler. An integration 
 
 Consequences:
 
-Parameter descriptions remain part of the library's public model and are covered by unit tests. Crawler integration is outside this project's test scope. This decision does not resolve whether module resolution needs a dedicated modular runtime test.
+The public fluent API remains readable by source-based catalog tooling, while crawler integration is outside this project's test scope. This decision does not resolve whether module resolution needs a dedicated modular runtime test.

@@ -2,13 +2,13 @@
 
 ## System Boundary
 
-Java Error Reporting includes the fluent error-message builder, placeholder parsing and matching, parameter metadata, value quoting, mitigation formatting, and the Java module declaration. It does not own error-code allocation, catalog persistence, application logging, exception transport, or user-interface presentation.
+Java Error Reporting includes the fluent error-message builder, placeholder parsing and matching, crawler-readable error-definition calls, value quoting, mitigation formatting, and the Java module declaration. It does not own error-code allocation, catalog persistence, application logging, exception transport, or user-interface presentation.
 
 ## Users and Neighboring Systems
 
 * Java application code creates and renders error messages.
 * Application users read the resulting strings.
-* The error-code crawler Maven plugin parses builder invocations and parameter descriptions.
+* The error-code crawler Maven plugin parses fluent builder calls to reconstruct error definitions.
 * Maven builds, tests, and publishes the library.
 
 ## Supported Environment

@@ -7,7 +7,7 @@ The library uses a fluent, mutable `ErrorMessageBuilder`. It accumulates message
 ## Key Quality Drivers
 
 * Small API surface and fluent use in error-definition code.
-* Deterministic text output suitable for users, tests, and catalog tooling.
+* A stable fluent source structure that catalog tooling can parse without executing error-definition code.
 * Fault tolerance for missing, duplicate, unnamed, and null parameters.
 * No runtime service or persistence dependencies.
 * Java-module compatibility.
