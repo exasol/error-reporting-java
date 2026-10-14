@@ -70,7 +70,7 @@ class PlaceholdersFiller {
         return this.result.toString();
     }
 
-    // [impl->dsn~report-unknown-and-null-values~1]
+    // [impl->dsn~report-unknown-placeholder~1, dsn~render-null-parameter~1]
     private String getPlaceholderFilling(final Placeholder placeholder) {
         if (this.isParameterPresent(placeholder)) {
             return getPresentParameterPlaceholderFilling(placeholder);

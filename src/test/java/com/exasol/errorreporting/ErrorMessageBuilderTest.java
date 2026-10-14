@@ -33,7 +33,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    // [utest->dsn~report-unknown-and-null-values~1]
+    // [utest->dsn~render-null-parameter~1]
     void testMessageWithNullParameter() {
         final String message = new ErrorMessageBuilder("E-ERJ-TEST-1").message("{{myPlaceholder}}")
                 .parameter("myPlaceholder", null).toString();
@@ -47,7 +47,7 @@ class ErrorMessageBuilderTest {
     }
 
     @Test
-    // [utest->dsn~report-unknown-and-null-values~1]
+    // [utest->dsn~report-unknown-placeholder~1]
     void testMessageUnknownParameter() {
         final ErrorMessageBuilder messageBuilder = new ErrorMessageBuilder("E-ERJ-TEST-1").message("test {{unknown}}");
         assertThat(messageBuilder.toString(), equalTo("E-ERJ-TEST-1: test UNKNOWN PLACEHOLDER('unknown')"));

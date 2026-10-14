@@ -13,12 +13,3 @@
 ## Requirement Without Observed Implementation
 
 * None of the drafted runtime scenarios lacks corresponding implementation evidence.
-
-## Contradictions Between Sources
-
-* README lifecycle guidance mentions `error_code_config.yml`, but that file and enforcement logic are outside this repository.
-
-## Decisions Needed
-
-* Confirm whether module resolution needs a dedicated integration test.
-* OFT implementation and unit-test markers are now present for the covered design items; the module export item still lacks a modular runtime test.

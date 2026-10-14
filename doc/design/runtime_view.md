@@ -28,15 +28,26 @@ Covers:
 
 Needs: impl, utest
 
-### Report Unknown And Null Values
-`dsn~report-unknown-and-null-values~1`
+### Report An Unknown Placeholder
+`dsn~report-unknown-placeholder~1`
 
-**Given** a placeholder has no definition or has a null value
+**Given** a placeholder has no definition
 **When** the text is rendered
-**Then** the output contains either `UNKNOWN PLACEHOLDER('<reference>')` or `<null>`.
+**Then** the output contains `UNKNOWN PLACEHOLDER('<reference>')`.
 
 Covers:
 - `scn~identify-unknown-placeholder~1`
+
+Needs: impl, utest
+
+### Render A Null Parameter
+`dsn~render-null-parameter~1`
+
+**Given** a placeholder has a null value
+**When** the text is rendered
+**Then** the output contains `<null>`.
+
+Covers:
 - `scn~render-null-parameter~1`
 
 Needs: impl, utest
