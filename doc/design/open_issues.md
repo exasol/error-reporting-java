@@ -2,7 +2,7 @@
 
 ## Requirements And Design Mismatches
 
-* The requirement for crawler-compatible parameter descriptions has no crawler integration test in this repository.
+* Crawler integration tests are intentionally excluded to avoid coupling this project to the error-code crawler; see [Independence From The Error-Code Crawler](architecture_decisions.md#independence-from-the-error-code-crawler).
 * The Java module requirement is supported by `module-info.java`, but no modular runtime test is present.
 
 ## Implemented Behavior Without Requirement
@@ -16,10 +16,9 @@
 
 ## Contradictions Between Sources
 
-* README output examples contain stray backticks and inconsistent sample values, while tests define the exact implementation output.
 * README lifecycle guidance mentions `error_code_config.yml`, but that file and enforcement logic are outside this repository.
 
 ## Decisions Needed
 
-* Confirm whether crawler integration and module resolution need dedicated integration tests.
+* Confirm whether module resolution needs a dedicated integration test.
 * OFT implementation and unit-test markers are now present for the covered design items; the module export item still lacks a modular runtime test.

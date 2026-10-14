@@ -40,7 +40,7 @@ ExaError.messageBuilder("E-TEST-2")
 
 Result:
 
-    E-TEST-2: Unknown input: 'unknown'.`
+    E-TEST-2: Unknown input: 'unknown'.
 
 The optional third parameter for `parameter(placeholder, value, description)` is used by the [error-code-crawler-maven-plugin](https://github.com/exasol/error-code-crawler-maven-plugin) to generate a parameter description.
 
@@ -53,7 +53,7 @@ ExaError.messageBuilder("E-TEST-2")
 
 Result:
 
-    E-TEST-2: Message with 'q-value' and uq-value.
+    E-TEST-2: Message with 'first value' and 'second value'.
 
 #### Automatic Quoting
 
@@ -124,7 +124,7 @@ ExaError.messageBuilder("E-TEST-2")
 
 Result: 
 
-    E-TEST-2: Not enough space on device '/dev/sda1'. Delete something from '/dev/sda1'.`
+    E-TEST-2: Not enough space on device '/dev/sda1'. Delete something from '/dev/sda1'.
 
 You can chain `mitigation` definitions if you want to tell the users that there is more than one solution.
 
@@ -162,6 +162,10 @@ So when you plan to remove an obsolete error code:
    Even if you deleted the entry with the highest number. The whole purpose of that index is to help avoid reusing error codes.
 
 3. Do not reuse the error code (see ["Never Change the Meaning of an Error"](#never-change-the-meaning-of-an-error)).
+
+### Don't Expose Confidential Data
+
+This library does not automatically mask or remove any sensitive or confidential data. It is the responsibility of the application developer using this library to make sure that no confidential data is put into an error message.
 
 ## Information for Users
 
