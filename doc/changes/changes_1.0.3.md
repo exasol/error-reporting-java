@@ -1,4 +1,4 @@
-# Error Reporting Java 1.0.3, released 2025-10-01
+# Error Reporting Java 1.0.3, released 2025-10-20
 
 Code name: Extract Specification
 
