@@ -15,6 +15,7 @@ public class ExaError {
      * @param errorCode Exasol error code
      * @return built error message
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public static ErrorMessageBuilder messageBuilder(final String errorCode) {
         return new ErrorMessageBuilder(errorCode);
     }

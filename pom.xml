@@ -2,12 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>error-reporting-java</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>error-reporting-java</name>
     <description>Builder for exasol error codes.</description>
     <url>https://github.com/exasol/error-reporting-java/</url>
     <properties>
         <error-code-crawler.skip>true</error-code-crawler.skip>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -19,8 +20,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <!-- Version 6 requires Java 17 -->
-            <version>5.13.4</version>
+            <version>6.1.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -29,7 +29,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.4.3</version>
+                <version>5.7.6</version>
                 <executions>
                     <execution>
                         <goals>
@@ -38,12 +38,41 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.itsallcode</groupId>
+                <artifactId>openfasttrace-maven-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.3</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.9.9</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <parent>
         <artifactId>error-reporting-java-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>

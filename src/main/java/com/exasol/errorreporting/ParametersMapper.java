@@ -17,6 +17,7 @@ class ParametersMapper {
      * @param parameters          parameters to be mapped
      * @param errorMessageBuilder {@link ErrorMessageBuilder} to add the parameters to
      */
+    // [impl->dsn~resolve-parameters~1]
     static void mapParametersByName(final String text, final Object[] parameters,
             final ErrorMessageBuilder errorMessageBuilder) {
         new ParametersMapper(text, parameters, errorMessageBuilder).mapParameters();

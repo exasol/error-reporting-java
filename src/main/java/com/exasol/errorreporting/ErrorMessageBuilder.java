@@ -29,6 +29,7 @@ public class ErrorMessageBuilder {
      * @param arguments arguments to fill the placeholders
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder message(final String message, final Object... arguments) {
         messageBuilder.append(message);
         addParameters(message, arguments);
@@ -77,6 +78,7 @@ public class ErrorMessageBuilder {
      * @param ignoredDescription description for the error catalog
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder parameter(final String placeholder, final Object value,
             final String ignoredDescription) {
         return parameter(placeholder, value);
@@ -92,6 +94,7 @@ public class ErrorMessageBuilder {
      * @param arguments  arguments to fill the placeholders
      * @return self for fluent programming
      */
+    // [impl->dsn~expose-crawler-readable-error-definitions~1]
     public ErrorMessageBuilder mitigation(final String mitigation, final Object... arguments) {
         mitigations.add(mitigation);
         addParameters(mitigation, arguments);
@@ -103,6 +106,7 @@ public class ErrorMessageBuilder {
      *
      * @return self for fluent programming
      */
+    // [impl->dsn~render-ticket-mitigation~1]
     public ErrorMessageBuilder ticketMitigation() {
         mitigation("This is an internal error that should not happen. Please report it by opening a GitHub issue.");
         return this;
@@ -111,8 +115,11 @@ public class ErrorMessageBuilder {
     /**
      * Build the error message.
      *
-     * @return built error massage string
+     * @return built error message string
      */
+    // [impl->dsn~render-code-and-message~1]
+    // [impl->dsn~render-mitigations~1]
+    // [impl->dsn~defer-rendering-until-output~1]
     @Override
     public String toString() {
         final StringBuilder result = new StringBuilder();
